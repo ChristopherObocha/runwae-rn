@@ -61,7 +61,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.runwae.app",
@@ -87,7 +89,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "2796fbcb-3299-447c-b191-6a3cbc8a40b3"
+        "projectId": "06ce5302-3e4b-43dd-bcdc-7ea53aa4e45d"
       }
     },
     "owner": "chrisobocha"

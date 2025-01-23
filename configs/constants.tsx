@@ -11,7 +11,8 @@ import { IsIPAD } from '~/theme/app.constant';
 
 export const onBoardingSlides: onBoardingSlidesTypes[] = [
   {
-    color: '#40E0D0',
+    // color: '#40E0D0',
+    color: '#f2f2f7',
     title: 'Explore',
     image: (
       <Image
