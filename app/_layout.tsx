@@ -13,7 +13,6 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { PortalHost } from '@rn-primitives/portal';
 
 import Onboarding from '~/app/Onboarding';
-import Auth from '~/app/auth/Auth';
 import { ThemeToggle } from '~/components/ThemeToggle';
 import { cn } from '~/lib/cn';
 import { useColorScheme, useInitialAndroidBarSync } from '~/lib/useColorScheme';
@@ -66,7 +65,15 @@ export default function RootLayout() {
           <BottomSheetModalProvider>
             <ActionSheetProvider>
               <NavThemeProvider value={NAV_THEME[colorScheme]}>
-                {!hasCompletedOnboarding ? <Onboarding /> : !session ? <Auth /> : <MainApp />}
+                {!hasCompletedOnboarding ? (
+                  <Onboarding />
+                ) : !session ? (
+                  <Stack>
+                    <Stack.Screen name="auth" options={{ headerShown: false }} />
+                  </Stack>
+                ) : (
+                  <MainApp />
+                )}
                 <PortalHost />
               </NavThemeProvider>
             </ActionSheetProvider>
