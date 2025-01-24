@@ -169,11 +169,11 @@ export default function Account() {
       fontWeight: '500', // equivalent to font-medium
       color: COLORS.black,
     },
-    avatarText: {
-      fontSize: 40, // equivalent to text-4xl
-      fontWeight: '500', // equivalent to font-medium
-      color: colors.background,
-    },
+    // avatarText: {
+    //   fontSize: 40, // equivalent to text-4xl
+    //   fontWeight: '500', // equivalent to font-medium
+    //   color: colors.background,
+    // },
   });
 
   return (
@@ -202,7 +202,10 @@ export default function Account() {
 
       <View style={styles.paddingHorizontal}>
         <Text style={styles.text}>
-          Last updated on: <Text style={styles.emphasis}>{format(updatedAt, 'MM/dd/yyyy')}</Text>
+          Last updated on:{' '}
+          <Text style={styles.emphasis}>
+            {updatedAt ? format(new Date(updatedAt), 'MM/dd/yyyy') : 'Never'}
+          </Text>
         </Text>
       </View>
 
