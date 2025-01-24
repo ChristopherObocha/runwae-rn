@@ -6,6 +6,7 @@ interface OnboardingState {
   initialized: boolean;
   setHasCompletedOnboarding: (value: boolean) => Promise<void>;
   initialize: () => Promise<void>;
+  completeOnboarding: () => Promise<void>;
 }
 
 export const useOnboardingStore = create<OnboardingState>((set) => ({
@@ -21,5 +22,9 @@ export const useOnboardingStore = create<OnboardingState>((set) => ({
       hasCompletedOnboarding: value === 'true',
       initialized: true,
     });
+  },
+  completeOnboarding: async () => {
+    await AsyncStorage.setItem('hasCompletedOnboarding', JSON.stringify(true));
+    set({ hasCompletedOnboarding: true });
   },
 }));

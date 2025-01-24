@@ -1,9 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Pressable, Platform, Modal } from 'react-native';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import { Defs, RadialGradient, Rect, Stop, Svg } from 'react-native-svg';
+import { useOnboardingStore } from '~/stores/useOnboardingStore';
 
 // import AuthModal from '../auth/auth.modal';
 
@@ -22,10 +24,11 @@ export default function Slide({
   totalSlides: number;
 }) {
   const [modalVisible, setModalVisible] = useState(false);
+  const { completeOnboarding } = useOnboardingStore();
 
   const handlePress = (index: number, setIndex: (index: number) => void) => {
     if (index === 2) {
-      setModalVisible(true);
+      completeOnboarding();
     } else {
       setIndex(index + 1);
     }
