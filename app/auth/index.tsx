@@ -1,16 +1,22 @@
 import { Link } from 'expo-router';
 import * as React from 'react';
-import { Image, Platform, View } from 'react-native';
+import { Image, Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Svg, { Path } from 'react-native-svg';
 
+// import LogoSvg from '~/assets/svgs/logo-svg';
+import { Logo } from '~/components/Logo';
 import { AlertAnchor } from '~/components/nativewindui/Alert';
 import { AlertRef } from '~/components/nativewindui/Alert/types';
 import { Button } from '~/components/nativewindui/Button';
 import { Text } from '~/components/nativewindui/Text';
+import { useColorScheme } from '~/lib/useColorScheme';
 
-const LOGO_SOURCE = {
-  uri: 'https://nativewindui.com/_next/image?url=/_next/static/media/logo.28276aeb.png&w=2048&q=75',
-};
+// const LOGO_SOURCE = {
+//   uri: 'https://nativewindui.com/_next/image?url=/_next/static/media/logo.28276aeb.png&w=2048&q=75',
+// };
+const LOGO_SOURCE = require('~/assets/icon.png');
+// const LOGO_SVG = require('~/assets/svgs/logo-svg.svg');
 
 const GOOGLE_SOURCE = {
   uri: 'https://www.pngall.com/wp-content/uploads/13/Google-Logo.png',
@@ -18,16 +24,31 @@ const GOOGLE_SOURCE = {
 
 export default function AuthIndexScreen() {
   const alertRef = React.useRef<AlertRef>(null);
+  // const colors = useColorScheme().colorScheme;
+  const colors = useColorScheme().colors;
+
+  const styles = StyleSheet.create({
+    logo: {
+      width: 100,
+      height: 100,
+    },
+    container: {
+      // backgroundColor: colors.primary,
+      flex: 1,
+    },
+  });
+
   return (
     <>
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={styles.container}>
         <View className="ios:justify-end flex-1 justify-center gap-4 px-8 py-4">
           <View className="items-center">
-            <Image
+            {/* <Image
               source={LOGO_SOURCE}
-              className="ios:h-12 ios:w-12 h-8 w-8"
+              className="ios:h-48 ios:w-48 h-8 w-8"
               resizeMode="contain"
-            />
+            /> */}
+            <Logo width={120} height={120} />
           </View>
           <View className="ios:pb-5 ios:pt-2 pb-2">
             <Text className="ios:font-extrabold text-center text-3xl font-medium">
