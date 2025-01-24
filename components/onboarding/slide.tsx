@@ -100,7 +100,9 @@ export default function Slide({
               height: '100%',
             }}
             onPress={() => handlePress(index, setIndex)}>
-            <Text style={styles.nextButtonText}>Next</Text>
+            <Text style={styles.nextButtonText}>
+              {index === totalSlides - 1 ? 'Get Started' : 'Next'}
+            </Text>
           </Pressable>
         </LinearGradient>
       )}
@@ -159,9 +161,10 @@ const styles = StyleSheet.create({
     marginTop: windowHeight(30),
     alignItems: 'center',
     justifyContent: 'center',
-    width: windowWidth(140),
+    // width: windowWidth(140),
     height: windowHeight(37),
     borderRadius: windowWidth(20),
+    maxWidth: windowWidth(200),
   },
   nextButtonText: {
     color: 'white',
