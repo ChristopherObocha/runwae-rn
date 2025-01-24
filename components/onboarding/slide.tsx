@@ -1,15 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Pressable, Platform, Modal } from 'react-native';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import { Defs, RadialGradient, Rect, Stop, Svg } from 'react-native-svg';
-import { useOnboardingStore } from '~/stores/useOnboardingStore';
-
-// import AuthModal from '../auth/auth.modal';
 
 import { HEIGHT, WIDTH } from '~/configs/constants';
+import { useOnboardingStore } from '~/stores/useOnboardingStore';
+// import AuthModal from '../auth/auth.modal';
 import { fontSizes, SCREEN_WIDTH, windowHeight, windowWidth } from '~/theme/app.constant';
 
 export default function Slide({
@@ -130,7 +128,7 @@ export default function Slide({
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     padding: scale(60),
