@@ -11,15 +11,17 @@ import { IsIPAD } from '~/theme/app.constant';
 
 export const onBoardingSlides: onBoardingSlidesTypes[] = [
   {
-    // color: '#40E0D0',
-    color: '#f2f2f7',
+    color: '#40E0D0',
+    // color: '#f2f2f7',
     title: 'Explore',
     image: (
       <Image
         source={One}
         style={{
-          width: IsIPAD ? verticalScale(285) : verticalScale(320),
+          width: IsIPAD ? verticalScale(285) : verticalScale(300),
           height: IsIPAD ? verticalScale(345) : verticalScale(330),
+          resizeMode: 'contain',
+          backgroundColor: '#f2f2f7',
         }}
       />
     ),

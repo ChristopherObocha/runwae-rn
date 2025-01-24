@@ -43,7 +43,7 @@ export default function Slide({
         <Rect x={0} y={0} width={WIDTH} height={HEIGHT} fill="url(#gradient)" />
       </Svg>
       <View style={styles.container}>
-        <View>{slide.image}</View>
+        <View style={styles.imageContainer}>{slide.image}</View>
         <View>
           <View
             style={{
@@ -180,5 +180,14 @@ const styles = StyleSheet.create({
     right: moderateScale(5),
     top: Platform.OS === 'ios' ? verticalScale(345) : verticalScale(385),
     transform: [{ translateY: -30 }],
+  },
+  imageContainer: {
+    // width: 200,
+    // alignSelf: 'center',
+    // height: windowHeight(200),
+    backgroundColor: 'red',
+    // borderRadius: 100,
+    // width: '90%',
+    marginBottom: verticalScale(20),
   },
 });
