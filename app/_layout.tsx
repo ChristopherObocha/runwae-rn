@@ -9,9 +9,11 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
 import { Pressable, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { PortalHost } from '@rn-primitives/portal';
 
 import Onboarding from '~/app/Onboarding';
-import Auth from '~/components/Auth';
+import Auth from '~/app/auth/Auth';
 import { ThemeToggle } from '~/components/ThemeToggle';
 import { cn } from '~/lib/cn';
 import { useColorScheme, useInitialAndroidBarSync } from '~/lib/useColorScheme';
@@ -54,14 +56,18 @@ export default function RootLayout() {
         style={isDarkColorScheme ? 'light' : 'dark'}
       />
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <BottomSheetModalProvider>
-          <ActionSheetProvider>
-            <NavThemeProvider value={NAV_THEME[colorScheme]}>
-              {/* {session ? <MainApp /> : <Auth />} */}
-              {session ? <Onboarding /> : <Auth />}
-            </NavThemeProvider>
-          </ActionSheetProvider>
-        </BottomSheetModalProvider>
+        <KeyboardProvider statusBarTranslucent navigationBarTranslucent>
+          <BottomSheetModalProvider>
+            <ActionSheetProvider>
+              <NavThemeProvider value={NAV_THEME[colorScheme]}>
+                {/* {session ? <MainApp /> : <Auth />} */}
+                {/* {session ? <Onboarding /> : <Auth />} */}
+                <MainApp />
+                <PortalHost />
+              </NavThemeProvider>
+            </ActionSheetProvider>
+          </BottomSheetModalProvider>
+        </KeyboardProvider>
       </GestureHandlerRootView>
     </>
   );
