@@ -23,7 +23,7 @@ export default function LoginScreen() {
   const [focusedTextField, setFocusedTextField] = React.useState<'email' | 'password' | null>(null);
   return (
     <View className="ios:bg-card flex-1" style={{ paddingBottom: insets.bottom }}>
-      <Stack.Screen
+      {/* <Stack.Screen
         options={{
           title: 'Log in',
           headerShadowVisible: false,
@@ -37,7 +37,7 @@ export default function LoginScreen() {
             );
           },
         }}
-      />
+      /> */}
       <KeyboardAwareScrollView
         bottomOffset={Platform.select({ ios: 175 })}
         bounces={false}

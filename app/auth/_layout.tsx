@@ -1,10 +1,26 @@
-import { Link, Stack } from 'expo-router';
+import { Link, Stack, useRouter } from 'expo-router';
 import { Platform } from 'react-native';
 
 import { Button } from '~/components/nativewindui/Button';
 import { Text } from '~/components/nativewindui/Text';
 
 export default function AuthLayout() {
+  const router = useRouter();
+
+  const LOGIN_MODAL_OPTIONS = {
+    presentation: 'modal',
+    headerShown: true,
+    headerShadowVisible: false,
+    title: 'Log in',
+    headerLeft() {
+      return (
+        <Button variant="plain" className="ios:px-0" onPress={() => router.back()}>
+          <Text className="text-primary">Cancel</Text>
+        </Button>
+      );
+    },
+  } as const;
+
   return (
     <Stack screenOptions={SCREEN_OPTIONS}>
       <Stack.Screen name="index" />
@@ -15,11 +31,6 @@ export default function AuthLayout() {
 }
 
 const SCREEN_OPTIONS = {
-  headerShown: false,
-} as const;
-
-const LOGIN_MODAL_OPTIONS = {
-  presentation: 'modal',
   headerShown: false,
 } as const;
 
