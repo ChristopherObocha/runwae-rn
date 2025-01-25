@@ -1,6 +1,6 @@
 import { Link, Stack, router } from 'expo-router';
 import * as React from 'react';
-import { Image, Platform, View } from 'react-native';
+import { Image, Platform, StyleSheet, View } from 'react-native';
 import {
   KeyboardAwareScrollView,
   KeyboardController,
@@ -8,36 +8,25 @@ import {
 } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Logo } from '~/components/Logo';
 import { Button } from '~/components/nativewindui/Button';
 import { Form, FormItem, FormSection } from '~/components/nativewindui/Form';
 import { Text } from '~/components/nativewindui/Text';
 import { TextField } from '~/components/nativewindui/TextField';
-import { Logo } from '~/components/Logo';
-
-const LOGO_SOURCE = {
-  uri: 'https://nativewindui.com/_next/image?url=/_next/static/media/logo.28276aeb.png&w=2048&q=75',
-};
+import { COLORS } from '~/theme/colors';
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
   const [focusedTextField, setFocusedTextField] = React.useState<'email' | 'password' | null>(null);
+
+  const styles = StyleSheet.create({
+    container: {
+      paddingBottom: insets.bottom,
+      backgroundColor: COLORS.gradientOne,
+    },
+  });
   return (
-    <View className="ios:bg-card flex-1" style={{ paddingBottom: insets.bottom }}>
-      {/* <Stack.Screen
-        options={{
-          title: 'Log in',
-          headerShadowVisible: false,
-          headerLeft() {
-            return (
-              <Link asChild href="/auth">
-                <Button variant="plain" className="ios:px-0">
-                  <Text className="text-primary">Cancel</Text>
-                </Button>
-              </Link>
-            );
-          },
-        }}
-      /> */}
+    <View className="ios:bg-card flex-1" style={styles.container}>
       <KeyboardAwareScrollView
         bottomOffset={Platform.select({ ios: 175 })}
         bounces={false}
@@ -46,12 +35,9 @@ export default function LoginScreen() {
         contentContainerClassName="ios:pt-12 pt-20">
         <View className="ios:px-12 flex-1 px-8">
           <View className="items-center pb-1">
-            <Image
-              source={LOGO_SOURCE}
-              className="ios:h-12 ios:w-12 h-8 w-8"
-              resizeMode="contain"
-            />
-            {/* <Logo height={12} width={12} /> */}
+            <View className="ios:h-12 ios:w-12 h-8 w-8 items-center justify-center">
+              <Logo width={Platform.select({ ios: 220, default: 72 })} />
+            </View>
             <Text variant="title1" className="ios:font-bold pb-1 pt-4 text-center">
               {Platform.select({ ios: 'Welcome back!', default: 'Log in' })}
             </Text>
