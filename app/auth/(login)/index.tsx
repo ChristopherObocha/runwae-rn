@@ -14,15 +14,17 @@ import { Form, FormItem, FormSection } from '~/components/nativewindui/Form';
 import { Text } from '~/components/nativewindui/Text';
 import { TextField } from '~/components/nativewindui/TextField';
 import { COLORS } from '~/theme/colors';
+import { useColorScheme } from '~/lib/useColorScheme';
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
   const [focusedTextField, setFocusedTextField] = React.useState<'email' | 'password' | null>(null);
+  const colors = useColorScheme().colors;
 
   const styles = StyleSheet.create({
     container: {
       paddingBottom: insets.bottom,
-      backgroundColor: COLORS.gradientOne,
+      backgroundColor: colors.background,
     },
   });
   return (
@@ -36,9 +38,9 @@ export default function LoginScreen() {
         <View className="ios:px-12 flex-1 px-8">
           <View className="items-center pb-1">
             <View className="ios:h-12 ios:w-12 h-8 w-8 items-center justify-center">
-              <Logo width={Platform.select({ ios: 220, default: 72 })} />
+              <Logo width={Platform.select({ ios: 180, default: 72 })} color={COLORS.gradientOne} />
             </View>
-            <Text variant="title1" className="ios:font-bold pb-1 pt-4 text-center">
+            <Text variant="heading" className="ios:font-bold pb-1 pt-4 text-center">
               {Platform.select({ ios: 'Welcome back!', default: 'Log in' })}
             </Text>
             {Platform.OS !== 'ios' && (

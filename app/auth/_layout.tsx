@@ -3,9 +3,11 @@ import { Platform } from 'react-native';
 
 import { Button } from '~/components/nativewindui/Button';
 import { Text } from '~/components/nativewindui/Text';
+import { useColorScheme } from '~/lib/useColorScheme';
 
 export default function AuthLayout() {
   const router = useRouter();
+  const colors = useColorScheme().colors;
 
   const LOGIN_MODAL_OPTIONS = {
     presentation: 'modal',
@@ -18,6 +20,9 @@ export default function AuthLayout() {
           <Text className="text-primary">Cancel</Text>
         </Button>
       );
+    },
+    headerStyle: {
+      backgroundColor: colors.background,
     },
   } as const;
 
