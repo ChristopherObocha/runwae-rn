@@ -1,6 +1,6 @@
-import { Link, Stack, router } from 'expo-router';
-import * as React from 'react';
-import { Image, Platform, StyleSheet, View } from 'react-native';
+import { Link, router } from 'expo-router';
+import React, { useState } from 'react';
+import { Alert, AppState, Platform, StyleSheet, View } from 'react-native';
 import {
   KeyboardAwareScrollView,
   KeyboardController,
@@ -9,17 +9,50 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Logo } from '~/components/Logo';
+import { ActivityIndicator } from '~/components/nativewindui/ActivityIndicator';
 import { Button } from '~/components/nativewindui/Button';
 import { Form, FormItem, FormSection } from '~/components/nativewindui/Form';
 import { Text } from '~/components/nativewindui/Text';
 import { TextField } from '~/components/nativewindui/TextField';
-import { COLORS } from '~/theme/colors';
 import { useColorScheme } from '~/lib/useColorScheme';
+import { COLORS } from '~/theme/colors';
+import { supabase } from '~/utils/supabase';
+
+// Tells Supabase Auth to continuously refresh the session automatically if
+// the app is in the foreground. When this is added, you will continue to receive
+// `onAuthStateChange` events with the `TOKEN_REFRESHED` or `SIGNED_OUT` event
+// if the user's session is terminated. This should only be registered once.
+AppState.addEventListener('change', (state) => {
+  if (state === 'active') {
+    supabase.auth.startAutoRefresh();
+  } else {
+    supabase.auth.stopAutoRefresh();
+  }
+});
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
-  const [focusedTextField, setFocusedTextField] = React.useState<'email' | 'password' | null>(null);
   const colors = useColorScheme().colors;
+
+  const [focusedTextField, setFocusedTextField] = React.useState<'email' | 'password' | null>(null);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+
+  async function signInWithEmail() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    console.log('ran');
+
+    if (error) Alert.alert(error.message);
+    setLoading(false);
+    router.replace('/');
+  }
+
+  // const handleFormItemSubmit =
 
   const styles = StyleSheet.create({
     container: {
@@ -40,21 +73,24 @@ export default function LoginScreen() {
             <View className="ios:h-12 ios:w-12 h-8 w-8 items-center justify-center">
               <Logo width={Platform.select({ ios: 180, default: 72 })} color={COLORS.gradientOne} />
             </View>
-            <Text variant="heading" className="ios:font-bold pb-1 pt-4 text-center">
+            <Text variant="title3" className="ios:font-bold pb-1 pt-4 text-center">
               {Platform.select({ ios: 'Welcome back!', default: 'Log in' })}
             </Text>
             {Platform.OS !== 'ios' && (
               <Text className="ios:text-sm text-center text-muted-foreground">Welcome back!</Text>
             )}
           </View>
-          <View className="ios:pt-4 pt-6">
-            <Form className="gap-2">
-              <FormSection className="ios:bg-background">
+          <View className="ios:pt-4 flex-1 pt-6">
+            <Form className="flex-1 gap-2">
+              <FormSection className="ios:bg-background flex-1">
                 <FormItem>
                   <TextField
                     placeholder={Platform.select({ ios: 'Email', default: '' })}
                     label={Platform.select({ ios: undefined, default: 'Email' })}
-                    onSubmitEditing={() => KeyboardController.setFocusTo('next')}
+                    onSubmitEditing={(event) => {
+                      setEmail(event.nativeEvent.text);
+                      KeyboardController.setFocusTo('next');
+                    }}
                     submitBehavior="submit"
                     autoFocus
                     onFocus={() => setFocusedTextField('email')}
@@ -73,7 +109,11 @@ export default function LoginScreen() {
                     secureTextEntry
                     returnKeyType="done"
                     textContentType="password"
-                    onSubmitEditing={() => router.replace('/')}
+                    autoCapitalize="none"
+                    onSubmitEditing={(event) => {
+                      setPassword(event.nativeEvent.text);
+                      signInWithEmail();
+                    }}
                   />
                 </FormItem>
               </FormSection>
@@ -98,9 +138,9 @@ export default function LoginScreen() {
             <Button
               size="lg"
               onPress={() => {
-                router.replace('/');
+                signInWithEmail();
               }}>
-              <Text>Continue</Text>
+              {loading ? <ActivityIndicator /> : <Text>Continue</Text>}
             </Button>
           </View>
         ) : (
