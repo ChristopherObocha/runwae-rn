@@ -12,6 +12,7 @@ import { Button } from '~/components/nativewindui/Button';
 import { Form, FormItem, FormSection } from '~/components/nativewindui/Form';
 import { Text } from '~/components/nativewindui/Text';
 import { TextField } from '~/components/nativewindui/TextField';
+import { Logo } from '~/components/Logo';
 
 const LOGO_SOURCE = {
   uri: 'https://nativewindui.com/_next/image?url=/_next/static/media/logo.28276aeb.png&w=2048&q=75',
@@ -50,11 +51,12 @@ export default function LoginScreen() {
               className="ios:h-12 ios:w-12 h-8 w-8"
               resizeMode="contain"
             />
+            {/* <Logo height={12} width={12} /> */}
             <Text variant="title1" className="ios:font-bold pb-1 pt-4 text-center">
               {Platform.select({ ios: 'Welcome back!', default: 'Log in' })}
             </Text>
             {Platform.OS !== 'ios' && (
-              <Text className="ios:text-sm text-muted-foreground text-center">Welcome back!</Text>
+              <Text className="ios:text-sm text-center text-muted-foreground">Welcome back!</Text>
             )}
           </View>
           <View className="ios:pt-4 pt-6">
@@ -90,7 +92,7 @@ export default function LoginScreen() {
               <View className="flex-row">
                 <Link asChild href="/auth/(login)/forgot-password">
                   <Button size="sm" variant="plain" className="px-0.5">
-                    <Text className="text-primary text-sm">Forgot password?</Text>
+                    <Text className="text-sm text-primary">Forgot password?</Text>
                   </Button>
                 </Link>
               </View>
@@ -121,7 +123,7 @@ export default function LoginScreen() {
               onPress={() => {
                 router.replace('/auth/(create-account)');
               }}>
-              <Text className="text-primary px-0.5 text-sm">Create Account</Text>
+              <Text className="px-0.5 text-sm text-primary">Create Account</Text>
             </Button>
             <Button
               onPress={() => {
@@ -143,7 +145,7 @@ export default function LoginScreen() {
           onPress={() => {
             router.replace('/auth/(create-account)');
           }}>
-          <Text className="text-primary text-sm">Create Account</Text>
+          <Text className="text-sm text-primary">Create Account</Text>
         </Button>
       )}
     </View>

@@ -33,6 +33,7 @@ import { COLORS } from '~/theme/colors';
 import { Spacer } from '~/utils/Spacer';
 import { textStyles } from '~/utils/styles';
 import { supabase } from '~/utils/supabase';
+import { useOnboardingStore } from '~/stores/useOnboardingStore';
 
 export default function Account() {
   const { session, profile, setProfile, loading } = useAuthStore();
@@ -40,6 +41,9 @@ export default function Account() {
   const website = profile?.website ?? '';
   const avatarUrl = profile?.avatar_url ?? '';
   const updatedAt = profile?.updated_at ?? '';
+
+  const { hasCompletedOnboarding, setHasCompletedOnboarding } = useOnboardingStore();
+  // console.log('hasCompletedOnboarding', hasCompletedOnboarding);
 
   const insets = useSafeAreaInsets();
 
@@ -222,9 +226,10 @@ export default function Account() {
       {/* BUTTONS  */}
       <Spacer size={40} vertical />
       <TouchableOpacity
-        onPress={() => updateProfile({ username, website, avatar_url: avatarUrl })}
+        // onPress={() => updateProfile({ username, website, avatar_url: avatarUrl })}
+        onPress={() => setHasCompletedOnboarding(false)}
         style={[styles.buttonContainer, styles.ctaButton]}>
-        {loading ? <ActivityIndicator /> : <Text style={styles.buttonText}>Update</Text>}
+        {loading ? <ActivityIndicator /> : <Text style={styles.buttonText}>Test Onboarding</Text>}
       </TouchableOpacity>
 
       <Spacer size={20} vertical />
