@@ -99,6 +99,11 @@ export default function Account() {
     }
   }
 
+  async function signOut() {
+    await supabase.auth.signOut();
+    router.replace('/auth');
+  }
+
   const styles = StyleSheet.create({
     container: {
       marginTop: 40,
@@ -233,9 +238,7 @@ export default function Account() {
       </TouchableOpacity>
 
       <Spacer size={20} vertical />
-      <TouchableOpacity
-        onPress={() => useAuthStore.getState().signOut()}
-        style={styles.buttonContainer}>
+      <TouchableOpacity onPress={signOut} style={styles.buttonContainer}>
         <Text style={[styles.buttonText, { color: colors.destructive }]}>Sign Out</Text>
       </TouchableOpacity>
 

@@ -3,6 +3,7 @@ import 'expo-dev-client';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { ThemeProvider as NavThemeProvider } from '@react-navigation/native';
+import { PortalHost } from '@rn-primitives/portal';
 import { Icon } from '@roninoss/icons';
 import { Link, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -10,7 +11,6 @@ import React, { useEffect } from 'react';
 import { Pressable, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
-import { PortalHost } from '@rn-primitives/portal';
 
 import Onboarding from '~/app/Onboarding';
 import { ThemeToggle } from '~/components/ThemeToggle';
@@ -86,10 +86,12 @@ export default function RootLayout() {
 
 const SCREEN_OPTIONS = {
   animation: 'ios_from_right', // for android
+  headerShown: false,
 } as const;
 
 const TABS_OPTIONS = {
   headerShown: false,
+  // headerLeft: () => <SettingsIcon />,
 } as const;
 
 const INDEX_OPTIONS = {

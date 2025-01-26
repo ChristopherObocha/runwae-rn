@@ -45,9 +45,11 @@ export default function LoginScreen() {
       email,
       password,
     });
-    console.log('ran');
 
-    if (error) Alert.alert(error.message);
+    if (error) {
+      Alert.alert(error.message);
+      console.log(error);
+    }
     setLoading(false);
     router.replace('/');
   }
