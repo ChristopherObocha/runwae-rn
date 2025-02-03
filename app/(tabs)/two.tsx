@@ -2,6 +2,7 @@ import { Image } from 'expo-image';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text } from '~/components/nativewindui/Text';
 import { Spacer } from '~/utils/Spacer';
@@ -11,7 +12,12 @@ const { DEFAULT_HOTELS } = constants;
 
 export default function Home() {
   const hotelData = DEFAULT_HOTELS;
+  const insets = useSafeAreaInsets();
+  const backgroundContainer = {
+    paddingTop: insets.top + 10,
+  };
 
+  // const HotelCard = ({ hotel }: { hotel: any }) => {
   const HotelCard = ({ hotel }: { hotel: any }) => {
     return (
       <View style={styles.hotelCard}>
@@ -32,7 +38,7 @@ export default function Home() {
   return (
     <>
       <Stack.Screen options={{ title: 'Tab Two' }} />
-      <ScrollView style={styles.container}>
+      <ScrollView style={[styles.container, backgroundContainer]}>
         <ScrollView style={styles.scrollView} horizontal showsHorizontalScrollIndicator={false}>
           {hotelData?.data?.map((hotel: Hotel, index: number) => (
             <HotelCard key={`${hotel.dest_id}-${index}`} hotel={hotel} />

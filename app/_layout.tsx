@@ -65,7 +65,7 @@ export default function RootLayout() {
           <BottomSheetModalProvider>
             <ActionSheetProvider>
               <NavThemeProvider value={NAV_THEME[colorScheme]}>
-                {!hasCompletedOnboarding ? (
+                {/* {!hasCompletedOnboarding ? (
                   <Onboarding />
                 ) : !session ? (
                   <Stack>
@@ -73,8 +73,8 @@ export default function RootLayout() {
                   </Stack>
                 ) : (
                   <MainApp />
-                )}
-                {/* {session ? <Onboarding /> : <MainApp />} */}
+                )} */}
+                {session ? <Onboarding /> : <MainApp />}
                 <PortalHost />
               </NavThemeProvider>
             </ActionSheetProvider>
