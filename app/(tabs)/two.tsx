@@ -1,6 +1,7 @@
 import { Image } from 'expo-image';
+import * as Location from 'expo-location';
 import { Stack } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -13,11 +14,35 @@ const { DEFAULT_HOTELS } = constants;
 export default function Home() {
   const hotelData = DEFAULT_HOTELS;
   const insets = useSafeAreaInsets();
+  const [location, setLocation] = useState<Location.LocationObject | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const backgroundContainer = {
     paddingTop: insets.top + 10,
   };
 
-  // const HotelCard = ({ hotel }: { hotel: any }) => {
+  useEffect(() => {
+    (async () => {
+      // Request permission to access location
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      // Get the user's location
+      const location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
+
+  let text = 'Waiting..';
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
+
   const HotelCard = ({ hotel }: { hotel: any }) => {
     return (
       <View style={styles.hotelCard}>
@@ -45,6 +70,7 @@ export default function Home() {
           ))}
         </ScrollView>
         <Spacer size={10} vertical />
+        <Text>{text}</Text>
       </ScrollView>
     </>
   );
