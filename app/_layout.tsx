@@ -74,6 +74,7 @@ export default function RootLayout() {
                 ) : (
                   <MainApp />
                 )}
+                {/* {session ? <Onboarding /> : <MainApp />} */}
                 <PortalHost />
               </NavThemeProvider>
             </ActionSheetProvider>
@@ -87,6 +88,8 @@ export default function RootLayout() {
 const SCREEN_OPTIONS = {
   animation: 'ios_from_right', // for android
   headerShown: false,
+  // headerShown: true,
+  // headerLeft: () => <SettingsIcon />,
 } as const;
 
 const TABS_OPTIONS = {

@@ -48,8 +48,9 @@ export default function LoginScreen() {
 
     if (error) {
       Alert.alert(error.message);
-      console.log(error);
+      return console.log(error);
     }
+
     setLoading(false);
     router.replace('/');
   }
@@ -100,6 +101,7 @@ export default function LoginScreen() {
                     keyboardType="email-address"
                     textContentType="emailAddress"
                     returnKeyType="next"
+                    autoCapitalize="none"
                   />
                 </FormItem>
                 <FormItem>
@@ -108,7 +110,7 @@ export default function LoginScreen() {
                     label={Platform.select({ ios: undefined, default: 'Password' })}
                     onFocus={() => setFocusedTextField('password')}
                     onBlur={() => setFocusedTextField(null)}
-                    secureTextEntry
+                    // secureTextEntry
                     returnKeyType="done"
                     textContentType="password"
                     autoCapitalize="none"
