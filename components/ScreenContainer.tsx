@@ -29,26 +29,31 @@ const ScreenContainer = ({ children, style }: ScreenContainerProps) => {
     },
     box1: {
       backgroundColor: '#EAE6FF',
-      // position: 'absolute',
-      // top: -500,
-      // left: 0,
-      // right: 0,
-      // bottom: 0,
-      transform: [{ translateX: -739 / 2 }, { translateY: -500 }, { rotate: '45deg' }],
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      transform: [{ translateX: -140 }, { translateY: -350 }, { rotate: '45deg' }],
     },
     box2: {
       backgroundColor: '#ECD5E3',
-      // position: 'absolute',
-      // top: 200,
-      // left: 100,
-      // right: 40,
-      // bottom: 0,
-      transform: [{ translateX: 340 }, { translateY: -500 }, { rotate: '45deg' }],
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      transform: [{ translateX: 340 }, { translateY: 50 }, { rotate: '45deg' }],
+    },
+    content: {
+      flex: 1,
+      paddingTop: insets.top + 10,
+      paddingBottom: insets.bottom + 80,
+      paddingHorizontal: 15,
     },
   });
 
   const Box = ({ style }: { style: StyleProp<ViewStyle> }) => {
-    // console.log('style', style);
     return <View style={[styles.boxContainer, style]} />;
   };
 
@@ -59,7 +64,7 @@ const ScreenContainer = ({ children, style }: ScreenContainerProps) => {
       contentContainerStyle={styles.contentContainerStyle}>
       <Box style={styles.box1} />
       <Box style={styles.box2} />
-      {children}
+      <View style={styles.content}>{children}</View>
     </ScrollView>
   );
 };
