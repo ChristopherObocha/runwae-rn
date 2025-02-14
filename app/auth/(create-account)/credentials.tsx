@@ -1,5 +1,5 @@
-import { router } from 'expo-router';
-import * as React from 'react';
+import { router, useLocalSearchParams } from 'expo-router';
+import React, { useState } from 'react';
 import { Image, Platform, View } from 'react-native';
 import {
   KeyboardAwareScrollView,
@@ -18,10 +18,28 @@ const LOGO_SOURCE = {
 };
 
 export default function CredentialsScreen() {
+  const params = useLocalSearchParams();
+  const name = params.name ? JSON.parse(params.name as string) : null;
   const insets = useSafeAreaInsets();
   const [focusedTextField, setFocusedTextField] = React.useState<
     'email' | 'password' | 'confirm-password' | null
   >(null);
+
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+
+  // console.log('name: ', name);
+  const handleSubmit = () => {
+    console.log('password: ', password);
+    console.log('confirmPassword: ', confirmPassword);
+    if (password === confirmPassword) {
+      console.log('passwords match');
+    } else {
+      console.log('passwords do not match');
+    }
+  };
+
   return (
     <View className="ios:bg-card flex-1" style={{ paddingBottom: insets.bottom }}>
       <KeyboardAwareScrollView
@@ -41,7 +59,7 @@ export default function CredentialsScreen() {
               {Platform.select({ ios: 'Set up your credentials', default: 'Create Account' })}
             </Text>
             {Platform.OS !== 'ios' && (
-              <Text className="ios:text-sm text-muted-foreground text-center">
+              <Text className="ios:text-sm text-center text-muted-foreground">
                 Set up your credentials
               </Text>
             )}
@@ -61,6 +79,7 @@ export default function CredentialsScreen() {
                     keyboardType="email-address"
                     textContentType="emailAddress"
                     returnKeyType="next"
+                    onChangeText={(val) => setEmail(val)}
                   />
                 </FormItem>
                 <FormItem>
@@ -74,6 +93,7 @@ export default function CredentialsScreen() {
                     secureTextEntry
                     returnKeyType="next"
                     textContentType="newPassword"
+                    onChangeText={(val) => setPassword(val)}
                   />
                 </FormItem>
                 <FormItem>
@@ -82,10 +102,12 @@ export default function CredentialsScreen() {
                     label={Platform.select({ ios: undefined, default: 'Confirm password' })}
                     onFocus={() => setFocusedTextField('confirm-password')}
                     onBlur={() => setFocusedTextField(null)}
-                    onSubmitEditing={() => router.replace('/')}
+                    // onSubmitEditing={() => router.replace('/')}
+                    onSubmitEditing={handleSubmit}
                     secureTextEntry
                     returnKeyType="done"
                     textContentType="newPassword"
+                    onChangeText={(val) => setConfirmPassword(val)}
                   />
                 </FormItem>
               </FormSection>
@@ -99,7 +121,8 @@ export default function CredentialsScreen() {
             <Button
               size="lg"
               onPress={() => {
-                router.replace('/');
+                // router.replace('/');
+                handleSubmit();
               }}>
               <Text>Submit</Text>
             </Button>
@@ -113,7 +136,8 @@ export default function CredentialsScreen() {
                   return;
                 }
                 KeyboardController.dismiss();
-                router.replace('/');
+                // router.replace('/');
+                handleSubmit();
               }}>
               <Text className="text-sm">
                 {focusedTextField !== 'confirm-password' ? 'Next' : 'Submit'}

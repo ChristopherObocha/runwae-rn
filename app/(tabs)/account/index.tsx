@@ -43,7 +43,7 @@ export default function Account() {
   const updatedAt = profile?.updated_at ?? '';
 
   const { hasCompletedOnboarding, setHasCompletedOnboarding } = useOnboardingStore();
-  // console.log('hasCompletedOnboarding', hasCompletedOnboarding);
+  console.log('hasCompletedOnboarding: ', profile);
 
   const insets = useSafeAreaInsets();
 

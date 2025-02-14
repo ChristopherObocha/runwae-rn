@@ -22,6 +22,11 @@ export default function InfoScreen() {
   const [focusedTextField, setFocusedTextField] = React.useState<'first-name' | 'last-name' | null>(
     null
   );
+  const [name, setName] = React.useState({
+    firstName: '',
+    lastName: '',
+  });
+  // console.log('name: ', name);
   return (
     <View className="ios:bg-card flex-1" style={{ paddingBottom: insets.bottom }}>
       <KeyboardAwareScrollView
@@ -41,7 +46,7 @@ export default function InfoScreen() {
               {Platform.select({ ios: "What's your name?", default: 'Create your account' })}
             </Text>
             {Platform.OS !== 'ios' && (
-              <Text className="ios:text-sm text-muted-foreground text-center">Welcome back!</Text>
+              <Text className="ios:text-sm text-center text-muted-foreground">Welcome back!</Text>
             )}
           </View>
           <View className="ios:pt-4 pt-6">
@@ -58,6 +63,7 @@ export default function InfoScreen() {
                     onBlur={() => setFocusedTextField(null)}
                     textContentType="name"
                     returnKeyType="next"
+                    onChangeText={(val) => setName({ ...name, firstName: val })}
                   />
                 </FormItem>
                 <FormItem>
@@ -69,8 +75,13 @@ export default function InfoScreen() {
                     textContentType="givenName"
                     returnKeyType="next"
                     submitBehavior="submit"
+                    onChangeText={(val) => setName({ ...name, lastName: val })}
                     onSubmitEditing={() => {
-                      router.push('/auth/(create-account)/credentials');
+                      if (name.firstName && name.lastName) {
+                        router.push(
+                          `/auth/(create-account)/credentials?name=${JSON.stringify(name)}`
+                        );
+                      }
                     }}
                   />
                 </FormItem>
@@ -89,7 +100,9 @@ export default function InfoScreen() {
             <Button
               size="lg"
               onPress={() => {
-                router.push('/auth/(create-account)/credentials');
+                if (name.firstName && name.lastName) {
+                  router.push(`/auth/(create-account)/credentials?name=${JSON.stringify(name)}`);
+                }
               }}>
               <Text>Continue</Text>
             </Button>
@@ -102,7 +115,7 @@ export default function InfoScreen() {
               onPress={() => {
                 router.replace('/auth/(login)');
               }}>
-              <Text className="text-primary text-sm">Already have an account?</Text>
+              <Text className="text-sm text-primary">Already have an account?</Text>
             </Button>
             <Button
               onPress={() => {
@@ -124,7 +137,7 @@ export default function InfoScreen() {
           onPress={() => {
             router.replace('/auth/(login)');
           }}>
-          <Text className="text-primary text-sm">Already have an account?</Text>
+          <Text className="text-sm text-primary">Already have an account?</Text>
         </Button>
       )}
     </View>
