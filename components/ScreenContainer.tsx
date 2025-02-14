@@ -49,7 +49,6 @@ const ScreenContainer = ({ children, style }: ScreenContainerProps) => {
       flex: 1,
       paddingTop: insets.top + 10,
       paddingBottom: insets.bottom + 80,
-      paddingHorizontal: 15,
     },
   });
 
