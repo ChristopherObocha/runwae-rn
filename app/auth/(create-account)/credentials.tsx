@@ -1,6 +1,6 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
-import { Image, Platform, View } from 'react-native';
+import { Alert, Image, Platform, View } from 'react-native';
 import {
   KeyboardAwareScrollView,
   KeyboardController,
@@ -12,6 +12,8 @@ import { Button } from '~/components/nativewindui/Button';
 import { Form, FormItem, FormSection } from '~/components/nativewindui/Form';
 import { Text } from '~/components/nativewindui/Text';
 import { TextField } from '~/components/nativewindui/TextField';
+import { useAuthStore } from '~/stores/useAuthStore';
+import { supabase } from '~/utils/supabase';
 
 const LOGO_SOURCE = {
   uri: 'https://nativewindui.com/_next/image?url=/_next/static/media/logo.28276aeb.png&w=2048&q=75',
@@ -28,6 +30,7 @@ export default function CredentialsScreen() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   // console.log('name: ', name);
   const handleSubmit = () => {
@@ -35,10 +38,32 @@ export default function CredentialsScreen() {
     console.log('confirmPassword: ', confirmPassword);
     if (password === confirmPassword) {
       console.log('passwords match');
+      signUpWithEmail();
     } else {
       console.log('passwords do not match');
     }
   };
+
+  async function signUpWithEmail() {
+    setLoading(true);
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: `${name?.firstName} ${name?.lastName}`,
+        },
+      },
+    });
+
+    if (error) Alert.alert(error.message);
+    if (!session) Alert.alert('Please check your inbox for email verification!');
+    setLoading(false);
+    console.log('session: ', session);
+  }
 
   return (
     <View className="ios:bg-card flex-1" style={{ paddingBottom: insets.bottom }}>
