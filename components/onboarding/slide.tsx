@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Pressable, Platform, Modal } from 'react-native';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
@@ -10,23 +11,22 @@ import { useOnboardingStore } from '~/stores/useOnboardingStore';
 // import AuthModal from '../auth/auth.modal';
 import { fontSizes, SCREEN_WIDTH, windowHeight, windowWidth } from '~/theme/app.constant';
 
-export default function Slide({
-  slide,
-  index,
-  setIndex,
-  totalSlides,
-}: {
+interface SlideProps {
   slide: onBoardingSlidesTypes;
   index: number;
   setIndex: (value: number) => void;
   totalSlides: number;
-}) {
+  isLast?: boolean;
+}
+
+const Slide = ({ slide, index, setIndex, totalSlides, isLast }: SlideProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { completeOnboarding } = useOnboardingStore();
 
-  const handlePress = (index: number, setIndex: (index: number) => void) => {
+  const handlePress = (index: number, setIndex: (value: number) => void) => {
     if (index === 2) {
       completeOnboarding();
+      console.log('completeOnboarding');
     } else {
       setIndex(index + 1);
     }
@@ -126,7 +126,7 @@ export default function Slide({
       </Modal>
     </>
   );
-}
+};
 
 export const styles = StyleSheet.create({
   container: {
@@ -195,3 +195,5 @@ export const styles = StyleSheet.create({
     marginBottom: verticalScale(20),
   },
 });
+
+export default Slide;
