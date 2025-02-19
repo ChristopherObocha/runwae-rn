@@ -5,10 +5,15 @@ export const appColors = {
   lightPurple: 'rgba(62, 99, 221, 0.28)',
   grey: '#ECEBEB',
   grey2: '#686868',
+  grey3: '#454545',
+  grey4: '#333333',
   black: '#33363F',
   textBlack: '#252525',
   textH1: '#4B4B4B',
   pitchBlack: '#1C1C1C',
+  white: '#FFFFFF',
+  gradientOne: '#3B82F6',
+  gradientTwo: '#1E3A8A',
 };
 
 export const textStyles: Record<string, TextStyle> = {
