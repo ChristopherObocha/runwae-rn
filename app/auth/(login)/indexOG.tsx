@@ -41,30 +41,18 @@ export default function LoginScreen() {
 
   async function signInWithEmail() {
     setLoading(true);
-
-    // Add validation
-    if (!email || !password) {
-      Alert.alert('Please enter both email and password');
-      setLoading(false);
-      return;
-    }
-
-    console.log('Attempting login with:', { email, password }); // Debug log
-
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
       Alert.alert(error.message);
-      setLoading(false);
-      return;
+      return console.log(error);
     }
 
     setLoading(false);
     router.replace('/');
-    console.log('Login successful:', data);
   }
 
   // const handleFormItemSubmit =
@@ -92,7 +80,7 @@ export default function LoginScreen() {
               {Platform.select({ ios: 'Welcome back!', default: 'Log in' })}
             </Text>
             {Platform.OS !== 'ios' && (
-              <Text className="ios:text-sm text-center text-muted-foreground">Welcome back</Text>
+              <Text className="ios:text-sm text-center text-muted-foreground">Welcome back!</Text>
             )}
           </View>
           <View className="ios:pt-4 flex-1 pt-6">
@@ -114,9 +102,6 @@ export default function LoginScreen() {
                     textContentType="emailAddress"
                     returnKeyType="next"
                     autoCapitalize="none"
-                    onChangeText={(text) => {
-                      setEmail(text);
-                    }}
                   />
                 </FormItem>
                 <FormItem>
@@ -129,9 +114,6 @@ export default function LoginScreen() {
                     returnKeyType="done"
                     textContentType="password"
                     autoCapitalize="none"
-                    onChangeText={(text) => {
-                      setPassword(text);
-                    }}
                     onSubmitEditing={(event) => {
                       setPassword(event.nativeEvent.text);
                       signInWithEmail();

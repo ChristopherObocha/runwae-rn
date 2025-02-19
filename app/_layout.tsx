@@ -65,13 +65,21 @@ export default function RootLayout() {
           <BottomSheetModalProvider>
             <ActionSheetProvider>
               <NavThemeProvider value={NAV_THEME[colorScheme]}>
-                <Stack>
+                {/* <Stack>
                   {!hasCompletedOnboarding ? (
                     <Stack.Screen name="index" options={{ headerShown: false }} />
                   ) : (
                     <Stack.Screen name="auth" options={{ headerShown: false }} />
                   )}
-                </Stack>
+                </Stack> */}
+                {/* {session ? (
+                  <Stack>
+                    <Stack.Screen name="auth" options={{ headerShown: false }} />
+                  </Stack>
+                ) : (
+                  <MainApp />
+                )} */}
+                <MainApp />
                 <PortalHost />
               </NavThemeProvider>
             </ActionSheetProvider>
