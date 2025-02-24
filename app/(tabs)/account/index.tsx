@@ -108,7 +108,7 @@ export default function Account() {
     container: {
       marginTop: 40,
       paddingTop: insets.top,
-      paddingBottom: insets.bottom + 20,
+      paddingBottom: insets.bottom + 150,
     },
     avatarContainer: {
       alignItems: 'center',
@@ -243,7 +243,7 @@ export default function Account() {
       </TouchableOpacity>
 
       {/* FOOTER  */}
-      <Spacer size={40} vertical />
+      <Spacer size={90} vertical />
     </ScrollView>
   );
 }
