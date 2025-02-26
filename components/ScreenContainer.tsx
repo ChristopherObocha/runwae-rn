@@ -6,9 +6,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 type ScreenContainerProps = {
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
+  withBoxes?: boolean;
+  withBackground?: boolean;
 };
 
-const ScreenContainer = ({ children, style }: ScreenContainerProps) => {
+const ScreenContainer = ({ children, style, withBoxes, withBackground }: ScreenContainerProps) => {
   const insets = useSafeAreaInsets();
   const styles = StyleSheet.create({
     container: {
@@ -56,13 +58,19 @@ const ScreenContainer = ({ children, style }: ScreenContainerProps) => {
     return <View style={[styles.boxContainer, style]} />;
   };
 
+  console.log('withBoxes: ', withBoxes);
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       style={[styles.container, style]}
       contentContainerStyle={styles.contentContainerStyle}>
-      <Box style={styles.box1} />
-      <Box style={styles.box2} />
+      {withBoxes === true && (
+        <>
+          <Box style={styles.box1} />
+          <Box style={styles.box2} />
+        </>
+      )}
       <View style={styles.content}>{children}</View>
     </ScrollView>
   );

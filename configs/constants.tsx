@@ -175,3 +175,21 @@ export const FAQData = [
       'For security reasons, course videos cannot be downloaded. However, you have lifetime access to each purchased course and can watch them anytime, anywhere with your account',
   },
 ];
+
+export const createTripSlides = [
+  {
+    title: 'Plan a Trip',
+    description: 'Just some basic information about the trip',
+    span: 'Import inspiration',
+  },
+  {
+    title: 'Who is going?',
+    description: 'Add people to your trip',
+    span: 'Select from friends',
+  },
+  {
+    title: 'Customize Trip',
+    description: 'Add details to make your trip unique',
+    span: 'Add details',
+  },
+];

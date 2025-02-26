@@ -1,3 +1,4 @@
+import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, Alert, Button, TextInput, Share, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -246,6 +247,10 @@ const CreateScreen = () => {
       ) : (
         <InviteOptions tripId={createdTrip?.id} />
       )}
+
+      <Link href="/create/startTrip" asChild>
+        <Button title="Start Trip" />
+      </Link>
     </View>
   );
 };

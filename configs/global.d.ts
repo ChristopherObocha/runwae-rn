@@ -6,6 +6,13 @@ type onBoardingSlidesTypes = {
   subTitle: string;
 };
 
+type createTripSlidesTypes = {
+  title: string;
+  description: string;
+  span?: string;
+  color?: string;
+};
+
 type UserType = {
   id: string;
   name: string;

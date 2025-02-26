@@ -9,6 +9,7 @@ export const appColors = {
   grey4: '#333333',
   black: '#33363F',
   textBlack: '#252525',
+  textGrey: '#747272',
   textH1: '#4B4B4B',
   pitchBlack: '#1C1C1C',
   white: '#FFFFFF',
