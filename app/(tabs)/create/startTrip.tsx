@@ -7,15 +7,22 @@ import {
   Dimensions,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  Pressable,
 } from 'react-native';
+import { verticalScale } from 'react-native-size-matters';
 
-import { TextField } from '~/components/nativewindui/TextField';
 import { DatePicker } from '~/components/nativewindui/DatePicker';
+import { TextField } from '~/components/nativewindui/TextField';
 import { createTripSlides } from '~/configs/constants';
+import { fontSizes } from '~/theme/app.constant';
 import { Spacer } from '~/utils/Spacer';
 import { appColors } from '~/utils/styles';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+interface LinearButtonProps {
+  type: 'prev' | 'next';
+}
 
 const StartTrip = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -30,6 +37,54 @@ const StartTrip = () => {
     const scrollPosition = event.nativeEvent.contentOffset.x;
     const index = Math.round(scrollPosition / SCREEN_WIDTH);
     setActiveIndex(index);
+  };
+
+  const handlePress = (index: number, setIndex: (value: number) => void, type: 'prev' | 'next') => {
+    if (type === 'prev' && index === 0) return;
+    if (type === 'next' && index === createTripSlides.length - 1) return;
+
+    const newIndex = type === 'next' ? index + 1 : index - 1;
+    setActiveIndex(newIndex);
+
+    // Scroll to the new index
+    scrollViewRef.current?.scrollTo({
+      x: newIndex * SCREEN_WIDTH,
+      animated: true,
+    });
+  };
+
+  // *********** RENDERS **********
+
+  const NavButton = ({ type }: LinearButtonProps) => {
+    const isDisabled = type === 'prev' && activeIndex === 0;
+    const textColor =
+      type === 'next' ? appColors.white : isDisabled ? appColors.grey3 : appColors.grey3;
+
+    const buttonStyle = {
+      backgroundColor: type === 'next' ? appColors.black : 'transparent',
+      borderWidth: 1,
+      borderColor:
+        type === 'prev' ? (isDisabled ? appColors.grey3 : appColors.grey3) : 'transparent',
+      borderRadius: 6,
+      opacity: isDisabled ? 0.5 : 1,
+    };
+
+    return (
+      <View style={buttonStyle}>
+        <Pressable
+          style={[styles.navButtonPressable, isDisabled && styles.navButtonDisabled]}
+          onPress={() => handlePress(activeIndex, setActiveIndex, type)}
+          disabled={isDisabled}>
+          <Text style={[styles.navButtonText, { color: textColor }]}>
+            {type === 'prev'
+              ? 'Prev'
+              : activeIndex === createTripSlides.length - 1
+                ? 'Complete'
+                : 'Next'}
+          </Text>
+        </Pressable>
+      </View>
+    );
   };
 
   const RenderSlideOne = () => {
@@ -104,6 +159,11 @@ const StartTrip = () => {
               <Text style={styles.description}>{slide.description}</Text>
               <Spacer size={30} vertical />
               {index === 0 && <RenderSlideOne />}
+
+              <View style={styles.indexButtonsContainer}>
+                <NavButton type="prev" />
+                <NavButton type="next" />
+              </View>
             </View>
           </View>
         ))}
@@ -174,5 +234,29 @@ const styles = StyleSheet.create({
     // fontWeight: 'bold',
     marginBottom: 10,
     marginLeft: 15,
+  },
+
+  navButtonText: {
+    color: 'white',
+    fontSize: fontSizes.FONT22,
+    fontWeight: 'bold',
+  },
+  navButtonPressable: {
+    width: 171,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  navButtonDisabled: {
+    opacity: 0.5,
+  },
+  indexButtonsContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    alignSelf: 'center',
+    width: '100%',
+    marginBottom: verticalScale(40),
   },
 });
