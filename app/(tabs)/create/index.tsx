@@ -1,91 +1,58 @@
+import { FontAwesome6 } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, Alert, Button, TextInput, Share, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ActivityIndicator } from '~/components/nativewindui/ActivityIndicator';
+import { dummyProfiles } from '~/configs/constants';
+import { useTrips, Trip } from '~/hooks/useTrips';
 import { useAuthStore } from '~/stores/useAuthStore';
+import { Spacer } from '~/utils/Spacer';
 import { generateRandomString } from '~/utils/helpers';
+import { appColors, textStyles } from '~/utils/styles';
 import { supabase } from '~/utils/supabase';
 
-type CreateTripProps = {
-  tripName: string;
-  creatorId: string | undefined;
-  description?: string;
-  startDate?: string;
-  endDate?: string;
-};
+// type CreateTripProps = {
+//   tripName: string;
+//   creatorId: string | undefined;
+//   description?: string;
+//   startDate?: string;
+//   endDate?: string;
+// };
 
 const CreateScreen = () => {
   const insets = useSafeAreaInsets();
   const { user, session } = useAuthStore();
+  const { createTrip, loading, trips } = useTrips();
 
   const [tripName, setTripName] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [loading, setLoading] = useState(false);
   const createdAt = new Date().toISOString();
   const [inviteeEmail, setInviteeEmail] = useState('');
   const [showInviteOptions, setShowInviteOptions] = useState(false);
-  const [createdTrip, setCreatedTrip] = useState<{ id: string } | null>(null);
+  const [createdTrip, setCreatedTrip] = useState<Trip | undefined>(undefined);
 
   const userId = user?.id; // Ensure we get the user ID
+  // console.log('trips: ', JSON.stringify(trips, null, 2));
 
-  const createTrip = async ({
-    tripName,
-    creatorId,
-    description,
-    startDate,
-    endDate,
-  }: CreateTripProps) => {
-    setLoading(true);
-    try {
-      // Get the authenticated user's ID
+  const handleCreateTrip = async () => {
+    const result = await createTrip({
+      tripName,
+      description,
+      startDate,
+      endDate,
+      creatorId: userId,
+    });
 
-      // Insert a new trip into the 'trips' table
-      // console.log('createdAt: ', session);
-      const { data: trip, error: tripError } = await supabase
-        .from('trip')
-        .insert([
-          {
-            name: tripName,
-            created_by: userId,
-            created_at: createdAt,
-          },
-        ])
-        .select()
-        .single();
-
-      if (tripError) {
-        console.log('tripError: ', tripError);
-        throw tripError;
-      }
-
-      // Insert the trip creator into 'trip_users' table as admin
-      // const { error: tripUserError } = await supabase
-      //   .from('trip_users')
-      //   .insert([{ trip_id: trip.id, user_id: userId, is_admin: true }]);
-
-      // if (tripUserError) throw tripUserError;
-      setLoading(false);
-      return { success: true, trip };
-    } catch (error) {
-      let errorMessage = 'An unexpected error occurred';
-
-      // Check if the error is a Supabase error
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      } else if (typeof error === 'string') {
-        errorMessage = error; // Handle string errors
-      } else if (typeof error === 'object' && error !== null && 'message' in error) {
-        errorMessage = (error as { message: string }).message; // Handle errors from Supabase API
-      }
-
-      console.error('Error creating trip:', errorMessage);
-      console.log('error: ', error);
-    } finally {
-      setLoading(false);
+    if (result.success) {
+      setCreatedTrip(result.trip);
+      setShowInviteOptions(true);
+    } else {
+      Alert.alert('Error', 'Failed to create trip');
     }
   };
 
@@ -169,22 +136,6 @@ const CreateScreen = () => {
     }
   };
 
-  const handleCreateTrip = async () => {
-    const result = await createTrip({
-      tripName,
-      description,
-      startDate,
-      endDate,
-      creatorId: userId,
-    });
-    if (result?.success) {
-      setCreatedTrip(result.trip);
-      setShowInviteOptions(true);
-    } else {
-      Alert.alert('Error', 'Failed to create trip');
-    }
-  };
-
   const InviteOptions = ({ tripId }: { tripId: string | undefined }) => (
     <View>
       <Text>Invite People</Text>
@@ -214,18 +165,51 @@ const CreateScreen = () => {
     </View>
   );
 
-  const getTrips = async () => {
-    const { data: trips, error } = await supabase.from('trip').select('*');
-    if (error) throw error;
-
-    console.log('trips: ', JSON.stringify(trips, null, 2));
-    return trips;
-  };
-
-  getTrips();
-
   const containerStyle = {
     paddingTop: insets.top,
+  };
+
+  const ConciseTripCard = ({ trip }: { trip: Trip }) => {
+    const members = trip?.members || dummyProfiles;
+    const location = trip?.location || 'Paris, France';
+    const startDate = trip?.start_date || 'Feb 8';
+    const endDate = trip?.end_date || 'Feb 10';
+
+    const displayMembers = members.slice(0, 2);
+    const remainingCount = members.length - 2;
+
+    return (
+      <View style={styles.tripCard}>
+        <Text style={styles.tripName}>{trip.name}</Text>
+        <Spacer size={10} vertical />
+        <View style={styles.tripInfoContainer}>
+          <View style={styles.tripTextInfoContainer}>
+            <View style={styles.tripInfoTextContainer}>
+              <FontAwesome6 name="location-dot" size={10} color={appColors.white} />
+              <Text style={styles.tripInfoText}>{location}</Text>
+            </View>
+            <View style={styles.tripInfoTextContainer}>
+              <FontAwesome6 name="calendar-days" size={10} color={appColors.white} />
+              <Text style={styles.tripInfoText}>
+                {startDate} - {endDate}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.memberContainer}>
+            {displayMembers.map((member) => (
+              <View key={member.id}>
+                <Image source={{ uri: member.image }} style={styles.memberAvatar} />
+              </View>
+            ))}
+            {remainingCount > 0 && (
+              <View style={[styles.memberAvatar, styles.memberCount]}>
+                <Text style={styles.memberCountText}>+{remainingCount}</Text>
+              </View>
+            )}
+          </View>
+        </View>
+      </View>
+    );
   };
 
   if (loading) {
@@ -251,6 +235,15 @@ const CreateScreen = () => {
       <Link href="/create/startTrip" asChild>
         <Button title="Start Trip" />
       </Link>
+
+      <Spacer size={20} vertical />
+      <Text>Your Trips</Text>
+      <Spacer size={20} vertical />
+      <View style={styles.tripContainer}>
+        {trips.map((trip) => (
+          <ConciseTripCard key={trip.id} trip={trip} />
+        ))}
+      </View>
     </View>
   );
 };
@@ -260,5 +253,60 @@ export default CreateScreen;
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,
+    // paddingVertical: 12,
+  },
+
+  memberAvatar: {
+    width: 30,
+    height: 30,
+    marginLeft: -5,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: appColors.white,
+  },
+  memberContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  tripContainer: {
+    gap: 10,
+  },
+  tripCard: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: appColors.pureBlack,
+    borderRadius: 16,
+    // borderWidth: 1,
+    // borderColor: appColors.grey,
+  },
+  tripName: {
+    ...textStyles.medium_22,
+    color: appColors.white,
+  },
+  tripInfoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  tripTextInfoContainer: {
+    gap: 6,
+  },
+  tripInfoText: {
+    ...textStyles.regular_10,
+    color: appColors.white,
+  },
+  tripInfoTextContainer: {
+    flexDirection: 'row',
+    gap: 4,
+    alignItems: 'center',
+  },
+  memberCount: {
+    backgroundColor: appColors.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  memberCountText: {
+    color: appColors.grey5,
+    fontSize: 12,
+    fontWeight: '500',
   },
 });

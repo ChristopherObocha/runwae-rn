@@ -19,6 +19,7 @@ import { useColorScheme, useInitialAndroidBarSync } from '~/lib/useColorScheme';
 import { useAuthStore } from '~/stores/useAuthStore';
 import { useOnboardingStore } from '~/stores/useOnboardingStore';
 import { NAV_THEME } from '~/theme';
+import { TripsProvider } from '~/hooks/useTrips';
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -55,7 +56,7 @@ export default function RootLayout() {
   };
 
   return (
-    <>
+    <TripsProvider>
       <StatusBar
         key={`root-status-bar-${isDarkColorScheme ? 'light' : 'dark'}`}
         style={isDarkColorScheme ? 'light' : 'dark'}
@@ -86,7 +87,7 @@ export default function RootLayout() {
           </BottomSheetModalProvider>
         </KeyboardProvider>
       </GestureHandlerRootView>
-    </>
+    </TripsProvider>
   );
 }
 
