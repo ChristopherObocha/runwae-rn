@@ -9,9 +9,11 @@ import {
   NativeSyntheticEvent,
 } from 'react-native';
 
-import ScreenContainer from '~/components/ScreenContainer';
+import { TextField } from '~/components/nativewindui/TextField';
+import { DatePicker } from '~/components/nativewindui/DatePicker';
 import { createTripSlides } from '~/configs/constants';
 import { Spacer } from '~/utils/Spacer';
+import { appColors } from '~/utils/styles';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -19,10 +21,59 @@ const StartTrip = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
 
+  const [tripName, setTripName] = useState<string>('');
+  const [tripLocation, setTripLocation] = useState<string>('');
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(new Date());
+
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const scrollPosition = event.nativeEvent.contentOffset.x;
     const index = Math.round(scrollPosition / SCREEN_WIDTH);
     setActiveIndex(index);
+  };
+
+  const RenderSlideOne = () => {
+    return (
+      <View>
+        <TextField
+          label="Trip Name"
+          style={styles.textField}
+          value={tripName}
+          onChangeText={setTripName}
+        />
+        <Spacer size={20} vertical />
+        <TextField
+          label="Trip Location"
+          style={styles.textField}
+          value={tripLocation}
+          onChangeText={setTripLocation}
+        />
+        <Spacer size={40} vertical />
+        <View style={styles.datePickerContainer}>
+          <View>
+            <Text style={styles.datePickerLabel}>Start Date</Text>
+            <DatePicker
+              value={startDate}
+              mode="date"
+              onChange={(ev) => {
+                setStartDate(new Date(ev.nativeEvent.timestamp));
+              }}
+            />
+          </View>
+          <View>
+            <Text style={styles.datePickerLabel}>End Date</Text>
+            <DatePicker
+              value={endDate}
+              mode="date"
+              onChange={(ev) => {
+                setEndDate(new Date(ev.nativeEvent.timestamp));
+              }}
+              minimumDate={startDate}
+            />
+          </View>
+        </View>
+      </View>
+    );
   };
 
   return (
@@ -51,6 +102,8 @@ const StartTrip = () => {
 
               <Text style={styles.title}>{slide.title}</Text>
               <Text style={styles.description}>{slide.description}</Text>
+              <Spacer size={30} vertical />
+              {index === 0 && <RenderSlideOne />}
             </View>
           </View>
         ))}
@@ -74,9 +127,8 @@ const styles = StyleSheet.create({
   },
   slideContainer: {
     flex: 1,
-    alignItems: 'center',
-    // justifyContent: 'center',
-    padding: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 15,
   },
   title: {
     fontSize: 24,
@@ -105,5 +157,22 @@ const styles = StyleSheet.create({
   progressDotActive: {
     backgroundColor: '#6366F1',
     width: 16,
+  },
+  textField: {
+    // width: '60%',
+    marginHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: appColors.textGrey,
+  },
+  datePickerContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    justifyContent: 'space-between',
+  },
+  datePickerLabel: {
+    fontSize: 16,
+    // fontWeight: 'bold',
+    marginBottom: 10,
+    marginLeft: 15,
   },
 });
