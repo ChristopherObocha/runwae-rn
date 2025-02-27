@@ -20,21 +20,29 @@ export const appColors = {
 export const textStyles: Record<string, TextStyle> = {
   medium_22: {
     fontSize: 22,
-    fontFamily: 'Inter-Medium',
+    fontFamily: 'SFProText-Bold',
     color: appColors.textH1,
   },
   medium_17: {
     fontSize: 17,
-    fontFamily: 'Inter-Medium',
+    fontFamily: 'SFProText-Medium',
     color: appColors.pitchBlack,
   },
   regular_8: {
     fontSize: 8,
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'SFProText-Regular',
     color: appColors.grey2,
   },
   regular_10: {
     fontSize: 10,
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'SFProText-Regular',
+  },
+  regular_12: {
+    fontSize: 12,
+    fontFamily: 'SFProText-Regular',
+  },
+  regular_14: {
+    fontSize: 14,
+    fontFamily: 'SFProText-Regular',
   },
 };

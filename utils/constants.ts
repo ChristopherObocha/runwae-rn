@@ -26,6 +26,11 @@ interface DefaultHotels {
   timestamp: number;
 }
 
+export interface DefaultFriends {
+  name: string;
+  image: string;
+}
+
 const DIRECTIONS = {
   VERTICAL: 'vertical',
   HORIZONTAL: 'horizontal',
