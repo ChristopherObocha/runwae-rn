@@ -7,7 +7,14 @@ export default function CreateATripLayout() {
         headerShown: false,
       }}>
       <Stack.Screen name="index" />
-      <Stack.Screen name="startTrip" />
+      <Stack.Screen
+        name="startTrip"
+        options={{
+          presentation: 'modal',
+          headerShown: false,
+          animation: 'slide_from_bottom',
+        }}
+      />
     </Stack>
   );
 }
