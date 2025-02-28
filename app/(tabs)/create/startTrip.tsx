@@ -10,6 +10,7 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   Pressable,
+  Alert,
 } from 'react-native';
 import { verticalScale } from 'react-native-size-matters';
 
@@ -21,6 +22,9 @@ import { fontSizes } from '~/theme/app.constant';
 import { Spacer } from '~/utils/Spacer';
 import { DefaultFriends } from '~/utils/constants';
 import { appColors, textStyles } from '~/utils/styles';
+import { useTrips } from '~/hooks/useTrips';
+import { useAuthStore } from '~/stores/useAuthStore';
+import { router } from 'expo-router';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -29,6 +33,8 @@ interface LinearButtonProps {
 }
 
 const StartTrip = () => {
+  const { createTrip } = useTrips();
+  const { user } = useAuthStore();
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -49,7 +55,10 @@ const StartTrip = () => {
 
   const handlePress = (index: number, setIndex: (value: number) => void, type: 'prev' | 'next') => {
     if (type === 'prev' && index === 0) return;
-    if (type === 'next' && index === createTripSlides.length - 1) return;
+    if (type === 'next' && index === createTripSlides.length - 1) {
+      handleComplete();
+      return;
+    }
 
     const newIndex = type === 'next' ? index + 1 : index - 1;
     setActiveIndex(newIndex);
@@ -59,6 +68,28 @@ const StartTrip = () => {
       x: newIndex * SCREEN_WIDTH,
       animated: true,
     });
+  };
+
+  // console.log('tripName', tripName);
+  console.log('startDate', startDate);
+  console.log('endDate', endDate);
+
+  const handleComplete = async () => {
+    const result = await createTrip({
+      tripName,
+      startDate,
+      endDate,
+      creatorId: user?.id,
+    });
+
+    if (result.success) {
+      // setCreatedTrip(result.trip);
+      // setShowInviteOptions(true);
+      console.log('result', result);
+      router.replace('/create');
+    } else {
+      Alert.alert('Error', 'Failed to create trip');
+    }
   };
 
   // *********** RENDERS **********

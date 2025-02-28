@@ -3,6 +3,7 @@ import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, Alert, Button, TextInput, Share, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ActivityIndicator } from '~/components/nativewindui/ActivityIndicator';
@@ -239,11 +240,18 @@ const CreateScreen = () => {
       <Spacer size={20} vertical />
       <Text>Your Trips</Text>
       <Spacer size={20} vertical />
-      <View style={styles.tripContainer}>
-        {trips.map((trip) => (
-          <ConciseTripCard key={trip.id} trip={trip} />
-        ))}
-      </View>
+      <ScrollView
+        style={styles.tripContainer}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ gap: 10 }}>
+        <>
+          {trips.map((trip) => (
+            <ConciseTripCard key={trip.id} trip={trip} />
+          ))}
+          <Spacer size={240} vertical />
+        </>
+      </ScrollView>
+      <Spacer size={200} vertical />
     </View>
   );
 };
@@ -269,15 +277,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tripContainer: {
-    gap: 10,
+    // gap: 10,
   },
   tripCard: {
     paddingHorizontal: 16,
     paddingVertical: 12,
     backgroundColor: appColors.pureBlack,
     borderRadius: 16,
-    // borderWidth: 1,
-    // borderColor: appColors.grey,
   },
   tripName: {
     ...textStyles.medium_22,

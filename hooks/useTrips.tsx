@@ -14,10 +14,6 @@ export interface Trip {
   start_date?: string;
   end_date?: string;
   members?: [];
-  // invite_link?: string;
-  // trip_type?: string;
-  // trip_status?: string;
-  // trip_budget?: number;
 }
 
 export type CreateTripProps = {
