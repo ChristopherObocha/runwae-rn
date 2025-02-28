@@ -17,7 +17,6 @@
       "channel": "development-simulator"
     },
     "preview": {
-      "distribution": "internal",
       "channel": "preview"
     },
     "production": {
