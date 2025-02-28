@@ -1,31 +1,32 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Pressable, Platform, Modal } from 'react-native';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import { Defs, RadialGradient, Rect, Stop, Svg } from 'react-native-svg';
 
-// import AuthModal from '../auth/auth.modal';
-
 import { HEIGHT, WIDTH } from '~/configs/constants';
+import { useOnboardingStore } from '~/stores/useOnboardingStore';
+// import AuthModal from '../auth/auth.modal';
 import { fontSizes, SCREEN_WIDTH, windowHeight, windowWidth } from '~/theme/app.constant';
 
-export default function Slide({
-  slide,
-  index,
-  setIndex,
-  totalSlides,
-}: {
+interface SlideProps {
   slide: onBoardingSlidesTypes;
   index: number;
   setIndex: (value: number) => void;
   totalSlides: number;
-}) {
-  const [modalVisible, setModalVisible] = useState(false);
+  isLast?: boolean;
+}
 
-  const handlePress = (index: number, setIndex: (index: number) => void) => {
+const Slide = ({ slide, index, setIndex, totalSlides, isLast }: SlideProps) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const { completeOnboarding } = useOnboardingStore();
+
+  const handlePress = (index: number, setIndex: (value: number) => void) => {
     if (index === 2) {
-      setModalVisible(true);
+      completeOnboarding();
+      console.log('completeOnboarding');
     } else {
       setIndex(index + 1);
     }
@@ -43,7 +44,7 @@ export default function Slide({
         <Rect x={0} y={0} width={WIDTH} height={HEIGHT} fill="url(#gradient)" />
       </Svg>
       <View style={styles.container}>
-        <View>{slide.image}</View>
+        <View style={styles.imageContainer}>{slide.image}</View>
         <View>
           <View
             style={{
@@ -100,7 +101,9 @@ export default function Slide({
               height: '100%',
             }}
             onPress={() => handlePress(index, setIndex)}>
-            <Text style={styles.nextButtonText}>Next</Text>
+            <Text style={styles.nextButtonText}>
+              {index === totalSlides - 1 ? 'Get Started' : 'Next'}
+            </Text>
           </Pressable>
         </LinearGradient>
       )}
@@ -123,9 +126,9 @@ export default function Slide({
       </Modal>
     </>
   );
-}
+};
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     padding: scale(60),
@@ -159,9 +162,10 @@ const styles = StyleSheet.create({
     marginTop: windowHeight(30),
     alignItems: 'center',
     justifyContent: 'center',
-    width: windowWidth(140),
+    // width: windowWidth(140),
     height: windowHeight(37),
     borderRadius: windowWidth(20),
+    maxWidth: windowWidth(200),
   },
   nextButtonText: {
     color: 'white',
@@ -181,4 +185,15 @@ const styles = StyleSheet.create({
     top: Platform.OS === 'ios' ? verticalScale(345) : verticalScale(385),
     transform: [{ translateY: -30 }],
   },
+  imageContainer: {
+    // width: 200,
+    // alignSelf: 'center',
+    // height: windowHeight(200),
+    backgroundColor: 'red',
+    // borderRadius: 100,
+    // width: '90%',
+    marginBottom: verticalScale(20),
+  },
 });
+
+export default Slide;

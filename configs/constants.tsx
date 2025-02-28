@@ -12,13 +12,16 @@ import { IsIPAD } from '~/theme/app.constant';
 export const onBoardingSlides: onBoardingSlidesTypes[] = [
   {
     color: '#40E0D0',
+    // color: '#f2f2f7',
     title: 'Explore',
     image: (
       <Image
         source={One}
         style={{
-          width: IsIPAD ? verticalScale(285) : verticalScale(320),
+          width: IsIPAD ? verticalScale(285) : verticalScale(300),
           height: IsIPAD ? verticalScale(345) : verticalScale(330),
+          resizeMode: 'contain',
+          backgroundColor: '#f2f2f7',
         }}
       />
     ),
@@ -170,5 +173,23 @@ export const FAQData = [
     question: 'Can I download any course videos?',
     answer:
       'For security reasons, course videos cannot be downloaded. However, you have lifetime access to each purchased course and can watch them anytime, anywhere with your account',
+  },
+];
+
+export const createTripSlides = [
+  {
+    title: 'Plan a Trip',
+    description: 'Just some basic information about the trip',
+    span: 'Import inspiration',
+  },
+  {
+    title: 'Who is going?',
+    description: 'Add people to your trip',
+    span: 'Select from friends',
+  },
+  {
+    title: 'Customize Trip',
+    description: 'Add details to make your trip unique',
+    span: 'Add details',
   },
 ];

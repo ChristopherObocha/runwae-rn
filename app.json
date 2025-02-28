@@ -47,6 +47,12 @@
         {
           "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
       ]
     ],
     "experiments": {
@@ -87,7 +93,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "2796fbcb-3299-447c-b191-6a3cbc8a40b3"
+        "projectId": "06ce5302-3e4b-43dd-bcdc-7ea53aa4e45d"
       }
     },
     "owner": "chrisobocha"

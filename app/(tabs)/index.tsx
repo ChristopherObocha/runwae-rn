@@ -1,472 +1,291 @@
-import { useActionSheet } from '@expo/react-native-action-sheet';
-import { useHeaderHeight } from '@react-navigation/elements';
-import { Icon } from '@roninoss/icons';
-import { FlashList } from '@shopify/flash-list';
-import { Stack } from 'expo-router';
-import * as StoreReview from 'expo-store-review';
-import { cssInterop } from 'nativewind';
-import * as React from 'react';
-import {
-  Button as RNButton,
-  ButtonProps,
-  Linking,
-  Platform,
-  Share,
-  useWindowDimensions,
-  View,
-  Alert,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { FontAwesome6 } from '@expo/vector-icons';
+import React from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import HotDealCard from '~/components/HotDealCard';
 
-import { Container } from '~/components/Container';
-import { ActivityIndicator } from '~/components/nativewindui/ActivityIndicator';
-import { Avatar, AvatarFallback, AvatarImage } from '~/components/nativewindui/Avatar';
-import { DatePicker } from '~/components/nativewindui/DatePicker';
-import { Picker, PickerItem } from '~/components/nativewindui/Picker';
-import { ProgressIndicator } from '~/components/nativewindui/ProgressIndicator';
-import { Sheet, useSheetRef } from '~/components/nativewindui/Sheet';
-import { Slider } from '~/components/nativewindui/Slider';
-import { Text } from '~/components/nativewindui/Text';
-import { Toggle } from '~/components/nativewindui/Toggle';
+import ItemCard from '~/components/ItemCard';
+import ScreenContainer from '~/components/ScreenContainer';
 import { useColorScheme } from '~/lib/useColorScheme';
-import { useHeaderSearchBar } from '~/lib/useHeaderSearchBar';
+import { COLORS } from '~/theme/colors';
+import { TripItem } from '~/types';
+import { Spacer } from '~/utils/Spacer';
+import { appColors, textStyles } from '~/utils/styles';
 
-export default function Home() {
-  const searchValue = useHeaderSearchBar({ hideWhenScrolling: COMPONENTS.length === 0 });
-
-  const data = searchValue
-    ? COMPONENTS.filter((c) => c.name.toLowerCase().includes(searchValue.toLowerCase()))
-    : COMPONENTS;
-
-  return (
-    <>
-      <Stack.Screen options={{ title: 'Tab One' }} />
-      <Container>
-        <FlashList
-          contentInsetAdjustmentBehavior="automatic"
-          keyboardShouldPersistTaps="handled"
-          data={data}
-          estimatedItemSize={200}
-          contentContainerClassName="py-4 android:pb-12"
-          extraData={searchValue}
-          removeClippedSubviews={false} // used for selecting text on android
-          keyExtractor={keyExtractor}
-          ItemSeparatorComponent={renderItemSeparator}
-          renderItem={renderItem}
-          ListEmptyComponent={COMPONENTS.length === 0 ? ListEmptyComponent : undefined}
-        />
-      </Container>
-    </>
-  );
-}
-
-cssInterop(FlashList, {
-  className: 'style',
-  contentContainerClassName: 'contentContainerStyle',
-});
-
-function DefaultButton({ color, ...props }: ButtonProps) {
-  const { colors } = useColorScheme();
-  return <RNButton color={color ?? colors.primary} {...props} />;
-}
-
-function ListEmptyComponent() {
-  const insets = useSafeAreaInsets();
-  const dimensions = useWindowDimensions();
-  const headerHeight = useHeaderHeight();
-  const { colors } = useColorScheme();
-  const height = dimensions.height - headerHeight - insets.bottom - insets.top;
-
-  return (
-    <View style={{ height }} className="flex-1 items-center justify-center gap-1 px-12">
-      <Icon name="file-plus-outline" size={42} color={colors.grey} />
-      <Text variant="title3" className="pb-1 text-center font-semibold">
-        No Components Installed
-      </Text>
-      <Text color="tertiary" variant="subhead" className="pb-4 text-center">
-        You can install any of the free components from the{' '}
-        <Text
-          onPress={() => Linking.openURL('https://nativewindui.com')}
-          variant="subhead"
-          className="text-primary">
-          NativeWindUI
-        </Text>
-        {' website.'}
-      </Text>
-    </View>
-  );
-}
-
-type ComponentItem = { name: string; component: React.FC };
-
-function keyExtractor(item: ComponentItem) {
-  return item.name;
-}
-
-function renderItemSeparator() {
-  return <View className="p-2" />;
-}
-
-function renderItem({ item }: { item: ComponentItem }) {
-  return (
-    <Card title={item.name}>
-      <item.component />
-    </Card>
-  );
-}
-
-function Card({ children, title }: { children: React.ReactNode; title: string }) {
-  return (
-    <View className="px-4">
-      <View className="gap-4 rounded-xl border border-border bg-card p-4 pb-6 shadow-sm shadow-black/10 dark:shadow-none">
-        <Text className="text-center text-sm font-medium tracking-wider opacity-60">{title}</Text>
-        {children}
-      </View>
-    </View>
-  );
-}
-
-let hasRequestedReview = false;
-
-const COMPONENTS: ComponentItem[] = [
+const CATEGORY_ITEMS = [
   {
-    name: 'Picker',
-    component: function PickerExample() {
-      const { colors } = useColorScheme();
-      const [picker, setPicker] = React.useState('blue');
-      return (
-        <Picker selectedValue={picker} onValueChange={(itemValue) => setPicker(itemValue)}>
-          <PickerItem
-            label="Red"
-            value="red"
-            color={colors.foreground}
-            style={{
-              backgroundColor: colors.root,
-            }}
-          />
-          <PickerItem
-            label="Blue"
-            value="blue"
-            color={colors.foreground}
-            style={{
-              backgroundColor: colors.root,
-            }}
-          />
-          <PickerItem
-            label="Green"
-            value="green"
-            color={colors.foreground}
-            style={{
-              backgroundColor: colors.root,
-            }}
-          />
-        </Picker>
-      );
-    },
-  },
-
-  {
-    name: 'Date Picker',
-    component: function DatePickerExample() {
-      const [date, setDate] = React.useState(new Date());
-      return (
-        <View className="items-center">
-          <DatePicker
-            value={date}
-            mode="datetime"
-            onChange={(ev) => {
-              setDate(new Date(ev.nativeEvent.timestamp));
-            }}
-          />
-        </View>
-      );
-    },
-  },
-
-  {
-    name: 'Slider',
-    component: function SliderExample() {
-      const [sliderValue, setSliderValue] = React.useState(0.5);
-      return <Slider value={sliderValue} onValueChange={setSliderValue} />;
-    },
-  },
-
-  {
-    name: 'Toggle',
-    component: function ToggleExample() {
-      const [switchValue, setSwitchValue] = React.useState(true);
-      return (
-        <View className="items-center">
-          <Toggle value={switchValue} onValueChange={setSwitchValue} />
-        </View>
-      );
-    },
-  },
-
-  {
-    name: 'Progress Indicator',
-    component: function ProgressIndicatorExample() {
-      const [progress, setProgress] = React.useState(13);
-      let id: ReturnType<typeof setInterval> | null = null;
-      React.useEffect(() => {
-        if (!id) {
-          id = setInterval(() => {
-            setProgress((prev) => (prev >= 99 ? 0 : prev + 5));
-          }, 1000);
-        }
-        return () => {
-          if (id) clearInterval(id);
-        };
-      }, []);
-      return (
-        <View className="p-4">
-          <ProgressIndicator value={progress} />
-        </View>
-      );
-    },
-  },
-
-  {
-    name: 'Activity Indicator',
-    component: function ActivityIndicatorExample() {
-      return (
-        <View className="items-center p-4">
-          <ActivityIndicator />
-        </View>
-      );
-    },
-  },
-
-  {
-    name: 'Action Sheet',
-    component: function ActionSheetExample() {
-      const { colorScheme, colors } = useColorScheme();
-      const { showActionSheetWithOptions } = useActionSheet();
-      return (
-        <View className="items-center">
-          <DefaultButton
-            color="grey"
-            onPress={async () => {
-              const options = ['Delete', 'Save', 'Cancel'];
-              const destructiveButtonIndex = 0;
-              const cancelButtonIndex = 2;
-
-              showActionSheetWithOptions(
-                {
-                  options,
-                  cancelButtonIndex,
-                  destructiveButtonIndex,
-                  containerStyle: {
-                    backgroundColor: colorScheme === 'dark' ? 'black' : 'white',
-                  },
-                  textStyle: {
-                    color: colors.foreground,
-                  },
-                },
-                (selectedIndex) => {
-                  switch (selectedIndex) {
-                    case 1:
-                      // Save
-                      break;
-
-                    case destructiveButtonIndex:
-                      // Delete
-                      break;
-
-                    case cancelButtonIndex:
-                    // Canceled
-                  }
-                }
-              );
-            }}
-            title="Open action sheet"
-          />
-        </View>
-      );
-    },
-  },
-
-  {
-    name: 'Text',
-    component: function TextExample() {
-      return (
-        <View className="gap-2">
-          <Text variant="largeTitle" className="text-center">
-            Large Title
-          </Text>
-          <Text variant="title1" className="text-center">
-            Title 1
-          </Text>
-          <Text variant="title2" className="text-center">
-            Title 2
-          </Text>
-          <Text variant="title3" className="text-center">
-            Title 3
-          </Text>
-          <Text variant="heading" className="text-center">
-            Heading
-          </Text>
-          <Text variant="body" className="text-center">
-            Body
-          </Text>
-          <Text variant="callout" className="text-center">
-            Callout
-          </Text>
-          <Text variant="subhead" className="text-center">
-            Subhead
-          </Text>
-          <Text variant="footnote" className="text-center">
-            Footnote
-          </Text>
-          <Text variant="caption1" className="text-center">
-            Caption 1
-          </Text>
-          <Text variant="caption2" className="text-center">
-            Caption 2
-          </Text>
-        </View>
-      );
-    },
+    type: 'Hotels',
+    icon: 'hotel',
   },
   {
-    name: 'Selectable Text',
-    component: function SelectableTextExample() {
-      return (
-        <Text uiTextView selectable>
-          Long press or double press this text
-        </Text>
-      );
-    },
+    type: 'Restaurants',
+    icon: 'restaurant',
   },
-
   {
-    name: 'Ratings Indicator',
-    component: function RatingsIndicatorExample() {
-      React.useEffect(() => {
-        async function showRequestReview() {
-          if (hasRequestedReview) return;
-          try {
-            if (await StoreReview.hasAction()) {
-              await StoreReview.requestReview();
-            }
-          } catch (error) {
-            console.log(
-              'FOR ANDROID: Make sure you meet all conditions to be able to test and use it: https://developer.android.com/guide/playcore/in-app-review/test#troubleshooting',
-              error
-            );
-          } finally {
-            hasRequestedReview = true;
-          }
-        }
-        const timeout = setTimeout(() => {
-          showRequestReview();
-        }, 1000);
-
-        return () => clearTimeout(timeout);
-      }, []);
-
-      return (
-        <View className="gap-3">
-          <Text className="pb-2 text-center font-semibold">Please follow the guidelines.</Text>
-          <View className="flex-row">
-            <Text className="w-6 text-center text-muted-foreground">·</Text>
-            <View className="flex-1">
-              <Text variant="caption1" className="text-muted-foreground">
-                Don't call StoreReview.requestReview() from a button
-              </Text>
-            </View>
-          </View>
-          <View className="flex-row">
-            <Text className="w-6 text-center text-muted-foreground">·</Text>
-            <View className="flex-1">
-              <Text variant="caption1" className="text-muted-foreground">
-                Don't request a review when the user is doing something time sensitive.
-              </Text>
-            </View>
-          </View>
-          <View className="flex-row">
-            <Text className="w-6 text-center text-muted-foreground">·</Text>
-            <View className="flex-1">
-              <Text variant="caption1" className="text-muted-foreground">
-                Don't ask the user any questions before or while presenting the rating button or
-                card.
-              </Text>
-            </View>
-          </View>
-        </View>
-      );
-    },
+    type: 'Attractions',
+    icon: 'attraction',
   },
-
   {
-    name: 'Activity View',
-    component: function ActivityViewExample() {
-      return (
-        <View className="items-center">
-          <DefaultButton
-            onPress={async () => {
-              try {
-                const result = await Share.share({
-                  message: 'NativeWindUI | Familiar interface, native feel.',
-                });
-                if (result.action === Share.sharedAction) {
-                  if (result.activityType) {
-                    // shared with activity type of result.activityType
-                  } else {
-                    // shared
-                  }
-                } else if (result.action === Share.dismissedAction) {
-                  // dismissed
-                }
-              } catch (error: any) {
-                Alert.alert(error.message);
-              }
-            }}
-            title="Share a message"
-          />
-        </View>
-      );
-    },
+    type: 'Events',
+    icon: 'event',
   },
-
   {
-    name: 'Bottom Sheet',
-    component: function BottomSheetExample() {
-      const { colorScheme } = useColorScheme();
-      const bottomSheetModalRef = useSheetRef();
-
-      return (
-        <View className="items-center">
-          <DefaultButton
-            color={colorScheme === 'dark' && Platform.OS === 'ios' ? 'white' : 'black'}
-            title="Open Bottom Sheet"
-            onPress={() => bottomSheetModalRef.current?.present()}
-          />
-          <Sheet ref={bottomSheetModalRef} snapPoints={[200]}>
-            <View className="flex-1 items-center justify-center pb-8">
-              <Text>@gorhom/bottom-sheet 🎉</Text>
-            </View>
-          </Sheet>
-        </View>
-      );
-    },
+    type: 'Shopping',
+    icon: 'shopping',
   },
-
   {
-    name: 'Avatar',
-    component: function AvatarExample() {
-      const TWITTER_AVATAR_URI =
-        'https://pbs.twimg.com/profile_images/1782428433898708992/1voyv4_A_400x400.jpg';
-      return (
-        <View className="items-center">
-          <Avatar alt="NativeWindUI Avatar">
-            <AvatarImage source={{ uri: TWITTER_AVATAR_URI }} />
-            <AvatarFallback>
-              <Text>NUI</Text>
-            </AvatarFallback>
-          </Avatar>
-        </View>
-      );
-    },
+    type: 'Transportation',
+    icon: 'transportation',
+  },
+  {
+    type: 'Rentals',
+    icon: 'rental',
+  },
+  {
+    type: 'Entertainment',
+    icon: 'entertainment',
+  },
+  {
+    type: 'Other',
+    icon: 'other',
   },
 ];
+
+const TOP_PICKS: TripItem[] = [
+  {
+    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b',
+    title: 'Mountain Explorers',
+    location: 'Colorado, USA',
+    members: 24,
+    isFavorite: true,
+    date: 'Aug 3 - Aug 9',
+    description:
+      'Join us for an adventure through the Rocky Mountains with experienced hikers...more',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000',
+    title: 'Urban Photography',
+    location: 'New York City, USA',
+    members: 32,
+    isFavorite: false,
+    date: 'Sep 5 - Sep 8',
+    description:
+      'Street photography workshop in the heart of Manhattan with pro photographers...more',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836',
+    title: 'Foodie Adventures',
+    location: 'New Orleans, USA',
+    members: 18,
+    isFavorite: true,
+    date: 'Oct 12 - Oct 16',
+    description: 'Discover the best of Creole cuisine and local food culture...more',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773',
+    title: 'Beach Yoga Retreat',
+    location: 'Miami, USA',
+    members: 15,
+    isFavorite: false,
+    date: 'Aug 20 - Aug 25',
+    description:
+      'Morning yoga sessions by the beach with meditation and wellness activities...more',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb',
+    title: 'Wine Country Tour',
+    location: 'Napa Valley, USA',
+    members: 21,
+    isFavorite: true,
+    date: 'Sep 25 - Sep 29',
+    description: 'Visit premium wineries and learn about wine making processes...more',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800',
+    title: 'Desert Adventure',
+    location: 'Arizona, USA',
+    members: 9,
+    isFavorite: false,
+    date: 'Nov 8 - Nov 13',
+    description: 'Explore the Grand Canyon and surrounding desert landscapes...more',
+  },
+];
+
+const HOT_DEALS: TripItem[] = [
+  {
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb',
+    title: 'The Ritz Carlton',
+    location: 'New York, USA',
+    promo: 50,
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d',
+    title: 'Four Seasons Resort',
+    location: 'Maui, Hawaii',
+    promo: 35,
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4',
+    title: 'Mandarin Oriental',
+    location: 'Tokyo, Japan',
+    promo: 45,
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945',
+    title: 'Burj Al Arab',
+    location: 'Dubai, UAE',
+    promo: 30,
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd',
+    title: 'Peninsula Hotel',
+    location: 'Paris, France',
+    promo: 40,
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1445019980597-93fa8acb246c',
+    title: 'Atlantis Resort',
+    location: 'Bahamas',
+    promo: 55,
+  },
+];
+
+const Home = () => {
+  const colorScheme = useColorScheme();
+  const { colors } = colorScheme;
+  const color = {
+    darkBlack: COLORS.dark,
+    grey2: colors.grey2,
+    grey: '#ECEBEB',
+    black: '#33363F',
+    textBlack: '#252525',
+    purple: '#3E63DD',
+    lightPurple: 'rgba(62, 99, 221, 0.28)',
+  };
+
+  const hookedStyles = StyleSheet.create({
+    categoryItem: {
+      backgroundColor: color.lightPurple,
+      borderRadius: 15,
+      paddingHorizontal: 13,
+      paddingVertical: 4,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    categoryItemText: {
+      color: color.textBlack,
+      fontSize: 12,
+      lineHeight: 17,
+      fontFamily: 'Inter',
+      opacity: 1,
+      zIndex: 100,
+    },
+    topNavBarRightIcon: {
+      height: 30,
+      aspectRatio: 1,
+      borderRadius: 15,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: color.grey,
+    },
+    hotDealCard: {
+      // width: '100%',
+      height: 200,
+    },
+  });
+
+  return (
+    <ScreenContainer>
+      <View style={styles.topNavBar}>
+        <View style={styles.topNavBarLeft}>
+          <Text style={styles.text1}>Current Location</Text>
+          <Text style={styles.header2}>New York</Text>
+        </View>
+        <View style={styles.topNavBarRight}>
+          <View style={hookedStyles.topNavBarRightIcon}>
+            <FontAwesome6 name="magnifying-glass" size={13} color="black" />
+          </View>
+        </View>
+      </View>
+      <Spacer vertical size={30} />
+
+      <ScrollView
+        style={{ paddingLeft: 30 }}
+        contentContainerStyle={styles.categoryContainer}
+        horizontal
+        showsHorizontalScrollIndicator={false}>
+        {CATEGORY_ITEMS.map((item) => (
+          <View key={item.type} style={hookedStyles.categoryItem}>
+            <Text style={hookedStyles.categoryItemText}>{item.type}</Text>
+          </View>
+        ))}
+      </ScrollView>
+
+      <View>
+        <Text style={styles.header1}>Top Picks</Text>
+        <ScrollView
+          style={{ paddingLeft: 30 }}
+          contentContainerStyle={styles.categoryContainer}
+          horizontal
+          showsHorizontalScrollIndicator={false}>
+          {TOP_PICKS.map((item) => (
+            <ItemCard key={item.title} hotel={item} />
+          ))}
+        </ScrollView>
+      </View>
+
+      <View>
+        <Text style={styles.header1}>Top Picks</Text>
+        <ScrollView
+          style={{ paddingLeft: 30 }}
+          contentContainerStyle={styles.categoryContainer}
+          horizontal
+          showsHorizontalScrollIndicator={false}>
+          {HOT_DEALS.map((item) => (
+            <HotDealCard key={item.title} hotel={item} />
+          ))}
+        </ScrollView>
+      </View>
+
+      <View style={styles.sectionContainer} />
+    </ScreenContainer>
+  );
+};
+
+export default Home;
+
+export const styles = StyleSheet.create({
+  topNavBar: {
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 30,
+  },
+  topNavBarLeft: {
+    flex: 1,
+  },
+  topNavBarRight: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  categoryContainer: {
+    gap: 10,
+    paddingVertical: 10,
+  },
+  sectionContainer: {
+    height: 50,
+  },
+  header1: {
+    ...textStyles.medium_22,
+    paddingLeft: 30,
+    paddingTop: 20,
+    paddingBottom: 10,
+    color: appColors.grey2,
+  },
+  header2: {
+    ...textStyles.medium_17,
+  },
+  text1: {
+    ...textStyles.regular_10,
+  },
+});

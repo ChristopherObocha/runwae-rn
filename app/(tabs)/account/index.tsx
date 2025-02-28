@@ -33,6 +33,7 @@ import { COLORS } from '~/theme/colors';
 import { Spacer } from '~/utils/Spacer';
 import { textStyles } from '~/utils/styles';
 import { supabase } from '~/utils/supabase';
+import { useOnboardingStore } from '~/stores/useOnboardingStore';
 
 export default function Account() {
   const { session, profile, setProfile, loading } = useAuthStore();
@@ -40,6 +41,9 @@ export default function Account() {
   const website = profile?.website ?? '';
   const avatarUrl = profile?.avatar_url ?? '';
   const updatedAt = profile?.updated_at ?? '';
+
+  const { hasCompletedOnboarding, setHasCompletedOnboarding } = useOnboardingStore();
+  console.log('hasCompletedOnboarding: ', profile);
 
   const insets = useSafeAreaInsets();
 
@@ -95,11 +99,16 @@ export default function Account() {
     }
   }
 
+  async function signOut() {
+    await supabase.auth.signOut();
+    router.replace('/auth');
+  }
+
   const styles = StyleSheet.create({
     container: {
       marginTop: 40,
       paddingTop: insets.top,
-      paddingBottom: insets.bottom + 20,
+      paddingBottom: insets.bottom + 150,
     },
     avatarContainer: {
       alignItems: 'center',
@@ -169,11 +178,11 @@ export default function Account() {
       fontWeight: '500', // equivalent to font-medium
       color: COLORS.black,
     },
-    avatarText: {
-      fontSize: 40, // equivalent to text-4xl
-      fontWeight: '500', // equivalent to font-medium
-      color: colors.background,
-    },
+    // avatarText: {
+    //   fontSize: 40, // equivalent to text-4xl
+    //   fontWeight: '500', // equivalent to font-medium
+    //   color: colors.background,
+    // },
   });
 
   return (
@@ -202,7 +211,10 @@ export default function Account() {
 
       <View style={styles.paddingHorizontal}>
         <Text style={styles.text}>
-          Last updated on: <Text style={styles.emphasis}>{format(updatedAt, 'MM/dd/yyyy')}</Text>
+          Last updated on:{' '}
+          <Text style={styles.emphasis}>
+            {updatedAt ? format(new Date(updatedAt), 'MM/dd/yyyy') : 'Never'}
+          </Text>
         </Text>
       </View>
 
@@ -219,20 +231,19 @@ export default function Account() {
       {/* BUTTONS  */}
       <Spacer size={40} vertical />
       <TouchableOpacity
-        onPress={() => updateProfile({ username, website, avatar_url: avatarUrl })}
+        // onPress={() => updateProfile({ username, website, avatar_url: avatarUrl })}
+        onPress={() => setHasCompletedOnboarding(false)}
         style={[styles.buttonContainer, styles.ctaButton]}>
-        {loading ? <ActivityIndicator /> : <Text style={styles.buttonText}>Update</Text>}
+        {loading ? <ActivityIndicator /> : <Text style={styles.buttonText}>Test Onboarding</Text>}
       </TouchableOpacity>
 
       <Spacer size={20} vertical />
-      <TouchableOpacity
-        onPress={() => useAuthStore.getState().signOut()}
-        style={styles.buttonContainer}>
+      <TouchableOpacity onPress={signOut} style={styles.buttonContainer}>
         <Text style={[styles.buttonText, { color: colors.destructive }]}>Sign Out</Text>
       </TouchableOpacity>
 
       {/* FOOTER  */}
-      <Spacer size={40} vertical />
+      <Spacer size={90} vertical />
     </ScrollView>
   );
 }

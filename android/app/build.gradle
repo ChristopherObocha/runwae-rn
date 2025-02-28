@@ -86,9 +86,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.chrisobocha.onestoprn'
+    namespace 'com.runwae.app'
     defaultConfig {
-        applicationId 'com.chrisobocha.onestoprn'
+        applicationId 'com.runwae.app'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
