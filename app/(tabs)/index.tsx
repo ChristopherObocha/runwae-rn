@@ -180,11 +180,15 @@ const Home = () => {
       borderRadius: 15,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: color.grey,
+      // backgroundColor: color.grey,
     },
     hotDealCard: {
-      // width: '100%',
       height: 200,
+    },
+    nameHeader: {
+      fontFamily: 'Rowan-Medium',
+      fontSize: 22,
+      color: appColors.pitchBlack,
     },
   });
 
@@ -239,7 +243,7 @@ const Home = () => {
                 <Text className="text-foreground">NUI</Text>
               </AvatarFallback>
             </Avatar>
-            <Text style={styles.header1}>Hi, Shirley</Text>
+            <Text style={hookedStyles.nameHeader}>Hi, Shirley</Text>
           </View>
           <View style={styles.topNavBarRight}>
             <View style={hookedStyles.topNavBarRightIcon}>
