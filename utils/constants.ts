@@ -150,7 +150,8 @@ const DEFAULT_HOTELS: DefaultHotels = {
 };
 
 const SEARCH_HOTELS_MAN = {
-  API_URL: 'https://booking-com15.p.rapidapi.com/api/v1/hotels/searchDestination?query=man',
+  API_URL:
+    'https://booking-com15.p.rapidapi.com/api/v1/hotels/searchDestination?query=man',
   API_OPTIONS: {
     method: 'GET',
     headers: {
@@ -159,11 +160,58 @@ const SEARCH_HOTELS_MAN = {
     },
   },
 };
+const CATEGORY_ITEMS = [
+  {
+    type: 'Hotels',
+    icon: 'hotel',
+    isActive: false,
+  },
+  {
+    type: 'Restaurants',
+    icon: 'restaurant',
+    isActive: false,
+  },
+  {
+    type: 'Attractions',
+    icon: 'attraction',
+    isActive: false,
+  },
+  {
+    type: 'Events',
+    icon: 'event',
+    isActive: false,
+  },
+  {
+    type: 'Shopping',
+    icon: 'shopping',
+    isActive: false,
+  },
+  {
+    type: 'Transportation',
+    icon: 'transportation',
+    isActive: false,
+  },
+  {
+    type: 'Rentals',
+    icon: 'rental',
+    isActive: false,
+  },
+  {
+    type: 'Entertainment',
+    icon: 'entertainment',
+    isActive: false,
+  },
+  {
+    type: 'Other',
+    icon: 'other',
+  },
+];
 
 export const constants = {
   DEFAULT_HOTELS_STRING: JSON.stringify(DEFAULT_HOTELS),
   DEFAULT_HOTELS_PARSED: DEFAULT_HOTELS,
   DEFAULT_HOTELS,
   SEARCH_HOTELS_MAN,
+  CATEGORY_ITEMS,
   ...DIRECTIONS,
 };

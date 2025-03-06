@@ -1,54 +1,30 @@
-import { FontAwesome6 } from '@expo/vector-icons';
-import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import HotDealCard from '~/components/HotDealCard';
+import { Octicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
+import HotDealCard from '~/components/HotDealCard';
 import ItemCard from '~/components/ItemCard';
 import ScreenContainer from '~/components/ScreenContainer';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '~/components/nativewindui/Avatar';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { COLORS } from '~/theme/colors';
 import { TripItem } from '~/types';
 import { Spacer } from '~/utils/Spacer';
 import { appColors, textStyles } from '~/utils/styles';
-
-const CATEGORY_ITEMS = [
-  {
-    type: 'Hotels',
-    icon: 'hotel',
-  },
-  {
-    type: 'Restaurants',
-    icon: 'restaurant',
-  },
-  {
-    type: 'Attractions',
-    icon: 'attraction',
-  },
-  {
-    type: 'Events',
-    icon: 'event',
-  },
-  {
-    type: 'Shopping',
-    icon: 'shopping',
-  },
-  {
-    type: 'Transportation',
-    icon: 'transportation',
-  },
-  {
-    type: 'Rentals',
-    icon: 'rental',
-  },
-  {
-    type: 'Entertainment',
-    icon: 'entertainment',
-  },
-  {
-    type: 'Other',
-    icon: 'other',
-  },
-];
+import { useAuthStore } from '~/stores/useAuthStore';
+import { constants } from '~/utils/constants';
+import { dummyProfiles } from '~/configs/constants';
 
 const TOP_PICKS: TripItem[] = [
   {
@@ -78,7 +54,8 @@ const TOP_PICKS: TripItem[] = [
     members: 18,
     isFavorite: true,
     date: 'Oct 12 - Oct 16',
-    description: 'Discover the best of Creole cuisine and local food culture...more',
+    description:
+      'Discover the best of Creole cuisine and local food culture...more',
   },
   {
     image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773',
@@ -97,7 +74,8 @@ const TOP_PICKS: TripItem[] = [
     members: 21,
     isFavorite: true,
     date: 'Sep 25 - Sep 29',
-    description: 'Visit premium wineries and learn about wine making processes...more',
+    description:
+      'Visit premium wineries and learn about wine making processes...more',
   },
   {
     image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800',
@@ -106,7 +84,8 @@ const TOP_PICKS: TripItem[] = [
     members: 9,
     isFavorite: false,
     date: 'Nov 8 - Nov 13',
-    description: 'Explore the Grand Canyon and surrounding desert landscapes...more',
+    description:
+      'Explore the Grand Canyon and surrounding desert landscapes...more',
   },
 ];
 
@@ -150,6 +129,7 @@ const HOT_DEALS: TripItem[] = [
 ];
 
 const Home = () => {
+  const { CATEGORY_ITEMS } = constants;
   const colorScheme = useColorScheme();
   const { colors } = colorScheme;
   const color = {
@@ -161,26 +141,38 @@ const Home = () => {
     purple: '#3E63DD',
     lightPurple: 'rgba(62, 99, 221, 0.28)',
   };
+  const [activeCategory, setActiveCategory] = useState<string>(
+    CATEGORY_ITEMS[0]?.type
+  );
 
   const hookedStyles = StyleSheet.create({
     categoryItem: {
-      backgroundColor: color.lightPurple,
-      borderRadius: 15,
+      backgroundColor: appColors.pureBlack,
+      borderRadius: 8,
       paddingHorizontal: 13,
       paddingVertical: 4,
       justifyContent: 'center',
       alignItems: 'center',
+      height: 30,
     },
     categoryItemText: {
-      color: color.textBlack,
+      color: appColors.white,
       fontSize: 12,
       lineHeight: 17,
       fontFamily: 'Inter',
       opacity: 1,
       zIndex: 100,
     },
+    categoryItemActive: {
+      backgroundColor: 'transparent',
+      borderWidth: 1,
+      borderColor: appColors.pureBlack,
+    },
+    categoryItemActiveText: {
+      color: appColors.pureBlack,
+    },
     topNavBarRightIcon: {
-      height: 30,
+      height: 50,
       aspectRatio: 1,
       borderRadius: 15,
       justifyContent: 'center',
@@ -193,37 +185,82 @@ const Home = () => {
     },
   });
 
+  const TabsComponent = ({ item }: { item: any }) => {
+    return (
+      <TouchableOpacity
+        onPress={() => setActiveCategory(item?.type)}
+        key={item?.type}
+        style={[
+          hookedStyles.categoryItem,
+          activeCategory === item?.type && hookedStyles.categoryItemActive,
+        ]}>
+        <Text
+          style={[
+            hookedStyles.categoryItemText,
+            activeCategory === item?.type &&
+              hookedStyles.categoryItemActiveText,
+          ]}>
+          {item?.type}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <ScreenContainer>
-      <View style={styles.topNavBar}>
-        <View style={styles.topNavBarLeft}>
-          <Text style={styles.text1}>Current Location</Text>
-          <Text style={styles.header2}>New York</Text>
-        </View>
-        <View style={styles.topNavBarRight}>
-          <View style={hookedStyles.topNavBarRightIcon}>
-            <FontAwesome6 name="magnifying-glass" size={13} color="black" />
+      <View style={styles.container}>
+        <View style={styles.topNavBar}>
+          <View style={styles.topNavBarLeft}>
+            {/* <Text style={styles.text1}>Current Location</Text>
+            <Text style={styles.header2}>New York</Text> */}
+            <Avatar alt="NativeWindUI Avatar" style={styles.avatar}>
+              <AvatarImage
+                source={{
+                  uri: dummyProfiles[0]?.image,
+                }}
+              />
+              <AvatarFallback>
+                <Text className="text-foreground">NUI</Text>
+              </AvatarFallback>
+            </Avatar>
+            <Text style={styles.header1}>Hi, Shirley</Text>
+          </View>
+          <View style={styles.topNavBarRight}>
+            <View
+            // style={hookedStyles.topNavBarRightIcon}
+            >
+              {/* <FontAwesome6 name="magnifying-glass" size={13} color="black" /> */}
+              <Octicons name="bell-fill" size={22} color="black" />
+            </View>
           </View>
         </View>
+        <Spacer vertical size={30} />
+
+        <Animated.Text entering={FadeIn} exiting={FadeOut}>
+          <Text style={styles.hugeHeader}>
+            {`Experience \nSeamless bookings, \nsmart itineraries, \nand unforgettable adventures`}
+          </Text>
+        </Animated.Text>
+        <Spacer vertical size={30} />
+
+        <ScrollView
+          // style={{ paddingLeft: 30 }}
+          contentContainerStyle={styles.categoryContainer}
+          horizontal
+          showsHorizontalScrollIndicator={false}>
+          {CATEGORY_ITEMS.map((item) => (
+            // <View key={item.type} style={hookedStyles.categoryItem}>
+            //   <Text style={hookedStyles.categoryItemText}>{item.type}</Text>
+            // </View>
+            <TabsComponent key={item?.type} item={item} />
+          ))}
+        </ScrollView>
       </View>
-      <Spacer vertical size={30} />
 
-      <ScrollView
-        style={{ paddingLeft: 30 }}
-        contentContainerStyle={styles.categoryContainer}
-        horizontal
-        showsHorizontalScrollIndicator={false}>
-        {CATEGORY_ITEMS.map((item) => (
-          <View key={item.type} style={hookedStyles.categoryItem}>
-            <Text style={hookedStyles.categoryItemText}>{item.type}</Text>
-          </View>
-        ))}
-      </ScrollView>
-
-      <View>
+      <View style={styles.sectionStyles}>
         <Text style={styles.header1}>Top Picks</Text>
         <ScrollView
-          style={{ paddingLeft: 30 }}
+          // style={{ paddingLeft: 30 }}
           contentContainerStyle={styles.categoryContainer}
           horizontal
           showsHorizontalScrollIndicator={false}>
@@ -236,7 +273,7 @@ const Home = () => {
       <View>
         <Text style={styles.header1}>Top Picks</Text>
         <ScrollView
-          style={{ paddingLeft: 30 }}
+          // style={}
           contentContainerStyle={styles.categoryContainer}
           horizontal
           showsHorizontalScrollIndicator={false}>
@@ -254,15 +291,27 @@ const Home = () => {
 export default Home;
 
 export const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 15,
+  },
+  avatar: {
+    height: 50,
+    // width: 50,
+    aspectRatio: 1,
+  },
   topNavBar: {
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 30,
+    // paddingHorizontal: 30,
   },
   topNavBarLeft: {
     flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
   },
   topNavBarRight: {
     flex: 1,
@@ -277,15 +326,26 @@ export const styles = StyleSheet.create({
   },
   header1: {
     ...textStyles.medium_22,
-    paddingLeft: 30,
     paddingTop: 20,
     paddingBottom: 10,
     color: appColors.grey2,
+    // backgroundColor: 'red'
   },
   header2: {
     ...textStyles.medium_17,
   },
   text1: {
     ...textStyles.regular_10,
+  },
+  hugeHeader: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    fontFamily: 'SFProText-Bold',
+    marginHorizontal: 15,
+    lineHeight: 40,
+    color: appColors.grey2,
+  },
+  sectionStyles: {
+    paddingLeft: 15,
   },
 });
