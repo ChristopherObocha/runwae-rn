@@ -244,7 +244,8 @@ const Home = () => {
             {`Experience \nSeamless bookings, \nsmart itineraries, \nand unforgettable adventures`}
           </Text>
         </Animated.Text>
-        <Spacer vertical size={30} />
+
+        <Spacer vertical size={15} />
       </View>
       <ScrollView
         style={styles.sectionStyles}
@@ -255,6 +256,8 @@ const Home = () => {
           <TabsComponent key={item?.type} item={item} />
         ))}
       </ScrollView>
+
+      <Spacer vertical size={30} />
 
       <View style={styles.sectionStyles}>
         <Text style={styles.header1}>⭐️ Recommended for you</Text>
@@ -269,12 +272,11 @@ const Home = () => {
 
         <Text style={styles.header1}>🌍 Trending trips in your circle</Text>
         <ScrollView
-          // style={}
           contentContainerStyle={styles.categoryContainer}
           horizontal
           showsHorizontalScrollIndicator={false}>
-          {HOT_DEALS.map((item) => (
-            <HotDealCard key={item.title} hotel={item} />
+          {TOP_PICKS.map((item) => (
+            <ItemCard key={item.title} hotel={item} />
           ))}
         </ScrollView>
       </View>
