@@ -212,11 +212,113 @@ const CATEGORY_ITEMS = [
   },
 ];
 
+export interface Event {
+  name: string;
+  description: string;
+  image: string;
+  stars: number;
+  type: string;
+  location: string;
+  isLiked: boolean | null;
+}
+
+const EVENTS_AND_EXPERIENCES: Event[] = [
+  {
+    name: 'The Grand Vesper',
+    description:
+      'A luxurious retreat in the heart of Vienna, The Grand Vesper blends classical elegance with modern sophistication....more',
+    image:
+      'https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=800&auto=format&fit=crop',
+    stars: 5,
+    type: 'Event',
+    location: 'Vienna, Austria',
+    isLiked: null,
+  },
+  {
+    name: 'Tokyo Street Food Tour',
+    description:
+      "Explore the vibrant flavors of Tokyo's hidden food scene. Journey through traditional markets and local favorites....more",
+    image:
+      'https://images.unsplash.com/photo-1554797589-7241bb691973?w=800&auto=format&fit=crop',
+    stars: 4.8,
+    type: 'Experience',
+    location: 'Tokyo, Japan',
+    isLiked: null,
+  },
+  {
+    name: 'Barcelona Wine Festival',
+    description:
+      "Annual celebration of Catalunya's finest wines, featuring tastings, workshops, and pairings with local cuisine....more",
+    image:
+      'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&auto=format&fit=crop',
+    stars: 4.9,
+    type: 'Event',
+    location: 'Barcelona, Spain',
+    isLiked: null,
+  },
+  {
+    name: 'Northern Lights Adventure',
+    description:
+      "Chase the aurora borealis through Iceland's stunning landscapes. Includes professional photography guidance....more",
+    image:
+      'https://images.unsplash.com/photo-1579033461380-adb47c3eb938?w=800&auto=format&fit=crop',
+    stars: 5,
+    type: 'Experience',
+    location: 'Reykjavik, Iceland',
+    isLiked: null,
+  },
+  {
+    name: 'Sydney Opera House Tour',
+    description:
+      "Behind-the-scenes access to one of the world's most iconic performing arts venues. Exclusive backstage access....more",
+    image:
+      'https://images.unsplash.com/photo-1624138784614-87fd1b6528f8?w=800&auto=format&fit=crop',
+    stars: 4.7,
+    type: 'Experience',
+    location: 'Sydney, Australia',
+    isLiked: null,
+  },
+  {
+    name: 'Marrakech Cooking Class',
+    description:
+      'Learn traditional Moroccan cooking techniques in a historic riad. Includes spice market tour and lunch....more',
+    image:
+      'https://images.unsplash.com/photo-1547637589-f54c34f5d7a4?w=800&auto=format&fit=crop',
+    stars: 4.9,
+    type: 'Experience',
+    location: 'Marrakech, Morocco',
+    isLiked: null,
+  },
+  {
+    name: 'Rio Carnival Experience',
+    description:
+      "VIP access to Rio's world-famous carnival, including samba school visits and parade participation....more",
+    image:
+      'https://images.unsplash.com/photo-1518019671582-55004f1bc9ab?w=800&auto=format&fit=crop',
+    stars: 4.8,
+    type: 'Event',
+    location: 'Rio de Janeiro, Brazil',
+    isLiked: null,
+  },
+  {
+    name: 'Greek Island Sailing',
+    description:
+      'Navigate through the crystal waters of the Aegean Sea, exploring hidden coves and ancient coastal ruins....more',
+    image:
+      'https://images.unsplash.com/photo-1586500036706-41963de24d8b?w=800&auto=format&fit=crop',
+    stars: 4.6,
+    type: 'Experience',
+    location: 'Cyclades, Greece',
+    isLiked: null,
+  },
+];
+
 export const constants = {
   DEFAULT_HOTELS_STRING: JSON.stringify(DEFAULT_HOTELS),
   DEFAULT_HOTELS_PARSED: DEFAULT_HOTELS,
   DEFAULT_HOTELS,
   SEARCH_HOTELS_MAN,
   CATEGORY_ITEMS,
+  EVENTS_AND_EXPERIENCES,
   ...DIRECTIONS,
 };

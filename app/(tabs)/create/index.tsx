@@ -1,18 +1,23 @@
-import { FontAwesome6 } from '@expo/vector-icons';
-import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import React, { useState } from 'react';
-import { View, Text, Alert, Button, TextInput, Share, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  Alert,
+  Button,
+  TextInput,
+  Share,
+  StyleSheet,
+} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import ConciseTripCard from '~/components/cards/ConciseTripCard';
 import { ActivityIndicator } from '~/components/nativewindui/ActivityIndicator';
-import { dummyProfiles } from '~/configs/constants';
 import { useTrips, Trip } from '~/hooks/useTrips';
 import { useAuthStore } from '~/stores/useAuthStore';
 import { Spacer } from '~/utils/Spacer';
 import { generateRandomString } from '~/utils/helpers';
-import { appColors, textStyles } from '~/utils/styles';
 import { supabase } from '~/utils/supabase';
 
 // type CreateTripProps = {
@@ -162,55 +167,15 @@ const CreateScreen = () => {
           }}
         />
       </View>
-      <Button title="Create Invite Link" onPress={() => handleShareInviteLink(tripId)} />
+      <Button
+        title="Create Invite Link"
+        onPress={() => handleShareInviteLink(tripId)}
+      />
     </View>
   );
 
   const containerStyle = {
     paddingTop: insets.top,
-  };
-
-  const ConciseTripCard = ({ trip }: { trip: Trip }) => {
-    const members = trip?.members || dummyProfiles;
-    const location = trip?.location || 'Paris, France';
-    const startDate = trip?.start_date || 'Feb 8';
-    const endDate = trip?.end_date || 'Feb 10';
-
-    const displayMembers = members.slice(0, 2);
-    const remainingCount = members.length - 2;
-
-    return (
-      <View style={styles.tripCard}>
-        <Text style={styles.tripName}>{trip.name}</Text>
-        <Spacer size={10} vertical />
-        <View style={styles.tripInfoContainer}>
-          <View style={styles.tripTextInfoContainer}>
-            <View style={styles.tripInfoTextContainer}>
-              <FontAwesome6 name="location-dot" size={10} color={appColors.white} />
-              <Text style={styles.tripInfoText}>{location}</Text>
-            </View>
-            <View style={styles.tripInfoTextContainer}>
-              <FontAwesome6 name="calendar-days" size={10} color={appColors.white} />
-              <Text style={styles.tripInfoText}>
-                {startDate} - {endDate}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.memberContainer}>
-            {displayMembers.map((member) => (
-              <View key={member.id}>
-                <Image source={{ uri: member.image }} style={styles.memberAvatar} />
-              </View>
-            ))}
-            {remainingCount > 0 && (
-              <View style={[styles.memberAvatar, styles.memberCount]}>
-                <Text style={styles.memberCountText}>+{remainingCount}</Text>
-              </View>
-            )}
-          </View>
-        </View>
-      </View>
-    );
   };
 
   if (loading) {
@@ -226,7 +191,11 @@ const CreateScreen = () => {
       {!showInviteOptions ? (
         <>
           <Text>Create Trip</Text>
-          <TextInput placeholder="Trip Name" value={tripName} onChangeText={setTripName} />
+          <TextInput
+            placeholder="Trip Name"
+            value={tripName}
+            onChangeText={setTripName}
+          />
           <Button title="Create Trip" onPress={handleCreateTrip} />
         </>
       ) : (
@@ -263,56 +232,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     // paddingVertical: 12,
   },
-
-  memberAvatar: {
-    width: 30,
-    height: 30,
-    marginLeft: -5,
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: appColors.white,
-  },
-  memberContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  tripContainer: {
-    // gap: 10,
-  },
-  tripCard: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: appColors.pureBlack,
-    borderRadius: 16,
-  },
-  tripName: {
-    ...textStyles.medium_22,
-    color: appColors.white,
-  },
-  tripInfoContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  tripTextInfoContainer: {
-    gap: 6,
-  },
-  tripInfoText: {
-    ...textStyles.regular_10,
-    color: appColors.white,
-  },
-  tripInfoTextContainer: {
-    flexDirection: 'row',
-    gap: 4,
-    alignItems: 'center',
-  },
-  memberCount: {
-    backgroundColor: appColors.white,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  memberCountText: {
-    color: appColors.grey5,
-    fontSize: 12,
-    fontWeight: '500',
-  },
+  tripContainer: {},
 });

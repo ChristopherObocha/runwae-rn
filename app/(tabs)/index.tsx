@@ -9,22 +9,23 @@ import {
 } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
-import HotDealCard from '~/components/HotDealCard';
 import ItemCard from '~/components/ItemCard';
 import ScreenContainer from '~/components/ScreenContainer';
+import ConciseTripCard from '~/components/cards/ConciseTripCard';
+import EventCard from '~/components/cards/EventCard';
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from '~/components/nativewindui/Avatar';
+import { dummyProfiles } from '~/configs/constants';
+import { useTrips } from '~/hooks/useTrips';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { COLORS } from '~/theme/colors';
 import { TripItem } from '~/types';
 import { Spacer } from '~/utils/Spacer';
-import { appColors, textStyles } from '~/utils/styles';
-import { useAuthStore } from '~/stores/useAuthStore';
 import { constants } from '~/utils/constants';
-import { dummyProfiles } from '~/configs/constants';
+import { appColors, textStyles } from '~/utils/styles';
 
 const TOP_PICKS: TripItem[] = [
   {
@@ -129,9 +130,10 @@ const HOT_DEALS: TripItem[] = [
 ];
 
 const Home = () => {
-  const { CATEGORY_ITEMS } = constants;
+  const { CATEGORY_ITEMS, EVENTS_AND_EXPERIENCES } = constants;
   const colorScheme = useColorScheme();
   const { colors } = colorScheme;
+  const { trips } = useTrips();
   const color = {
     darkBlack: COLORS.dark,
     grey2: colors.grey2,
@@ -207,6 +209,16 @@ const Home = () => {
     );
   };
 
+  const RenderTrips = () => {
+    return (
+      <View style={styles.tripsContainer}>
+        {trips.slice(0, 2).map((trip) => (
+          <ConciseTripCard key={trip.id} trip={trip} />
+        ))}
+      </View>
+    );
+  };
+
   return (
     <ScreenContainer
       header={
@@ -279,9 +291,27 @@ const Home = () => {
             <ItemCard key={item.title} hotel={item} />
           ))}
         </ScrollView>
-      </View>
 
-      <View></View>
+        {trips.length > 0 && (
+          <>
+            <Text style={styles.header1}>💬 My groups and active trips</Text>
+            <Spacer vertical size={10} />
+            <RenderTrips />
+          </>
+        )}
+
+        <Spacer vertical size={30} />
+
+        <Text style={styles.header1}>🎟️ Event & experience picks</Text>
+        <ScrollView
+          contentContainerStyle={styles.categoryContainer}
+          horizontal
+          showsHorizontalScrollIndicator={false}>
+          {EVENTS_AND_EXPERIENCES.map((item) => (
+            <EventCard key={item.name} event={item} />
+          ))}
+        </ScrollView>
+      </View>
 
       <View style={styles.sectionContainer} />
     </ScreenContainer>
@@ -345,5 +375,9 @@ export const styles = StyleSheet.create({
   },
   sectionStyles: {
     paddingLeft: 15,
+  },
+  tripsContainer: {
+    gap: 10,
+    paddingRight: 15,
   },
 });
