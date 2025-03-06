@@ -53,6 +53,18 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "node_modules/@expo-google-fonts/inter/Inter_300Light.ttf",
+            "node_modules/@expo-google-fonts/inter/Inter_400Regular.ttf",
+            "node_modules/@expo-google-fonts/inter/Inter_500Medium.ttf",
+            "node_modules/@expo-google-fonts/inter/Inter_600SemiBold.ttf",
+            "node_modules/@expo-google-fonts/inter/Inter_700Bold.ttf"
+          ]
+        }
       ]
     ],
     "experiments": {
@@ -67,9 +79,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.runwae.app",

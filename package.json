@@ -16,6 +16,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo-google-fonts/inter": "^0.2.3",
     "@expo/react-native-action-sheet": "^4.1.0",
     "@expo/vector-icons": "^14.0.0",
     "@gorhom/bottom-sheet": "^5.0.6",
@@ -51,6 +52,7 @@
     "expo-dev-launcher": "^5.0.17",
     "expo-document-picker": "~13.0.2",
     "expo-file-system": "~18.0.7",
+    "expo-font": "~13.0.4",
     "expo-haptics": "~14.0.1",
     "expo-image": "~2.0.4",
     "expo-image-manipulator": "~13.0.6",
