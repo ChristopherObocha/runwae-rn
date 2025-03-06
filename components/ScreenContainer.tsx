@@ -8,24 +8,30 @@ type ScreenContainerProps = {
   style?: StyleProp<ViewStyle>;
   withBoxes?: boolean;
   withBackground?: boolean;
+  header?: React.ReactNode;
 };
 
-const ScreenContainer = ({ children, style, withBoxes, withBackground }: ScreenContainerProps) => {
+const ScreenContainer = ({
+  children,
+  style,
+  withBoxes,
+  withBackground,
+  header,
+}: ScreenContainerProps) => {
   const insets = useSafeAreaInsets();
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: 'white',
+      paddingTop: insets.top + 10,
     },
     contentContainerStyle: {
-      // paddingTop: insets.top,
       paddingBottom: insets.bottom,
     },
 
     boxContainer: {
       backgroundColor: '#EAE6FF',
       height: 678,
-      // width: 739,
       aspectRatio: 1,
       borderRadius: 100,
     },
@@ -36,7 +42,11 @@ const ScreenContainer = ({ children, style, withBoxes, withBackground }: ScreenC
       left: 0,
       right: 0,
       bottom: 0,
-      transform: [{ translateX: -140 }, { translateY: -350 }, { rotate: '45deg' }],
+      transform: [
+        { translateX: -140 },
+        { translateY: -350 },
+        { rotate: '45deg' },
+      ],
     },
     box2: {
       backgroundColor: '#ECD5E3',
@@ -49,7 +59,7 @@ const ScreenContainer = ({ children, style, withBoxes, withBackground }: ScreenC
     },
     content: {
       flex: 1,
-      paddingTop: insets.top + 10,
+      paddingTop: !header ? insets.top + 10 : 0,
       paddingBottom: insets.bottom + 80,
     },
   });
@@ -58,21 +68,21 @@ const ScreenContainer = ({ children, style, withBoxes, withBackground }: ScreenC
     return <View style={[styles.boxContainer, style]} />;
   };
 
-  console.log('withBoxes: ', withBoxes);
-
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      style={[styles.container, style]}
-      contentContainerStyle={styles.contentContainerStyle}>
-      {withBoxes === true && (
-        <>
-          <Box style={styles.box1} />
-          <Box style={styles.box2} />
-        </>
-      )}
-      <View style={styles.content}>{children}</View>
-    </ScrollView>
+    <View style={[styles.container, style]}>
+      {header && header}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.contentContainerStyle}>
+        {withBoxes === true && (
+          <>
+            <Box style={styles.box1} />
+            <Box style={styles.box2} />
+          </>
+        )}
+        <View style={styles.content}>{children}</View>
+      </ScrollView>
+    </View>
   );
 };
 
