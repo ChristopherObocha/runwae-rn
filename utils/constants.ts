@@ -162,6 +162,11 @@ const SEARCH_HOTELS_MAN = {
 };
 const CATEGORY_ITEMS = [
   {
+    type: 'All',
+    icon: 'all',
+    isActive: false,
+  },
+  {
     type: 'Hotels',
     icon: 'hotel',
     isActive: false,

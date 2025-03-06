@@ -154,6 +154,7 @@ const Home = () => {
       justifyContent: 'center',
       alignItems: 'center',
       height: 30,
+      minWidth: 45,
     },
     categoryItemText: {
       color: appColors.white,
@@ -229,7 +230,6 @@ const Home = () => {
             <View
             // style={hookedStyles.topNavBarRightIcon}
             >
-              {/* <FontAwesome6 name="magnifying-glass" size={13} color="black" /> */}
               <Octicons name="bell-fill" size={22} color="black" />
             </View>
           </View>
@@ -242,25 +242,20 @@ const Home = () => {
           </Text>
         </Animated.Text>
         <Spacer vertical size={30} />
-
-        <ScrollView
-          // style={{ paddingLeft: 30 }}
-          contentContainerStyle={styles.categoryContainer}
-          horizontal
-          showsHorizontalScrollIndicator={false}>
-          {CATEGORY_ITEMS.map((item) => (
-            // <View key={item.type} style={hookedStyles.categoryItem}>
-            //   <Text style={hookedStyles.categoryItemText}>{item.type}</Text>
-            // </View>
-            <TabsComponent key={item?.type} item={item} />
-          ))}
-        </ScrollView>
       </View>
+      <ScrollView
+        style={styles.sectionStyles}
+        contentContainerStyle={styles.categoryContainer}
+        horizontal
+        showsHorizontalScrollIndicator={false}>
+        {CATEGORY_ITEMS.map((item) => (
+          <TabsComponent key={item?.type} item={item} />
+        ))}
+      </ScrollView>
 
       <View style={styles.sectionStyles}>
         <Text style={styles.header1}>Top Picks</Text>
         <ScrollView
-          // style={{ paddingLeft: 30 }}
           contentContainerStyle={styles.categoryContainer}
           horizontal
           showsHorizontalScrollIndicator={false}>
@@ -327,7 +322,7 @@ export const styles = StyleSheet.create({
   header1: {
     ...textStyles.medium_22,
     paddingTop: 20,
-    paddingBottom: 10,
+    // paddingBottom: 10,
     color: appColors.grey2,
     // backgroundColor: 'red'
   },
