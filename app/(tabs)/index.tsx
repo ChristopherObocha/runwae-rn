@@ -18,13 +18,12 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '~/components/nativewindui/Avatar';
-import { dummyProfiles } from '~/configs/constants';
 import { useTrips } from '~/hooks/useTrips';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { COLORS } from '~/theme/colors';
 import { TripItem } from '~/types';
 import { Spacer } from '~/utils/Spacer';
-import { constants } from '~/utils/constants';
+import { dummyProfiles, constants } from '~/utils/constants';
 import { appColors, textStyles } from '~/utils/styles';
 
 const TOP_PICKS: TripItem[] = [

@@ -1,8 +1,11 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
+import { Button } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import Slide from '~/components/onboarding/slide';
 import Slider from '~/components/onboarding/slider';
+// import { onBoardingSlides } from '~/configs/constants';
 import { onBoardingSlides } from '~/configs/constants';
 
 export default function OnboardingScreen() {
@@ -12,6 +15,7 @@ export default function OnboardingScreen() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+      <Button title="Go to Home" onPress={() => router.back()} />
       <Slider
         key={index}
         index={index}

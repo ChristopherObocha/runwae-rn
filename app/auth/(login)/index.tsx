@@ -34,7 +34,9 @@ export default function LoginScreen() {
   const insets = useSafeAreaInsets();
   const colors = useColorScheme().colors;
 
-  const [focusedTextField, setFocusedTextField] = React.useState<'email' | 'password' | null>(null);
+  const [focusedTextField, setFocusedTextField] = React.useState<
+    'email' | 'password' | null
+  >(null);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -49,14 +51,13 @@ export default function LoginScreen() {
       return;
     }
 
-    console.log('Attempting login with:', { email, password }); // Debug log
-
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
+      console.log('Error:', error);
       Alert.alert(error.message);
       setLoading(false);
       return;
@@ -86,13 +87,20 @@ export default function LoginScreen() {
         <View className="ios:px-12 flex-1 px-8">
           <View className="items-center pb-1">
             <View className="ios:h-12 ios:w-12 h-8 w-8 items-center justify-center">
-              <Logo width={Platform.select({ ios: 180, default: 72 })} color={COLORS.gradientOne} />
+              <Logo
+                width={Platform.select({ ios: 180, default: 72 })}
+                color={COLORS.gradientOne}
+              />
             </View>
-            <Text variant="title3" className="ios:font-bold pb-1 pt-4 text-center">
+            <Text
+              variant="title3"
+              className="ios:font-bold pb-1 pt-4 text-center">
               {Platform.select({ ios: 'Welcome back!', default: 'Log in' })}
             </Text>
             {Platform.OS !== 'ios' && (
-              <Text className="ios:text-sm text-center text-muted-foreground">Welcome back</Text>
+              <Text className="ios:text-sm text-center text-muted-foreground">
+                Welcome back
+              </Text>
             )}
           </View>
           <View className="ios:pt-4 flex-1 pt-6">
@@ -101,7 +109,10 @@ export default function LoginScreen() {
                 <FormItem>
                   <TextField
                     placeholder={Platform.select({ ios: 'Email', default: '' })}
-                    label={Platform.select({ ios: undefined, default: 'Email' })}
+                    label={Platform.select({
+                      ios: undefined,
+                      default: 'Email',
+                    })}
                     onSubmitEditing={(event) => {
                       setEmail(event.nativeEvent.text);
                       KeyboardController.setFocusTo('next');
@@ -121,8 +132,14 @@ export default function LoginScreen() {
                 </FormItem>
                 <FormItem>
                   <TextField
-                    placeholder={Platform.select({ ios: 'Password', default: '' })}
-                    label={Platform.select({ ios: undefined, default: 'Password' })}
+                    placeholder={Platform.select({
+                      ios: 'Password',
+                      default: '',
+                    })}
+                    label={Platform.select({
+                      ios: undefined,
+                      default: 'Password',
+                    })}
                     onFocus={() => setFocusedTextField('password')}
                     onBlur={() => setFocusedTextField(null)}
                     // secureTextEntry
@@ -142,7 +159,9 @@ export default function LoginScreen() {
               <View className="flex-row">
                 <Link asChild href="/auth/(login)/forgot-password">
                   <Button size="sm" variant="plain" className="px-0.5">
-                    <Text className="text-sm text-primary">Forgot password?</Text>
+                    <Text className="text-sm text-primary">
+                      Forgot password?
+                    </Text>
                   </Button>
                 </Link>
               </View>
@@ -153,7 +172,10 @@ export default function LoginScreen() {
       <KeyboardStickyView
         offset={{
           closed: 0,
-          opened: Platform.select({ ios: insets.bottom + 30, default: insets.bottom }),
+          opened: Platform.select({
+            ios: insets.bottom + 30,
+            default: insets.bottom,
+          }),
         }}>
         {Platform.OS === 'ios' ? (
           <View className=" px-12 py-4">
@@ -173,7 +195,9 @@ export default function LoginScreen() {
               onPress={() => {
                 router.replace('/auth/(create-account)');
               }}>
-              <Text className="px-0.5 text-sm text-primary">Create Account</Text>
+              <Text className="px-0.5 text-sm text-primary">
+                Create Account
+              </Text>
             </Button>
             <Button
               onPress={() => {
@@ -184,7 +208,9 @@ export default function LoginScreen() {
                 KeyboardController.dismiss();
                 router.replace('/');
               }}>
-              <Text className="text-sm">{focusedTextField === 'email' ? 'Next' : 'Submit'}</Text>
+              <Text className="text-sm">
+                {focusedTextField === 'email' ? 'Next' : 'Submit'}
+              </Text>
             </Button>
           </View>
         )}

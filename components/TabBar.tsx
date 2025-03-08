@@ -21,14 +21,30 @@ export default function MyTabBar({
   // const { buildHref } = useLinkBuilder();
 
   const icon = {
-    index: (props: any) => <Fontisto name="home" size={22} color={props.color} {...props} />,
-    two: (props: any) => <Fontisto name="search" size={22} color={props.color} {...props} />,
-    create: (props: any) => <Feather name="plus-square" size={22} color={props.color} {...props} />,
+    index: (props: any) => (
+      <Fontisto name="home" size={22} color={props.color} {...props} />
+    ),
+    two: (props: any) => (
+      <Fontisto name="search" size={22} color={props.color} {...props} />
+    ),
+    create: (props: any) => (
+      <Feather name="plus-square" size={22} color={props.color} {...props} />
+    ),
     account: (props: any) => (
-      <MaterialCommunityIcons name="briefcase-outline" size={22} color={props.color} {...props} />
+      <MaterialCommunityIcons
+        name="briefcase-outline"
+        size={22}
+        color={props.color}
+        {...props}
+      />
     ),
     more: (props: any) => (
-      <Feather name="more-horizontal" size={22} color={props.color} {...props} />
+      <Feather
+        name="more-horizontal"
+        size={22}
+        color={props.color}
+        {...props}
+      />
     ),
   };
 
@@ -120,5 +136,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    // backgroundColor: 'red',
+    // height: 40,
   },
 });
