@@ -17,6 +17,7 @@ export const appColors = {
   white: '#FFFFFF',
   gradientOne: '#3B82F6',
   gradientTwo: '#1E3A8A',
+  gradientOrange: '#EA5809',
 };
 
 export const textStyles: Record<string, TextStyle> = {
