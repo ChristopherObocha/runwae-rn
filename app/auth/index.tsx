@@ -1,4 +1,5 @@
 import { Canvas, RadialGradient, Rect, vec } from '@shopify/react-native-skia';
+import { router } from 'expo-router';
 import * as React from 'react';
 import {
   StyleSheet,
@@ -9,21 +10,60 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { AlertAnchor } from '~/components/nativewindui/Alert';
 import { AlertRef } from '~/components/nativewindui/Alert/types';
 import { Text } from '~/components/nativewindui/Text';
-import { useColorScheme } from '~/lib/useColorScheme';
 import { appColors } from '~/utils/styles';
+import { supabase } from '~/utils/supabase';
 
 export default function AuthIndexScreen() {
-  const alertRef = React.useRef<AlertRef>(null);
   const insets = useSafeAreaInsets();
-  const colors = useColorScheme().colors;
   const { width, height } = Dimensions.get('window');
+  const alertRef = React.useRef<AlertRef>(null);
+  const [loading, setLoading] = React.useState(false);
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [isInputFocused, setIsInputFocused] = React.useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = React.useState(false);
+
+  async function signInWithEmail() {
+    setLoading(true);
+
+    // Add validation
+    if (!email || !password) {
+      alertRef.current?.alert({
+        title: 'Error',
+        message: 'Please enter both email and password',
+        buttons: [{ text: 'OK', style: 'cancel' }],
+      });
+      setLoading(false);
+      return;
+    }
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      console.log('Error:', error);
+      alertRef.current?.prompt({
+        title: 'Error',
+        prompt: {
+          type: 'login-password',
+        },
+        message: error.message,
+        buttons: [{ text: 'OK', style: 'cancel' }],
+      });
+      setLoading(false);
+      return;
+    }
+
+    setLoading(false);
+    router.replace('/');
+    console.log('Login successful:', data);
+  }
 
   const styles = StyleSheet.create({
     container: {
@@ -90,8 +130,13 @@ export default function AuthIndexScreen() {
 
   const NextButton = () => {
     return (
-      <TouchableOpacity style={styles.button} onPress={() => {}}>
-        <Text style={styles.buttonText}>Sign In</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={signInWithEmail}
+        disabled={loading}>
+        <Text style={styles.buttonText}>
+          {loading ? 'Signing in...' : 'Sign In'}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -141,7 +186,7 @@ export default function AuthIndexScreen() {
           </View>
         </View>
       </View>
-      {/* <AlertAnchor ref={alertRef} /> */}
+      <AlertAnchor ref={alertRef} />
     </>
   );
 }

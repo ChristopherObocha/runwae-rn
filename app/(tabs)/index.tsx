@@ -130,18 +130,8 @@ const HOT_DEALS: TripItem[] = [
 
 const Home = () => {
   const { CATEGORY_ITEMS, EVENTS_AND_EXPERIENCES } = constants;
-  const colorScheme = useColorScheme();
-  const { colors } = colorScheme;
   const { trips } = useTrips();
-  const color = {
-    darkBlack: COLORS.dark,
-    grey2: colors.grey2,
-    grey: '#ECEBEB',
-    black: '#33363F',
-    textBlack: '#252525',
-    purple: '#3E63DD',
-    lightPurple: 'rgba(62, 99, 221, 0.28)',
-  };
+
   const [activeCategory, setActiveCategory] = useState<string>(
     CATEGORY_ITEMS[0]?.type
   );
@@ -213,6 +203,7 @@ const Home = () => {
   };
 
   const RenderTrips = () => {
+    if (!trips || !Array.isArray(trips)) return null;
     return (
       <View style={styles.tripsContainer}>
         {trips.slice(0, 2).map((trip) => (
@@ -295,7 +286,7 @@ const Home = () => {
           ))}
         </ScrollView>
 
-        {trips.length > 0 && (
+        {Array.isArray(trips) && trips.length > 0 && (
           <>
             <Text style={styles.header1}>💬 My groups and active trips</Text>
             <Spacer vertical size={10} />

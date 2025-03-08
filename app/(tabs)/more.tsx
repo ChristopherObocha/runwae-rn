@@ -6,7 +6,13 @@ const more = () => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>more</Text>
-      <Button title="Onboarding?" onPress={() => router.push('/Onboard')} />
+      <Button
+        title="Onboarding?"
+        onPress={() => {
+          // router.push('/Onboard')
+          router.push('/auth');
+        }}
+      />
     </View>
   );
 };

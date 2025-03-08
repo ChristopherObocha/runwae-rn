@@ -3,9 +3,9 @@ import { Image } from 'expo-image';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { dummyProfiles } from '~/configs/constants';
 import { Trip } from '~/hooks/useTrips';
 import { Spacer } from '~/utils/Spacer';
+import { dummyProfiles } from '~/utils/constants';
 import { appColors, textStyles } from '~/utils/styles';
 
 const ConciseTripCard = ({ trip }: { trip: Trip }) => {
