@@ -6,7 +6,7 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { appColors } from '~/utils/styles';
 
-type RouteNames = 'index' | 'two' | 'create' | 'account' | 'more';
+type RouteNames = 'index' | 'two' | 'create' | 'account' | 'trips';
 
 export default function MyTabBar({
   state,
@@ -32,15 +32,15 @@ export default function MyTabBar({
     ),
     account: (props: any) => (
       <MaterialCommunityIcons
-        name="briefcase-outline"
+        name="account-outline"
         size={22}
         color={props.color}
         {...props}
       />
     ),
-    more: (props: any) => (
-      <Feather
-        name="more-horizontal"
+    trips: (props: any) => (
+      <MaterialCommunityIcons
+        name="briefcase-outline"
         size={22}
         color={props.color}
         {...props}
@@ -50,7 +50,8 @@ export default function MyTabBar({
 
   return (
     <View style={styles.tabBar}>
-      {state.routes.map((route: any, index: number) => {
+      {state.routes.slice(0, 5).map((route: any, index: number) => {
+        console.log('Current route name:', route.name);
         const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined

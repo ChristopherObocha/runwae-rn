@@ -12,6 +12,8 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: 'black',
         headerShown: false,
+        tabBarShowLabel: false,
+        tabBarHideOnKeyboard: true,
       }}>
       <Tabs.Screen
         name="index"
@@ -36,7 +38,19 @@ export default function TabLayout() {
         name="create"
         options={{
           title: 'Create',
-          tabBarIcon: ({ color }) => <TabBarIcon name="user-circle" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="user-circle" color={color} />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tabs.Screen
+        name="trips"
+        options={{
+          title: 'Trips',
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="user-circle" color={color} />
+          ),
           headerShown: false,
         }}
       />
@@ -44,14 +58,6 @@ export default function TabLayout() {
         name="account"
         options={{
           title: 'Account',
-          tabBarIcon: ({ color }) => <TabBarIcon name="user-circle" color={color} />,
-          headerShown: false,
-        }}
-      />
-      <Tabs.Screen
-        name="more"
-        options={{
-          title: 'More',
           tabBarIcon: ({ color }) => <TabBarIcon name="anchor" color={color} />,
           headerShown: false,
         }}

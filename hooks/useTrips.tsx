@@ -26,7 +26,9 @@ export type CreateTripProps = {
 };
 
 interface TripsContextType {
-  createTrip: (props: CreateTripProps) => Promise<{ success: boolean; trip?: Trip }>;
+  createTrip: (
+    props: CreateTripProps
+  ) => Promise<{ success: boolean; trip?: Trip }>;
   getTrips: () => Promise<Trip[]>;
   loading: boolean;
   trips: Trip[];
@@ -83,7 +85,11 @@ export const TripsProvider = ({ children }: { children: React.ReactNode }) => {
         errorMessage = error.message;
       } else if (typeof error === 'string') {
         errorMessage = error;
-      } else if (typeof error === 'object' && error !== null && 'message' in error) {
+      } else if (
+        typeof error === 'object' &&
+        error !== null &&
+        'message' in error
+      ) {
         errorMessage = (error as { message: string }).message;
       }
 
@@ -99,7 +105,6 @@ export const TripsProvider = ({ children }: { children: React.ReactNode }) => {
       const { data: trips, error } = await supabase.from('trip').select('*');
       if (error) throw error;
 
-      console.log('trips: ', JSON.stringify(trips, null, 2));
       setTrips(trips);
       return trips;
     } catch (error) {
@@ -115,7 +120,9 @@ export const TripsProvider = ({ children }: { children: React.ReactNode }) => {
     trips,
   };
 
-  return <TripsContext.Provider value={value}>{children}</TripsContext.Provider>;
+  return (
+    <TripsContext.Provider value={value}>{children}</TripsContext.Provider>
+  );
 };
 
 export const useTrips = () => {
