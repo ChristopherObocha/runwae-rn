@@ -51,7 +51,6 @@ export default function MyTabBar({
   return (
     <View style={styles.tabBar}>
       {state.routes.slice(0, 5).map((route: any, index: number) => {
-        console.log('Current route name:', route.name);
         const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
@@ -61,8 +60,6 @@ export default function MyTabBar({
               : route.name;
 
         const isFocused = state.index === index;
-
-        // console.log('route name: ', route.name);
 
         const onPress = () => {
           const event = navigation.emit({

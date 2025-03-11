@@ -7,6 +7,7 @@ export default function TripsLayout() {
         headerShown: false,
       }}>
       <Stack.Screen name="index" />
+      <Stack.Screen name="expanded-trip" />
     </Stack>
   );
 }

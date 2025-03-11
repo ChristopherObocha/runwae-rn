@@ -1,14 +1,20 @@
 import { FontAwesome6 } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Trip } from '~/hooks/useTrips';
 import { Spacer } from '~/utils/Spacer';
 import { dummyProfiles } from '~/utils/constants';
 import { appColors, textStyles } from '~/utils/styles';
 
-const ConciseTripCard = ({ trip }: { trip: Trip }) => {
+const ConciseTripCard = ({
+  trip,
+  onPress,
+}: {
+  trip: Trip;
+  onPress: () => void;
+}) => {
   const members = trip?.members || dummyProfiles;
   const location = trip?.location || 'Paris, France';
   const startDate = trip?.start_date || 'Feb 8';
@@ -18,7 +24,7 @@ const ConciseTripCard = ({ trip }: { trip: Trip }) => {
   const remainingCount = members.length - 2;
 
   return (
-    <View style={styles.tripCard}>
+    <TouchableOpacity style={styles.tripCard} onPress={onPress}>
       <Text style={styles.tripName}>{trip.name}</Text>
       <Spacer size={10} vertical />
       <View style={styles.tripInfoContainer}>
@@ -58,7 +64,7 @@ const ConciseTripCard = ({ trip }: { trip: Trip }) => {
           )}
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -1,9 +1,10 @@
+import { router } from 'expo-router';
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import ScreenContainer from '~/components/ScreenContainer';
 import ConciseTripCard from '~/components/cards/ConciseTripCard';
-import { useTrips } from '~/hooks/useTrips';
+import { Trip, useTrips } from '~/hooks/useTrips';
 
 const TripsScreen = () => {
   const { trips, getTrips } = useTrips();
@@ -12,6 +13,15 @@ const TripsScreen = () => {
     getTrips();
   }, []);
 
+  const handleTripPress = (trip: Trip) => {
+    console.log('trip pressed', trip);
+    router.push({
+      pathname: '/trips/expanded-trip',
+      params: { trip: JSON.stringify(trip) },
+      // params: { trip: trip },
+    });
+  };
+
   return (
     <ScreenContainer
       withBoxes={false}
@@ -19,7 +29,11 @@ const TripsScreen = () => {
       header={<Text style={styles.header}>My Trips</Text>}>
       <View style={styles.tripsContainer}>
         {trips.map((trip) => (
-          <ConciseTripCard key={trip.id} trip={trip} />
+          <ConciseTripCard
+            key={trip.id}
+            trip={trip}
+            onPress={() => handleTripPress(trip)}
+          />
         ))}
       </View>
     </ScreenContainer>
