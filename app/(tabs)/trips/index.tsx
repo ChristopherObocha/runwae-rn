@@ -14,7 +14,7 @@ const TripsScreen = () => {
   }, []);
 
   const handleTripPress = (trip: Trip) => {
-    console.log('trip pressed', trip);
+    // console.log('trip pressed', trip);
     router.push({
       pathname: '/trips/expanded-trip',
       params: { trip: JSON.stringify(trip) },

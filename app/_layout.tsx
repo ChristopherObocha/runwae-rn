@@ -28,7 +28,11 @@ export {
 export default function RootLayout() {
   useInitialAndroidBarSync();
   const { colorScheme, isDarkColorScheme } = useColorScheme();
-  const { session, initialize: initAuth, initialized: authInitialized } = useAuthStore();
+  const {
+    session,
+    initialize: initAuth,
+    initialized: authInitialized,
+  } = useAuthStore();
   const {
     hasCompletedOnboarding,
     initialize: initOnboarding,
@@ -48,7 +52,11 @@ export default function RootLayout() {
     return (
       <>
         <Stack screenOptions={SCREEN_OPTIONS}>
-          <Stack.Screen name="(tabs)" options={TABS_OPTIONS} />
+          {session ? (
+            <Stack.Screen name="(tabs)" options={TABS_OPTIONS} />
+          ) : (
+            <Stack.Screen name="auth" options={{ headerShown: false }} />
+          )}
           <Stack.Screen name="modal" options={MODAL_OPTIONS} />
         </Stack>
       </>

@@ -42,8 +42,9 @@ export default function Account() {
   const avatarUrl = profile?.avatar_url ?? '';
   const updatedAt = profile?.updated_at ?? '';
 
-  const { hasCompletedOnboarding, setHasCompletedOnboarding } = useOnboardingStore();
-  console.log('hasCompletedOnboarding: ', profile);
+  const { hasCompletedOnboarding, setHasCompletedOnboarding } =
+    useOnboardingStore();
+  // console.log('hasCompletedOnboarding: ', profile);
 
   const insets = useSafeAreaInsets();
 
@@ -186,7 +187,9 @@ export default function Account() {
   });
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}>
       <View style={styles.titleContainer}>
         <Text style={[styles.title, textColor]}>Profile</Text>
       </View>
@@ -234,12 +237,18 @@ export default function Account() {
         // onPress={() => updateProfile({ username, website, avatar_url: avatarUrl })}
         onPress={() => setHasCompletedOnboarding(false)}
         style={[styles.buttonContainer, styles.ctaButton]}>
-        {loading ? <ActivityIndicator /> : <Text style={styles.buttonText}>Test Onboarding</Text>}
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <Text style={styles.buttonText}>Test Onboarding</Text>
+        )}
       </TouchableOpacity>
 
       <Spacer size={20} vertical />
       <TouchableOpacity onPress={signOut} style={styles.buttonContainer}>
-        <Text style={[styles.buttonText, { color: colors.destructive }]}>Sign Out</Text>
+        <Text style={[styles.buttonText, { color: colors.destructive }]}>
+          Sign Out
+        </Text>
       </TouchableOpacity>
 
       {/* FOOTER  */}
@@ -263,7 +272,9 @@ function Item({ info }: { info: ListRenderItemInfo<DataItem> }) {
       titleClassName="text-lg"
       rightView={
         <View className="flex-1 flex-row items-center gap-0.5 px-2">
-          {!!info.item.value && <Text className="text-muted-foreground">{info.item.value}</Text>}
+          {!!info.item.value && (
+            <Text className="text-muted-foreground">{info.item.value}</Text>
+          )}
           <Icon name="chevron-right" size={22} color={colors.grey2} />
         </View>
       }
@@ -303,7 +314,9 @@ const DATA: DataItem[] = [
   {
     id: '7',
     title: 'About',
-    ...(Platform.OS === 'ios' ? { value: 'NativeWindUI' } : { subTitle: 'NativeWindUI' }),
+    ...(Platform.OS === 'ios'
+      ? { value: 'NativeWindUI' }
+      : { subTitle: 'NativeWindUI' }),
     onPress: () => Linking.openURL('https://nativewindui.com/'),
   },
 ];
