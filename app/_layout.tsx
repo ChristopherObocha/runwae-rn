@@ -1,3 +1,4 @@
+import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo';
 import {
   DarkTheme,
   DefaultTheme,
@@ -9,12 +10,12 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo';
-import { tokenCache } from '@/cache';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider as TinyBaseProvider } from 'tinybase/ui-react';
+
+import { tokenCache } from '@/cache';
 import { ListCreationProvider } from '@/context/ListCreationContext';
+import { useColorScheme } from '@/hooks/useColorScheme';
 import TripListStore from '@/stores/TripListStore';
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
