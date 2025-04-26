@@ -1,27 +1,16 @@
-import { Redirect, Stack } from 'expo-router';
 import { useAuth } from '@clerk/clerk-expo';
+import { Stack, useRouter } from 'expo-router';
+
 import HomeSkeleton from '@/components/skeletons/HomeSkeleton';
 import Button from '@/components/ui/Button';
-import { useRouter } from 'expo-router';
 
-export default function HomeLayout() {
-  const { isSignedIn, isLoaded } = useAuth();
+export default function TripsLayout() {
+  const { isLoaded } = useAuth();
   const router = useRouter();
+
   if (!isLoaded) {
     return <HomeSkeleton />;
   }
-
-  const screenOptions = {
-    // headerShown: false,
-    headerLargeTitle: true,
-    headerTransparent: true,
-    headerBlurEffect: 'systemChromeMaterial',
-    headerShadowVisible: true,
-    headerLargeTitleStyle: {
-      backgroundColor: 'transparent',
-    },
-    headerLargeTitleShadowVisible: false,
-  };
 
   return (
     <Stack
@@ -82,19 +71,6 @@ export default function HomeLayout() {
           headerTitle: 'Edit trip',
         }}
       />
-
-      {/* 
-
-      <Stack.Screen
-        name="trip/[tripId]/product/new"
-        options={{
-          presentation: "formSheet",
-          sheetAllowedDetents: [0.8, 1],
-          sheetGrabberVisible: true,
-          headerLargeTitle: false,
-          headerTitle: 'Add product',
-        }}
-      /> */}
       <Stack.Screen
         name="trip/[tripId]/itinerary/[itineraryId]"
         options={{
