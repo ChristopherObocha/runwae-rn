@@ -1,132 +1,72 @@
-import '../global.css';
-import 'expo-dev-client';
-import { ActionSheetProvider } from '@expo/react-native-action-sheet';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { ThemeProvider as NavThemeProvider } from '@react-navigation/native';
-import { PortalHost } from '@rn-primitives/portal';
-import { Icon } from '@roninoss/icons';
-import { Link, Stack } from 'expo-router';
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+import { Slot } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect } from 'react';
-import { Pressable, View } from 'react-native';
+import { useEffect } from 'react';
+import 'react-native-reanimated';
+import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo';
+import { tokenCache } from '@/cache';
+import { useColorScheme } from '@/hooks/useColorScheme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { Provider as TinyBaseProvider } from 'tinybase/ui-react';
+import { ListCreationProvider } from '@/context/ListCreationContext';
+import TripListStore from '@/stores/TripListStore';
 
-import Onboarding from '~/app/Onboarding';
-import { ThemeToggle } from '~/components/ThemeToggle';
-import { cn } from '~/lib/cn';
-import { useColorScheme, useInitialAndroidBarSync } from '~/lib/useColorScheme';
-import { useAuthStore } from '~/stores/useAuthStore';
-import { useOnboardingStore } from '~/stores/useOnboardingStore';
-import { NAV_THEME } from '~/theme';
-import { TripsProvider } from '~/hooks/useTrips';
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+if (!publishableKey) {
+  console.log('Missing Publishable Key');
+  throw new Error('Missing Publishable Key');
+}
+
+// Prevent the splash screen from auto-hiding before asset loading is complete.
+SplashScreen.preventAutoHideAsync();
+
+// Create a wrapper component that uses useAuth
+function AuthenticatedContent() {
+  const { isSignedIn, isLoaded } = useAuth();
+  const colorScheme = useColorScheme();
+
+  return (
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        {isLoaded && isSignedIn && <TripListStore />}
+        <Slot />
+        <StatusBar style="auto" />
+      </GestureHandlerRootView>
+    </ThemeProvider>
+  );
+}
 
 export default function RootLayout() {
-  useInitialAndroidBarSync();
-  const { colorScheme, isDarkColorScheme } = useColorScheme();
-  const { session, initialize: initAuth, initialized: authInitialized } = useAuthStore();
-  const {
-    hasCompletedOnboarding,
-    initialize: initOnboarding,
-    initialized: onboardingInitialized,
-  } = useOnboardingStore();
+  const [loaded] = useFonts({
+    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  });
 
   useEffect(() => {
-    Promise.all([initAuth(), initOnboarding()]);
-  }, []);
+    if (loaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded]);
 
-  // Don't render until both auth and onboarding state are initialized
-  if (!authInitialized || !onboardingInitialized) {
-    return null; // or a loading spinner
+  if (!loaded) {
+    return null;
   }
 
-  const MainApp = () => {
-    return (
-      <>
-        <Stack screenOptions={SCREEN_OPTIONS}>
-          <Stack.Screen name="(tabs)" options={TABS_OPTIONS} />
-          <Stack.Screen name="modal" options={MODAL_OPTIONS} />
-        </Stack>
-      </>
-    );
-  };
-
   return (
-    <TripsProvider>
-      <StatusBar
-        key={`root-status-bar-${isDarkColorScheme ? 'light' : 'dark'}`}
-        style={isDarkColorScheme ? 'light' : 'dark'}
-      />
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <KeyboardProvider statusBarTranslucent navigationBarTranslucent>
-          <BottomSheetModalProvider>
-            <ActionSheetProvider>
-              <NavThemeProvider value={NAV_THEME[colorScheme]}>
-                {/* <Stack>
-                  {!hasCompletedOnboarding ? (
-                    <Stack.Screen name="index" options={{ headerShown: false }} />
-                  ) : (
-                    <Stack.Screen name="auth" options={{ headerShown: false }} />
-                  )}
-                </Stack> */}
-                {/* {session ? (
-                  <Stack>
-                    <Stack.Screen name="auth" options={{ headerShown: false }} />
-                  </Stack>
-                ) : (
-                  <MainApp />
-                )} */}
-                <MainApp />
-                <PortalHost />
-              </NavThemeProvider>
-            </ActionSheetProvider>
-          </BottomSheetModalProvider>
-        </KeyboardProvider>
-      </GestureHandlerRootView>
-    </TripsProvider>
+    <TinyBaseProvider>
+      <ListCreationProvider>
+        <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+          <ClerkLoaded>
+            <AuthenticatedContent />
+          </ClerkLoaded>
+        </ClerkProvider>
+      </ListCreationProvider>
+    </TinyBaseProvider>
   );
 }
-
-const SCREEN_OPTIONS = {
-  animation: 'ios_from_right', // for android
-  headerShown: false,
-  // headerShown: true,
-  // headerLeft: () => <SettingsIcon />,
-} as const;
-
-const TABS_OPTIONS = {
-  headerShown: false,
-  // headerLeft: () => <SettingsIcon />,
-} as const;
-
-const INDEX_OPTIONS = {
-  headerLargeTitle: true,
-  title: 'NativeWindUI',
-  headerRight: () => <SettingsIcon />,
-} as const;
-
-function SettingsIcon() {
-  const { colors } = useColorScheme();
-  return (
-    <Link href="/modal" asChild>
-      <Pressable className="opacity-80">
-        {({ pressed }) => (
-          <View className={cn(pressed ? 'opacity-50' : 'opacity-90')}>
-            <Icon name="cog-outline" color={colors.foreground} />
-          </View>
-        )}
-      </Pressable>
-    </Link>
-  );
-}
-
-const MODAL_OPTIONS = {
-  presentation: 'modal',
-  animation: 'fade_from_bottom', // for android
-  title: 'Settings',
-  headerRight: () => <ThemeToggle />,
-} as const;
