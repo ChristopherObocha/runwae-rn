@@ -6,12 +6,12 @@ import {
 import React from 'react';
 import { StyleSheet, useColorScheme, View } from 'react-native';
 
-import { IconSymbol } from '../ui/IconSymbol.ios';
+// import { IconSymbol } from '../ui/IconSymbol.ios';
 
 import { Spacer } from '@/components/Spacer';
 import { ThemedText } from '@/components/ThemedText';
 import { Colors } from '@/constants/Colors';
-import { useDelTripCallback } from '@/stores/TripListStore';
+// import { useDelTripCallback } from '@/stores/TripListStore';
 import { useTripUserNicknames, useTripValue } from '@/stores/TripStore';
 
 export default function TripCard({ tripId }: { tripId: string }) {
@@ -26,7 +26,7 @@ export default function TripCard({ tripId }: { tripId: string }) {
   // const productCount = useTripValues(tripId, "productCount");
   const userNicknames = useTripUserNicknames(tripId);
 
-  const deleteCallback = useDelTripCallback(tripId);
+  // const deleteCallback = useDelTripCallback(tripId);
 
   const dynamicStyles = {
     tripCard: {
@@ -59,64 +59,65 @@ export default function TripCard({ tripId }: { tripId: string }) {
     return `${diffDays} days to departure`;
   };
 
-  const Render = () => {
-    return (
-      <Link href={{ pathname: '/trip/[tripId]', params: { tripId } }}>
-        <View style={styles.swipeable}>
-          <View style={styles.leftContent}>
-            <View style={styles.textContent}>
-              <ThemedText type="defaultSemiBold" numberOfLines={2}>
-                {name}
-              </ThemedText>
-              {/* <ThemedText type="defaultSemiBold" style={styles.productCount}>
-                  Created on {startDate}
-                </ThemedText> */}
-            </View>
-          </View>
+  // TODO: Add swipeable card
+  // const Render = () => {
+  //   return (
+  //     <Link href={{ pathname: '/trip/[tripId]', params: { tripId } }}>
+  //       <View style={styles.swipeable}>
+  //         <View style={styles.leftContent}>
+  //           <View style={styles.textContent}>
+  //             <ThemedText type="defaultSemiBold" numberOfLines={2}>
+  //               {name}
+  //             </ThemedText>
+  //             {/* <ThemedText type="defaultSemiBold" style={styles.productCount}>
+  //                 Created on {startDate}
+  //               </ThemedText> */}
+  //           </View>
+  //         </View>
 
-          <View style={styles.rightContent}>
-            {userNicknames.length > 1 && (
-              <View style={styles.nicknameContainer}>
-                {userNicknames.length === 4
-                  ? // Show all 4 letters when length is exactly 4
-                    userNicknames.map((nickname, index) => (
-                      <NicknameCircle
-                        key={nickname}
-                        nickname={nickname}
-                        color={Colors.light.primary}
-                        index={index}
-                      />
-                    ))
-                  : userNicknames.length > 4
-                    ? // Show first 3 letters and ellipsis when length > 4
-                      userNicknames
-                        .slice(0, 4)
-                        .map((nickname, index) => (
-                          <NicknameCircle
-                            key={nickname}
-                            nickname={nickname}
-                            color={Colors.light.primary}
-                            index={index}
-                            isEllipsis={index === 3}
-                          />
-                        ))
-                    : // Show all letters when length is 2 or 3
-                      userNicknames.map((nickname, index) => (
-                        <NicknameCircle
-                          key={nickname}
-                          nickname={nickname}
-                          color={Colors.light.primary}
-                          index={index}
-                        />
-                      ))}
-              </View>
-            )}
-            <IconSymbol name="chevron.right" size={14} color="#A1A1AA" />
-          </View>
-        </View>
-      </Link>
-    );
-  };
+  //         <View style={styles.rightContent}>
+  //           {userNicknames.length > 1 && (
+  //             <View style={styles.nicknameContainer}>
+  //               {userNicknames.length === 4
+  //                 ? // Show all 4 letters when length is exactly 4
+  //                   userNicknames.map((nickname, index) => (
+  //                     <NicknameCircle
+  //                       key={nickname}
+  //                       nickname={nickname}
+  //                       color={Colors.light.primary}
+  //                       index={index}
+  //                     />
+  //                   ))
+  //                 : userNicknames.length > 4
+  //                   ? // Show first 3 letters and ellipsis when length > 4
+  //                     userNicknames
+  //                       .slice(0, 4)
+  //                       .map((nickname, index) => (
+  //                         <NicknameCircle
+  //                           key={nickname}
+  //                           nickname={nickname}
+  //                           color={Colors.light.primary}
+  //                           index={index}
+  //                           isEllipsis={index === 3}
+  //                         />
+  //                       ))
+  //                   : // Show all letters when length is 2 or 3
+  //                     userNicknames.map((nickname, index) => (
+  //                       <NicknameCircle
+  //                         key={nickname}
+  //                         nickname={nickname}
+  //                         color={Colors.light.primary}
+  //                         index={index}
+  //                       />
+  //                     ))}
+  //             </View>
+  //           )}
+  //           <IconSymbol name="chevron.right" size={14} color="#A1A1AA" />
+  //         </View>
+  //       </View>
+  //     </Link>
+  //   );
+  // };
 
   return (
     <Link href={{ pathname: '/trip/[tripId]', params: { tripId } }}>
@@ -239,8 +240,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 16,
-    // width: '100%',
-    width: 360,
+    minWidth: '100%',
   },
   tripInfoContainer: {
     flexDirection: 'row',

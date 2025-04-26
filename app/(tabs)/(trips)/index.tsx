@@ -1,3 +1,6 @@
+import { useUser } from '@clerk/clerk-expo';
+import { useRouter, Stack } from 'expo-router';
+import React, { useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -8,26 +11,22 @@ import {
   Platform,
   FlatList,
 } from 'react-native';
-import React, { useState } from 'react';
-import { useUser } from '@clerk/clerk-expo';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import { useRouter } from 'expo-router';
 
-import HomeSkeleton from '@/components/skeletons/HomeSkeleton';
 import ScreenContainer from '@/components/ScreenContainer';
-import { Colors } from '@/constants/Colors';
+import { Spacer } from '@/components/Spacer';
 import { ThemedText } from '@/components/ThemedText';
-import { Stack } from 'expo-router';
+import TripCard from '@/components/cards/TripCard';
+import HomeSkeleton from '@/components/skeletons/HomeSkeleton';
 import { BodyScrollView } from '@/components/ui/BodyScrollView';
 import Button from '@/components/ui/Button';
+import { IconSymbol } from '@/components/ui/IconSymbol';
+import { Colors } from '@/constants/Colors';
 import { useTripIds } from '@/stores/TripListStore';
-import TripCard from '@/components/cards/TripCard';
-import { Spacer } from '@/components/Spacer';
 
 const TripsScreen = () => {
   const router = useRouter();
   const { user, isLoaded, isSignedIn } = useUser();
-  const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme() || 'light';
   const [tripName, setTripName] = useState('');
   const tripIds = useTripIds();
 
@@ -115,7 +114,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    // paddingTop: 16,
   },
   header: {
     flexDirection: 'row',
