@@ -1,31 +1,21 @@
 import { FontAwesome6 } from '@expo/vector-icons';
-import { Image } from 'expo-image';
-import React from 'react';
 import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from 'react-native';
-import { Link, useRouter } from 'expo-router';
+  Link,
+  // useRouter
+} from 'expo-router';
+import React from 'react';
+import { StyleSheet, useColorScheme, View } from 'react-native';
 
-import { ThemedText } from '@/components/ThemedText';
-import { useDelTripCallback, useTripValues } from '@/stores/TripListStore';
-import { useTripUserNicknames, useTripValue } from '@/stores/TripStore';
-import { Spacer } from '@/components/Spacer';
-import { Colors } from '@/constants/Colors';
 import { IconSymbol } from '../ui/IconSymbol.ios';
 
-export default function TripCard({ tripId }: { tripId: string }) {
-  // const members = trip?.members || dummyProfiles;
-  // const location = trip?.location || 'Paris, France';
-  // const startDate = trip?.start_date || 'Feb 8';
-  // const endDate = trip?.end_date || 'Feb 10';
+import { Spacer } from '@/components/Spacer';
+import { ThemedText } from '@/components/ThemedText';
+import { Colors } from '@/constants/Colors';
+import { useDelTripCallback } from '@/stores/TripListStore';
+import { useTripUserNicknames, useTripValue } from '@/stores/TripStore';
 
-  // const displayMembers = members.slice(0, 2);
-  // const remainingCount = members.length - 2;
-  const router = useRouter();
+export default function TripCard({ tripId }: { tripId: string }) {
+  // const router = useRouter();
   const colorScheme = useColorScheme();
   // Listening to just these cells means that the component won't unnecessarily
   // re-render if anything else in the row changes (such as the timestamps).
@@ -249,9 +239,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 16,
-    width: '100%',
-    // minHeight: 100,
-    // marginBottom: 12,
+    // width: '100%',
+    width: 360,
   },
   tripInfoContainer: {
     flexDirection: 'row',
@@ -265,24 +254,6 @@ const styles = StyleSheet.create({
     gap: 4,
     alignItems: 'center',
   },
-  // memberCount: {
-  //   // backgroundColor: appColors.white,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
-  // memberCountText: {
-  //   // color: appColors.grey5,
-  //   fontSize: 12,
-  //   fontWeight: '500',
-  // },
-  // memberAvatar: {
-  //   width: 30,
-  //   height: 30,
-  //   marginLeft: -5,
-  //   borderRadius: 15,
-  //   borderWidth: 1,
-  //   // borderColor: appColors.white,
-  // },
   memberContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -291,7 +262,6 @@ const styles = StyleSheet.create({
   rightAction: {
     width: 200,
     height: 65,
-    // backgroundColor: appleRed,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -301,7 +271,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    // borderBottomColor: borderColor,
     gap: 8,
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -333,12 +302,13 @@ const styles = StyleSheet.create({
     color: 'white',
     borderWidth: 1,
     borderColor: 'white',
-    borderRadius: 16,
+    borderRadius: 12,
     padding: 1,
     width: 24,
     height: 24,
     textAlign: 'center',
     lineHeight: 20,
+    overflow: 'hidden',
   },
   ellipsisCircle: {
     lineHeight: 0,
