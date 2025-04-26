@@ -2,11 +2,13 @@ import { Octicons } from '@expo/vector-icons';
 import { ImageBackground } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View, useColorScheme } from 'react-native';
 
-import { Spacer } from '~/utils/Spacer';
-import { Event } from '~/utils/constants';
-import { appColors, textStyles } from '~/utils/styles';
+import { ThemedText } from '@/components/ThemedText';
+import { Spacer } from '@/components/Spacer';
+import { Event } from '@/utils/temp-constants';
+import { Colors } from '@/constants/Colors';
+// import { appColors, textStyles } from '@/utils/styles';
 
 interface EventCardProps {
   event: Event;
@@ -15,7 +17,7 @@ interface EventCardProps {
 const Pill = ({ name }: { name: string }) => {
   return (
     <View style={styles.pill}>
-      <Text style={styles.pillText}>🏨 {name}</Text>
+      <ThemedText style={styles.pillText}>🏨 {name}</ThemedText>
     </View>
   );
 };
@@ -23,23 +25,26 @@ const Pill = ({ name }: { name: string }) => {
 const CTAButton = ({ name }: { name: string }) => {
   return (
     <View style={styles.CTAButton}>
-      <Text style={styles.CTAText}>{name}</Text>
+      <ThemedText style={styles.CTAText}>{name}</ThemedText>
     </View>
   );
 };
 
 const EventCard = ({ event }: EventCardProps) => {
+  const colorScheme = useColorScheme();
+  const appColors = Colors[colorScheme];
+
   const hookedStyles = StyleSheet.create({
     likeIcon: {
       ...styles.likeIcon,
-      backgroundColor: event.isLiked ? appColors.pureBlack : appColors.white,
+      backgroundColor: event.isLiked ? appColors.text : appColors.background,
     },
   });
 
   return (
     // <View style={styles.container}>
     <LinearGradient
-      colors={[appColors.grey, appColors.pureBlack]}
+      colors={[appColors.grey, appColors.text]}
       style={styles.container}>
       <ImageBackground
         source={{ uri: event.image }}
@@ -47,21 +52,21 @@ const EventCard = ({ event }: EventCardProps) => {
         // imageStyle={{ borderRadius: 12 }}
       >
         <View style={styles.starsContainer}>
-          <Text style={styles.stars}>{event.stars}</Text>
+          <ThemedText style={styles.stars}>{event.stars}</ThemedText>
         </View>
         <View style={styles.likeContainer}>
           <View style={hookedStyles.likeIcon}>
             <Octicons
               name="thumbsup"
               size={12}
-              color={event.isLiked ? appColors.white : appColors.pureBlack}
+              color={event.isLiked ? appColors.background : appColors.text}
             />
           </View>
           <View style={styles.likeIcon}>
             <Octicons
               name="thumbsdown"
               size={12}
-              color={event.isLiked ? appColors.white : appColors.pureBlack}
+              color={event.isLiked ? appColors.background : appColors.text}
             />
           </View>
         </View>
@@ -74,12 +79,18 @@ const EventCard = ({ event }: EventCardProps) => {
           <View style={styles.infoContainer}>
             <Pill name={event.type} />
             <Spacer size={4} vertical />
-            <Text style={styles.header} numberOfLines={2}>
+            <ThemedText type="subtitle" numberOfLines={2}>
               {event.name}
-            </Text>
+            </ThemedText>
             <View style={styles.locationContainer}>
-              <Octicons name="location" size={12} color={appColors.white} />
-              <Text style={styles.location}>{event.location}</Text>
+              <Octicons
+                name="location"
+                size={12}
+                color={appColors.background}
+              />
+              <ThemedText type="default" style={styles.location}>
+                {event.location}
+              </ThemedText>
             </View>
           </View>
 
@@ -90,9 +101,12 @@ const EventCard = ({ event }: EventCardProps) => {
 
         <Spacer size={10} vertical />
         <View style={styles.descriptionContainer}>
-          <Text style={styles.description} numberOfLines={2}>
+          <ThemedText
+            type="default"
+            style={styles.description}
+            numberOfLines={2}>
             {event.description}
-          </Text>
+          </ThemedText>
         </View>
       </View>
     </LinearGradient>
@@ -123,7 +137,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
   },
   starsContainer: {
-    backgroundColor: appColors.white,
+    backgroundColor: Colors.light.background, // TODO: change to appColors.white
     borderRadius: 100,
     padding: 4,
   },
@@ -141,10 +155,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 30,
-    backgroundColor: appColors.white,
+    backgroundColor: Colors.light.background, // TODO: change to appColors.white
   },
   pill: {
-    backgroundColor: appColors.pureBlack,
+    backgroundColor: Colors.light.background, // TODO: change to appColors.pureBlack
     paddingHorizontal: 8,
     paddingVertical: 6,
     borderRadius: 30,
@@ -155,7 +169,7 @@ const styles = StyleSheet.create({
   pillText: {
     fontSize: 12,
     fontWeight: 'bold',
-    color: appColors.white,
+    color: Colors.light.background, // TODO: change to appColors.white
   },
 
   contentContainer: {
@@ -184,30 +198,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   header: {
-    ...textStyles.medium_17,
-    color: appColors.white,
     flexShrink: 1,
   },
   location: {
-    ...textStyles.regular_12,
-    color: appColors.white,
+    fontSize: 12,
   },
   descriptionContainer: {
     width: '100%',
   },
   description: {
-    ...textStyles.regular_12,
-    color: appColors.white,
+    fontSize: 12,
   },
   CTAButton: {
-    backgroundColor: appColors.pureBlack,
+    backgroundColor: Colors.black, // TODO: change to appColors.pureBlack
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 4,
   },
   CTAText: {
-    ...textStyles.medium_17,
-    color: appColors.white,
     fontSize: 10,
     fontWeight: '600',
   },
