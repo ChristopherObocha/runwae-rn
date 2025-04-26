@@ -7,6 +7,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+// import TabBar from '~/components/TabBar';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -25,7 +26,16 @@ export default function TabLayout() {
           },
           default: {},
         }),
-      }}>
+      }}
+
+      // tabBar={(props) => <TabBar {...props} />}
+      // screenOptions={{
+      //   tabBarActiveTintColor: 'black',
+      //   headerShown: false,
+      //   tabBarShowLabel: false,
+      //   tabBarHideOnKeyboard: true,
+      // }}
+    >
       <Tabs.Screen
         name="(home)"
         options={{
