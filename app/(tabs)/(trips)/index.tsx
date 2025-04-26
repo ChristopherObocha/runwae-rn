@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
   listContainer: {
     paddingTop: 8,
     gap: 12,
+    flex: 1,
   },
   emptyStateContainer: {
     alignItems: 'center',

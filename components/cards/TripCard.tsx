@@ -245,18 +245,22 @@ const styles = StyleSheet.create({
   tripInfoContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    width: '100%',
   },
   tripTextInfoContainer: {
-    // gap: 6,
+    flex: 1,
+    minWidth: 0,
   },
   tripInfoTextContainer: {
     flexDirection: 'row',
     gap: 4,
     alignItems: 'center',
+    width: '100%',
   },
   memberContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-end',
   },
 
   rightAction: {
