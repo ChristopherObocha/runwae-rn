@@ -51,7 +51,7 @@ export default function AuthIndexScreen() {
       alertRef.current?.prompt({
         title: 'Error',
         prompt: {
-          type: 'login-password',
+          type: 'plain-text',
         },
         message: error.message,
         buttons: [{ text: 'OK', style: 'cancel' }],

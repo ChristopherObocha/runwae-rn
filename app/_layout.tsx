@@ -5,25 +5,32 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { ThemeProvider as NavThemeProvider } from '@react-navigation/native';
 import { PortalHost } from '@rn-primitives/portal';
 import { Icon } from '@roninoss/icons';
-import { Link, Stack } from 'expo-router';
+import { Link, Slot, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
 import { Pressable, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { ClerkProvider } from '@clerk/clerk-expo';
 
 import Onboarding from '~/app/Onboarding';
 import { ThemeToggle } from '~/components/ThemeToggle';
+import { TripsProvider } from '~/hooks/useTrips';
 import { cn } from '~/lib/cn';
 import { useColorScheme, useInitialAndroidBarSync } from '~/lib/useColorScheme';
 import { useAuthStore } from '~/stores/useAuthStore';
 import { useOnboardingStore } from '~/stores/useOnboardingStore';
 import { NAV_THEME } from '~/theme';
-import { TripsProvider } from '~/hooks/useTrips';
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from 'expo-router';
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+if (!publishableKey) {
+  console.error('Missing Publishable Key');
+}
 
 export default function RootLayout() {
   useInitialAndroidBarSync();
@@ -64,38 +71,29 @@ export default function RootLayout() {
   };
 
   return (
-    <TripsProvider>
-      <StatusBar
-        key={`root-status-bar-${isDarkColorScheme ? 'light' : 'dark'}`}
-        style={isDarkColorScheme ? 'light' : 'dark'}
-      />
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <KeyboardProvider statusBarTranslucent navigationBarTranslucent>
-          <BottomSheetModalProvider>
-            <ActionSheetProvider>
-              <NavThemeProvider value={NAV_THEME[colorScheme]}>
-                {/* <Stack>
-                  {!hasCompletedOnboarding ? (
-                    <Stack.Screen name="index" options={{ headerShown: false }} />
-                  ) : (
-                    <Stack.Screen name="auth" options={{ headerShown: false }} />
-                  )}
-                </Stack> */}
-                {/* {session ? (
-                  <Stack>
-                    <Stack.Screen name="auth" options={{ headerShown: false }} />
-                  </Stack>
-                ) : (
-                  <MainApp />
-                )} */}
-                <MainApp />
-                <PortalHost />
-              </NavThemeProvider>
-            </ActionSheetProvider>
-          </BottomSheetModalProvider>
-        </KeyboardProvider>
-      </GestureHandlerRootView>
-    </TripsProvider>
+    <ClerkProvider publishableKey={publishableKey}
+    tokenCache={}
+    >
+      <TripsProvider>
+        <StatusBar
+          key={`root-status-bar-${isDarkColorScheme ? 'light' : 'dark'}`}
+          style={isDarkColorScheme ? 'light' : 'dark'}
+        />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <KeyboardProvider statusBarTranslucent navigationBarTranslucent>
+            <BottomSheetModalProvider>
+              <ActionSheetProvider>
+                <NavThemeProvider value={NAV_THEME[colorScheme]}>
+                  {/* <MainApp /> */}
+                  <Slot />
+                  <PortalHost />
+                </NavThemeProvider>
+              </ActionSheetProvider>
+            </BottomSheetModalProvider>
+          </KeyboardProvider>
+        </GestureHandlerRootView>
+      </TripsProvider>
+    </ClerkProvider>
   );
 }
 

@@ -1,4 +1,5 @@
 import { AntDesign, FontAwesome6 } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import {
   StyleSheet,
@@ -17,14 +18,13 @@ import { verticalScale } from 'react-native-size-matters';
 import FriendCard from '~/components/FriendCard';
 import { DatePicker } from '~/components/nativewindui/DatePicker';
 import { TextField } from '~/components/nativewindui/TextField';
-import { createTripSlides, dummyProfiles } from '~/configs/constants';
-import { fontSizes } from '~/theme/app.constant';
-import { Spacer } from '~/utils/Spacer';
-import { DefaultFriends } from '~/utils/constants';
-import { appColors, textStyles } from '~/utils/styles';
+import { createTripSlides } from '~/configs/constants';
 import { useTrips } from '~/hooks/useTrips';
 import { useAuthStore } from '~/stores/useAuthStore';
-import { router } from 'expo-router';
+import { fontSizes } from '~/theme/app.constant';
+import { Spacer } from '~/utils/Spacer';
+import { DefaultFriends, dummyProfiles } from '~/utils/constants';
+import { appColors, textStyles } from '~/utils/styles';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -42,7 +42,9 @@ const StartTrip = () => {
   const [tripLocation, setTripLocation] = useState<string>('');
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
-  const [inviteLink, setInviteLink] = useState<string>('https://runwae.io/invite/trip-id=1234');
+  const [inviteLink, setInviteLink] = useState<string>(
+    'https://runwae.io/invite/trip-id=1234'
+  );
   // Add this to prevent horizontal scrolling while typing
   const [isEditing, setIsEditing] = useState(false);
 
@@ -53,7 +55,11 @@ const StartTrip = () => {
     setActiveIndex(index);
   };
 
-  const handlePress = (index: number, setIndex: (value: number) => void, type: 'prev' | 'next') => {
+  const handlePress = (
+    index: number,
+    setIndex: (value: number) => void,
+    type: 'prev' | 'next'
+  ) => {
     if (type === 'prev' && index === 0) return;
     if (type === 'next' && index === createTripSlides.length - 1) {
       handleComplete();
@@ -71,14 +77,14 @@ const StartTrip = () => {
   };
 
   // console.log('tripName', tripName);
-  console.log('startDate', startDate);
-  console.log('endDate', endDate);
+  // console.log('startDate', startDate);
+  // console.log('endDate', endDate);
 
   const handleComplete = async () => {
     const result = await createTrip({
       tripName,
-      startDate,
-      endDate,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
       creatorId: user?.id,
     });
 
@@ -97,13 +103,21 @@ const StartTrip = () => {
   const NavButton = ({ type }: LinearButtonProps) => {
     const isDisabled = type === 'prev' && activeIndex === 0;
     const textColor =
-      type === 'next' ? appColors.white : isDisabled ? appColors.grey3 : appColors.grey3;
+      type === 'next'
+        ? appColors.white
+        : isDisabled
+          ? appColors.grey3
+          : appColors.grey3;
 
     const buttonStyle = {
       backgroundColor: type === 'next' ? appColors.black : 'transparent',
       borderWidth: 1,
       borderColor:
-        type === 'prev' ? (isDisabled ? appColors.grey3 : appColors.grey3) : 'transparent',
+        type === 'prev'
+          ? isDisabled
+            ? appColors.grey3
+            : appColors.grey3
+          : 'transparent',
       borderRadius: 6,
       opacity: isDisabled ? 0.5 : 1,
     };
@@ -111,7 +125,10 @@ const StartTrip = () => {
     return (
       <View style={buttonStyle}>
         <Pressable
-          style={[styles.navButtonPressable, isDisabled && styles.navButtonDisabled]}
+          style={[
+            styles.navButtonPressable,
+            isDisabled && styles.navButtonDisabled,
+          ]}
           onPress={() => handlePress(activeIndex, setActiveIndex, type)}
           disabled={isDisabled}>
           <Text style={[styles.navButtonText, { color: textColor }]}>
@@ -248,7 +265,10 @@ const StartTrip = () => {
                 {createTripSlides.map((_, i) => (
                   <View
                     key={i}
-                    style={[styles.progressDot, i === activeIndex && styles.progressDotActive]}
+                    style={[
+                      styles.progressDot,
+                      i === activeIndex && styles.progressDotActive,
+                    ]}
                   />
                 ))}
               </View>
