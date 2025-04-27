@@ -1,4 +1,6 @@
 import { useUser } from '@clerk/clerk-expo';
+import { FlashList } from '@shopify/flash-list';
+import * as Haptics from 'expo-haptics';
 import { useRouter, Stack } from 'expo-router';
 import React from 'react';
 import {
@@ -6,7 +8,7 @@ import {
   useColorScheme,
   Pressable,
   Platform,
-  FlatList,
+  View,
 } from 'react-native';
 
 import { Spacer } from '@/components/Spacer';
@@ -29,13 +31,13 @@ const TripsScreen = () => {
   }
 
   const handleNewListPress = () => {
-    // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    // router.push("/list/new");
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    return router.push('/(tabs)/(trips)/trip/new');
   };
 
   const renderEmptyList = () => (
     <BodyScrollView contentContainerStyle={styles.emptyStateContainer}>
-      <Button onPress={handleNewListPress} variant="ghost">
+      <Button onPress={handleNewListPress} variant="filled">
         Create your first list
       </Button>
     </BodyScrollView>
@@ -59,16 +61,19 @@ const TripsScreen = () => {
           headerRight: renderHeaderRight,
         }}
       />
-      <FlatList
-        data={tripIds}
-        renderItem={({ item: tripId }) => <TripCard tripId={tripId} />}
-        contentContainerStyle={styles.listContainer}
-        style={styles.container}
-        contentInsetAdjustmentBehavior="automatic"
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={renderEmptyList}
-        ListFooterComponent={() => <Spacer vertical size={100} />}
-      />
+      <View style={styles.container}>
+        <FlashList
+          data={tripIds}
+          renderItem={({ item: tripId }) => <TripCard tripId={tripId} />}
+          contentContainerStyle={styles.listContainer}
+          contentInsetAdjustmentBehavior="automatic"
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={renderEmptyList}
+          ListFooterComponent={() => <Spacer vertical size={100} />}
+          estimatedItemSize={79}
+          ItemSeparatorComponent={() => <Spacer vertical size={8} />}
+        />
+      </View>
     </>
   );
 };
@@ -82,7 +87,6 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingTop: 8,
-    gap: 12,
     paddingBottom: 100,
   },
 
