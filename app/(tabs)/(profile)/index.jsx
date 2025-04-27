@@ -1,15 +1,15 @@
-import { StyleSheet, useColorScheme, View } from 'react-native';
-import React, { useState } from 'react';
-import { BodyScrollView } from '@/components/ui/BodyScrollView';
-import { useAuth } from '@clerk/clerk-expo';
-import { useRouter, Stack } from 'expo-router';
-import Button from '@/components/ui/Button';
-import { ThemedText } from '@/components/ThemedText';
+import { useAuth, useUser } from '@clerk/clerk-expo';
 import { Image } from 'expo-image';
-import { useUser } from '@clerk/clerk-expo';
-import { Colors } from '@/constants/Colors';
+import { useRouter, Stack } from 'expo-router';
+import React, { useState } from 'react';
+import { StyleSheet, useColorScheme, View, Pressable } from 'react-native';
+
 import CardContainer from '@/components/CardContainer';
 import { Spacer } from '@/components/Spacer';
+import { ThemedText } from '@/components/ThemedText';
+import { BodyScrollView } from '@/components/ui/BodyScrollView';
+import Button from '@/components/ui/Button';
+import { Colors } from '@/constants/Colors';
 
 const ProfileScreen = () => {
   const { signOut } = useAuth();
@@ -136,7 +136,7 @@ const ProfileScreen = () => {
             <View style={styles.userActivities}>
               {propopsedUserMetadata.userActivities
                 .slice(0, 3)
-                .map(activity => (
+                .map((activity) => (
                   <View key={activity} style={dynamicStyles.activityCard}>
                     <ThemedText type="caption">⭐ {activity}</ThemedText>
                   </View>
@@ -148,8 +148,23 @@ const ProfileScreen = () => {
         <Spacer vertical size={16} />
         {/* Segmented Control */}
         <View style={dynamicStyles.segmentedControl}>
-          {tabs.map(tab => (
-            <CardContainer
+          {tabs.map((tab) => (
+            // <CardContainer
+            //   key={tab}
+            //   onPress={() => setSelectedTab(tab)}
+            //   style={[
+            //     styles.tab,
+            //     selectedTab === tab && dynamicStyles.selectedTab,
+            //   ]}>
+            //   <ThemedText
+            //     style={[
+            //       styles.tabText,
+            //       selectedTab === tab && styles.selectedTabText,
+            //     ]}>
+            //     {tab}
+            //   </ThemedText>
+            // </CardContainer>
+            <Pressable
               key={tab}
               onPress={() => setSelectedTab(tab)}
               style={[
@@ -163,7 +178,7 @@ const ProfileScreen = () => {
                 ]}>
                 {tab}
               </ThemedText>
-            </CardContainer>
+            </Pressable>
           ))}
         </View>
 
