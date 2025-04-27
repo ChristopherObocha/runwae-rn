@@ -1,13 +1,11 @@
+import React from 'react';
 import {
   StyleSheet,
-  Text,
-  View,
   Pressable,
   PressableProps,
   StyleProp,
   ViewStyle,
 } from 'react-native';
-import React from 'react';
 
 interface CardContainerProps extends PressableProps {
   onPress: () => void;
