@@ -4,7 +4,6 @@ import { useRouter, Stack } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, useColorScheme, View, Pressable } from 'react-native';
 
-import CardContainer from '@/components/CardContainer';
 import { Spacer } from '@/components/Spacer';
 import { ThemedText } from '@/components/ThemedText';
 import { BodyScrollView } from '@/components/ui/BodyScrollView';
@@ -26,7 +25,9 @@ const ProfileScreen = () => {
 
   const dynamicStyles = {
     selectedTab: {
-      backgroundColor: Colors[colorScheme].primary,
+      backgroundColor: Colors[colorScheme].grey,
+      borderBottomWidth: 2,
+      borderBottomColor: Colors[colorScheme].tripCardBackground,
     },
     signOutButton: {
       color: Colors[colorScheme].destructive,
@@ -55,12 +56,11 @@ const ProfileScreen = () => {
     segmentedControl: {
       flexDirection: 'row',
       marginVertical: 16,
-      // backgroundColor: Colors[colorScheme].background,
-      borderRadius: 8,
-      // borderWidth: 1,
+      borderTopLeftRadius: 8,
+      borderTopRightRadius: 8,
       borderBottomWidth: 1,
       borderColor: Colors[colorScheme].grey,
-      padding: 4,
+      paddingTop: 4,
       gap: 4,
     },
   };
@@ -149,21 +149,6 @@ const ProfileScreen = () => {
         {/* Segmented Control */}
         <View style={dynamicStyles.segmentedControl}>
           {tabs.map((tab) => (
-            // <CardContainer
-            //   key={tab}
-            //   onPress={() => setSelectedTab(tab)}
-            //   style={[
-            //     styles.tab,
-            //     selectedTab === tab && dynamicStyles.selectedTab,
-            //   ]}>
-            //   <ThemedText
-            //     style={[
-            //       styles.tabText,
-            //       selectedTab === tab && styles.selectedTabText,
-            //     ]}>
-            //     {tab}
-            //   </ThemedText>
-            // </CardContainer>
             <Pressable
               key={tab}
               onPress={() => setSelectedTab(tab)}
@@ -261,7 +246,7 @@ const styles = StyleSheet.create({
   },
   userContainer: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    // alignItems: 'flex-start',
     gap: 12,
     alignItems: 'center',
   },
@@ -280,7 +265,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 8,
     alignItems: 'center',
-    borderRadius: 6,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
   },
   tabText: {
     fontSize: 14,
@@ -291,7 +277,8 @@ const styles = StyleSheet.create({
   },
   tabContent: {
     height: 300,
-    borderRadius: 8,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
     marginBottom: 16,
   },
   userInterests: {
