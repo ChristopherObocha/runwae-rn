@@ -4,42 +4,81 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { StyleSheet, View, useColorScheme } from 'react-native';
 
-import { ThemedText } from '@/components/ThemedText';
 import { Spacer } from '@/components/Spacer';
-import { Event } from '@/utils/temp-constants';
+import { ThemedText } from '@/components/ThemedText';
 import { Colors } from '@/constants/Colors';
-// import { appColors, textStyles } from '@/utils/styles';
+import { Event } from '@/utils/temp-constants';
 
 interface EventCardProps {
   event: Event;
 }
-
-const Pill = ({ name }: { name: string }) => {
-  return (
-    <View style={styles.pill}>
-      <ThemedText style={styles.pillText}>🏨 {name}</ThemedText>
-    </View>
-  );
-};
-
-const CTAButton = ({ name }: { name: string }) => {
-  return (
-    <View style={styles.CTAButton}>
-      <ThemedText style={styles.CTAText}>{name}</ThemedText>
-    </View>
-  );
-};
 
 const EventCard = ({ event }: EventCardProps) => {
   const colorScheme = useColorScheme();
   const appColors = Colors[colorScheme];
 
   const hookedStyles = StyleSheet.create({
+    genericTextStyle: {
+      color: appColors.background,
+    },
     likeIcon: {
-      ...styles.likeIcon,
+      height: 28,
+      aspectRatio: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 30,
       backgroundColor: event.isLiked ? appColors.text : appColors.background,
     },
+    pill: {
+      backgroundColor: appColors.background, // TODO: change to appColors.pureBlack
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+      borderRadius: 12,
+      alignSelf: 'flex-start',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    pillText: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      // color: appColors.background, // TODO: change to appColors.white
+    },
+    CTAButton: {
+      backgroundColor: appColors.tripCardBackground, // TODO: change to appColors.pureBlack
+      paddingVertical: 8,
+      paddingHorizontal: 12,
+      borderRadius: 4,
+    },
+    CTAText: {
+      fontSize: 10,
+      fontWeight: '600',
+      color: appColors.background,
+    },
+    starsContainer: {
+      backgroundColor: appColors.tripCardBackground, // TODO: change to appColors.white
+      height: 28,
+      width: 28,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 14,
+    },
   });
+
+  const Pill = ({ name }: { name: string }) => {
+    return (
+      <View style={hookedStyles.pill}>
+        <ThemedText style={hookedStyles.pillText}>🏨 {name}</ThemedText>
+      </View>
+    );
+  };
+
+  const CTAButton = ({ name }: { name: string }) => {
+    return (
+      <View style={hookedStyles.CTAButton}>
+        <ThemedText style={hookedStyles.CTAText}>{name}</ThemedText>
+      </View>
+    );
+  };
 
   return (
     // <View style={styles.container}>
@@ -51,8 +90,10 @@ const EventCard = ({ event }: EventCardProps) => {
         style={styles.image}
         // imageStyle={{ borderRadius: 12 }}
       >
-        <View style={styles.starsContainer}>
-          <ThemedText style={styles.stars}>{event.stars}</ThemedText>
+        <View style={hookedStyles.starsContainer}>
+          <ThemedText style={[styles.stars, hookedStyles.genericTextStyle]}>
+            {event.stars}
+          </ThemedText>
         </View>
         <View style={styles.likeContainer}>
           <View style={hookedStyles.likeIcon}>
@@ -62,7 +103,7 @@ const EventCard = ({ event }: EventCardProps) => {
               color={event.isLiked ? appColors.background : appColors.text}
             />
           </View>
-          <View style={styles.likeIcon}>
+          <View style={hookedStyles.likeIcon}>
             <Octicons
               name="thumbsdown"
               size={12}
@@ -79,7 +120,10 @@ const EventCard = ({ event }: EventCardProps) => {
           <View style={styles.infoContainer}>
             <Pill name={event.type} />
             <Spacer size={4} vertical />
-            <ThemedText type="subtitle" numberOfLines={2}>
+            <ThemedText
+              type="subtitle"
+              numberOfLines={2}
+              style={hookedStyles.genericTextStyle}>
               {event.name}
             </ThemedText>
             <View style={styles.locationContainer}>
@@ -88,7 +132,9 @@ const EventCard = ({ event }: EventCardProps) => {
                 size={12}
                 color={appColors.background}
               />
-              <ThemedText type="default" style={styles.location}>
+              <ThemedText
+                type="default"
+                style={[styles.location, hookedStyles.genericTextStyle]}>
                 {event.location}
               </ThemedText>
             </View>
@@ -103,7 +149,7 @@ const EventCard = ({ event }: EventCardProps) => {
         <View style={styles.descriptionContainer}>
           <ThemedText
             type="default"
-            style={styles.description}
+            style={[styles.description, hookedStyles.genericTextStyle]}
             numberOfLines={2}>
             {event.description}
           </ThemedText>
@@ -136,11 +182,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     paddingVertical: 6,
   },
-  starsContainer: {
-    backgroundColor: Colors.light.background, // TODO: change to appColors.white
-    borderRadius: 100,
-    padding: 4,
-  },
   stars: {
     fontSize: 12,
     fontWeight: 'bold',
@@ -148,28 +189,6 @@ const styles = StyleSheet.create({
   likeContainer: {
     flexDirection: 'row',
     gap: 4,
-  },
-  likeIcon: {
-    height: 28,
-    aspectRatio: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 30,
-    backgroundColor: Colors.light.background, // TODO: change to appColors.white
-  },
-  pill: {
-    backgroundColor: Colors.light.background, // TODO: change to appColors.pureBlack
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderRadius: 30,
-    alignSelf: 'flex-start',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  pillText: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    color: Colors.light.background, // TODO: change to appColors.white
   },
 
   contentContainer: {
@@ -208,12 +227,6 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 12,
-  },
-  CTAButton: {
-    backgroundColor: Colors.black, // TODO: change to appColors.pureBlack
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 4,
   },
   CTAText: {
     fontSize: 10,

@@ -51,7 +51,7 @@ const ProfileScreen = () => {
       backgroundColor: 'gray',
       overflow: 'hidden',
       borderWidth: 2,
-      borderColor: Colors[colorScheme].grey,
+      borderColor: Colors[colorScheme].tripCardBackground,
     },
     segmentedControl: {
       flexDirection: 'row',
@@ -109,10 +109,10 @@ const ProfileScreen = () => {
           </View>
           <View style={styles.userInfo}>
             <ThemedText type="subtitle">{user?.fullName}</ThemedText>
-            <Spacer vertical size={4} />
-            <ThemedText type="defaultSemiBold">
+            {/* <Spacer vertical size={4} /> */}
+            {/* <ThemedText type="defaultSemiBold">
               {user?.emailAddresses[0].emailAddress}
-            </ThemedText>
+            </ThemedText> */}
             <View style={styles.userInterests}>
               {propopsedUserMetadata.userInterests
                 .slice(0, 3)

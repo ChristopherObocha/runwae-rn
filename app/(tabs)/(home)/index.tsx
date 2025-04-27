@@ -29,6 +29,8 @@ import { TripItem } from '@/types';
 import { Spacer } from '@/components/Spacer';
 import { tempConstants } from '@/utils/temp-constants';
 import { Colors } from '@/constants/Colors';
+import { useTripIds } from '@/stores/TripListStore';
+import { FlashList } from '@shopify/flash-list';
 // import { appColors, textStyles } from '~/utils/styles';
 
 const TOP_PICKS: TripItem[] = [
@@ -94,49 +96,11 @@ const TOP_PICKS: TripItem[] = [
   },
 ];
 
-const HOT_DEALS: TripItem[] = [
-  {
-    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb',
-    title: 'The Ritz Carlton',
-    location: 'New York, USA',
-    promo: 50,
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d',
-    title: 'Four Seasons Resort',
-    location: 'Maui, Hawaii',
-    promo: 35,
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4',
-    title: 'Mandarin Oriental',
-    location: 'Tokyo, Japan',
-    promo: 45,
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945',
-    title: 'Burj Al Arab',
-    location: 'Dubai, UAE',
-    promo: 30,
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd',
-    title: 'Peninsula Hotel',
-    location: 'Paris, France',
-    promo: 40,
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1445019980597-93fa8acb246c',
-    title: 'Atlantis Resort',
-    location: 'Bahamas',
-    promo: 55,
-  },
-];
-
 const Home = () => {
   const { user } = useUser();
   const { CATEGORY_ITEMS, EVENTS_AND_EXPERIENCES } = tempConstants;
   // const { trips } = useTrips();
+  const tripIds = useTripIds();
   const colorScheme = useColorScheme();
   const appColors = Colors[colorScheme];
 
@@ -210,16 +174,22 @@ const Home = () => {
     );
   };
 
-  // const RenderTrips = () => {
-  //   if (!trips || !Array.isArray(trips)) return null;
-  //   return (
-  //     <View style={styles.tripsContainer}>
-  //       {trips.slice(0, 2).map((trip) => (
-  //         <TripCard tripId={trip.id} />
-  //       ))}
-  //     </View>
-  //   );
-  // };
+  const RenderTrips = () => {
+    if (!tripIds || !Array.isArray(tripIds)) return null;
+    return (
+      <View style={styles.tripsContainer}>
+        <FlashList
+          data={tripIds.slice(0, 4)}
+          renderItem={({ item: tripId }) => <TripCard tripId={tripId} />}
+          contentContainerStyle={{ paddingTop: 4 }}
+          contentInsetAdjustmentBehavior="automatic"
+          showsVerticalScrollIndicator={false}
+          estimatedItemSize={79}
+          ItemSeparatorComponent={() => <Spacer vertical size={8} />}
+        />
+      </View>
+    );
+  };
 
   return (
     <ScreenContainer
@@ -259,7 +229,7 @@ const Home = () => {
         contentContainerStyle={styles.categoryContainer}
         horizontal
         showsHorizontalScrollIndicator={false}>
-        {CATEGORY_ITEMS.map(item => (
+        {CATEGORY_ITEMS.map((item) => (
           <TabsComponent key={item?.type} item={item} />
         ))}
       </ScrollView>
@@ -274,7 +244,7 @@ const Home = () => {
           contentContainerStyle={styles.categoryContainer}
           horizontal
           showsHorizontalScrollIndicator={false}>
-          {TOP_PICKS.map(item => (
+          {TOP_PICKS.map((item) => (
             <ItemCard key={item.title} hotel={item} />
           ))}
         </ScrollView>
@@ -286,18 +256,20 @@ const Home = () => {
           contentContainerStyle={styles.categoryContainer}
           horizontal
           showsHorizontalScrollIndicator={false}>
-          {TOP_PICKS.map(item => (
+          {TOP_PICKS.map((item) => (
             <ItemCard key={item.title} hotel={item} />
           ))}
         </ScrollView>
-        {/* 
-        {Array.isArray(trips) && trips.length > 0 && (
+
+        {Array.isArray(tripIds) && tripIds.length > 0 && (
           <>
-            <ThemedText type='subtitle' style={styles.header1}>💬 My groups and active trips</ThemedText>
+            <ThemedText type="subtitle" style={styles.header1}>
+              💬 My groups and active trips
+            </ThemedText>
             <Spacer vertical size={10} />
             <RenderTrips />
           </>
-        )} */}
+        )}
 
         <Spacer vertical size={30} />
 
@@ -308,7 +280,7 @@ const Home = () => {
           contentContainerStyle={styles.categoryContainer}
           horizontal
           showsHorizontalScrollIndicator={false}>
-          {EVENTS_AND_EXPERIENCES.map(item => (
+          {EVENTS_AND_EXPERIENCES.map((item) => (
             <EventCard key={item.name} event={item} />
           ))}
         </ScrollView>
