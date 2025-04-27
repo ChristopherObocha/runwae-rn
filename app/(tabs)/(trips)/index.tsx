@@ -1,20 +1,15 @@
 import { useUser } from '@clerk/clerk-expo';
 import { useRouter, Stack } from 'expo-router';
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Image,
   StyleSheet,
-  Text,
-  View,
   useColorScheme,
   Pressable,
   Platform,
   FlatList,
 } from 'react-native';
 
-import ScreenContainer from '@/components/ScreenContainer';
 import { Spacer } from '@/components/Spacer';
-import { ThemedText } from '@/components/ThemedText';
 import TripCard from '@/components/cards/TripCard';
 import HomeSkeleton from '@/components/skeletons/HomeSkeleton';
 import { BodyScrollView } from '@/components/ui/BodyScrollView';
@@ -25,9 +20,8 @@ import { useTripIds } from '@/stores/TripListStore';
 
 const TripsScreen = () => {
   const router = useRouter();
-  const { user, isLoaded, isSignedIn } = useUser();
+  const { isLoaded } = useUser();
   const colorScheme = useColorScheme() || 'light';
-  const [tripName, setTripName] = useState('');
   const tripIds = useTripIds();
 
   if (!isLoaded) {
@@ -39,11 +33,6 @@ const TripsScreen = () => {
     // router.push("/list/new");
   };
 
-  const handleProfilePress = () => {
-    // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    // router.push("/profile");
-  };
-
   const renderEmptyList = () => (
     <BodyScrollView contentContainerStyle={styles.emptyStateContainer}>
       <Button onPress={handleNewListPress} variant="ghost">
@@ -52,12 +41,6 @@ const TripsScreen = () => {
     </BodyScrollView>
   );
 
-  // const handleCreateTrip = () => {
-  //   if (tripName.length === 0) return;
-
-  //   const tripId =
-  // };
-
   const renderHeaderRight = () => (
     <Pressable
       // work around for https://github.com/software-mansion/react-native-screens/issues/2219
@@ -65,23 +48,6 @@ const TripsScreen = () => {
       onPress={() => router.push('/(tabs)/(trips)/trip/new')}
       style={styles.headerButton}>
       <IconSymbol name="plus" color={Colors[colorScheme].primary} />
-      {/* <Image
-        source={require('@/assets/images/avatar.jpg')}
-        style={styles.headerButtonIcon}
-      /> */}
-    </Pressable>
-  );
-
-  const renderHeaderLeft = () => (
-    <Pressable
-      // work around for https://github.com/software-mansion/react-native-screens/issues/2219
-      onPress={() => router.push('/(tabs)/(trips)/trip/new')}
-      style={[styles.headerButton, styles.headerButtonLeft]}>
-      <IconSymbol
-        name="gear"
-        color={Colors[colorScheme].primary}
-        style={{ marginRight: Platform.select({ default: 0, android: 8 }) }}
-      />
     </Pressable>
   );
 
@@ -91,7 +57,6 @@ const TripsScreen = () => {
         options={{
           title: 'Trips',
           headerRight: renderHeaderRight,
-          // headerLeft: renderHeaderLeft,
         }}
       />
       <FlatList
@@ -102,7 +67,7 @@ const TripsScreen = () => {
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={renderEmptyList}
-        ListFooterComponent={<Spacer vertical size={100} />}
+        ListFooterComponent={() => <Spacer vertical size={100} />}
       />
     </>
   );
@@ -115,6 +80,12 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
   },
+  listContainer: {
+    paddingTop: 8,
+    gap: 12,
+    paddingBottom: 100,
+  },
+
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -147,11 +118,6 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
 
-  listContainer: {
-    paddingTop: 8,
-    gap: 12,
-    flex: 1,
-  },
   emptyStateContainer: {
     alignItems: 'center',
     gap: 8,
