@@ -43,7 +43,6 @@ const Button: React.FC<ButtonProps> = ({
   leftIcon,
 }) => {
   const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
 
   const sizeStyle: Record<
     ButtonSize,
