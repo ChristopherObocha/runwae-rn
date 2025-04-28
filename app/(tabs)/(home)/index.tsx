@@ -185,14 +185,16 @@ const Home = () => {
       header={
         <View style={styles.topNavBar}>
           <View style={styles.topNavBarLeft}>
-            <Image
-              source={{
-                uri: user?.imageUrl,
-              }}
-              style={styles.avatar}
-            />
+            {user?.imageUrl && (
+              <Image
+                source={{
+                  uri: user.imageUrl,
+                }}
+                style={styles.avatar}
+              />
+            )}
             <ThemedText style={hookedStyles.nameHeader}>
-              Hi, {user?.firstName}
+              Hi, {user?.firstName || 'there'}
             </ThemedText>
           </View>
           <View style={styles.topNavBarRight}>

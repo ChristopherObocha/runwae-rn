@@ -1,3 +1,4 @@
+import { useAuth } from '@clerk/clerk-expo';
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform } from 'react-native';
@@ -11,6 +12,11 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { isSignedIn } = useAuth();
+
+  if (!isSignedIn) {
+    return null;
+  }
 
   return (
     <Tabs

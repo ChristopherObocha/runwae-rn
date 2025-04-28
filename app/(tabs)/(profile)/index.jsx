@@ -213,9 +213,13 @@ const ProfileScreen = () => {
         <Spacer vertical size={40} />
         <Button
           variant="ghost"
-          onPress={() => {
-            signOut();
-            router.replace('/');
+          onPress={async () => {
+            try {
+              await signOut();
+              router.replace('/(auth)');
+            } catch (error) {
+              console.error('Error signing out:', error);
+            }
           }}
           textStyle={dynamicStyles.signOutButton}>
           Sign Out

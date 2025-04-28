@@ -1,27 +1,13 @@
-import { Redirect, Stack } from 'expo-router';
 import { useAuth } from '@clerk/clerk-expo';
+import { Stack } from 'expo-router';
+
 import HomeSkeleton from '@/components/skeletons/HomeSkeleton';
-import Button from '@/components/ui/Button';
-import { useRouter } from 'expo-router';
 
 export default function HomeLayout() {
-  const { isSignedIn, isLoaded } = useAuth();
-  const router = useRouter();
+  const { isLoaded } = useAuth();
   if (!isLoaded) {
     return <HomeSkeleton />;
   }
-
-  const screenOptions = {
-    // headerShown: false,
-    headerLargeTitle: true,
-    headerTransparent: true,
-    headerBlurEffect: 'systemChromeMaterial',
-    headerShadowVisible: true,
-    headerLargeTitleStyle: {
-      backgroundColor: 'transparent',
-    },
-    headerLargeTitleShadowVisible: false,
-  };
 
   return (
     <Stack
