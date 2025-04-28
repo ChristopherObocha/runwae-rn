@@ -1,4 +1,6 @@
+import { useUser } from '@clerk/clerk-expo';
 import { Octicons } from '@expo/vector-icons';
+import { FlashList } from '@shopify/flash-list';
 import { Image } from 'expo-image';
 import React, { useState } from 'react';
 import {
@@ -9,29 +11,19 @@ import {
   useColorScheme,
 } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-import { useUser } from '@clerk/clerk-expo';
 
-import { BodyScrollView } from '@/components/ui/BodyScrollView';
 import ScreenContainer from '@/components/ScreenContainer';
+import { Spacer } from '@/components/Spacer';
+import { ThemedText } from '@/components/ThemedText';
+import EventCard from '@/components/cards/EventCard';
 import ItemCard from '@/components/cards/ItemCard';
 import TripCard from '@/components/cards/TripCard';
-import EventCard from '@/components/cards/EventCard';
-import { ThemedText } from '@/components/ThemedText';
-// import {
-//   Avatar,
-//   AvatarFallback,
-//   AvatarImage,
-// } from '~/components/nativewindui/Avatar';
-// import { useTrips } from '@/hooks/useTrips';
-// import { useColorScheme } from '@/lib/useColorScheme';
-// import { COLORS } from '@/theme/colors';
-import { TripItem } from '@/types';
-import { Spacer } from '@/components/Spacer';
-import { tempConstants } from '@/utils/temp-constants';
 import { Colors } from '@/constants/Colors';
 import { useTripIds } from '@/stores/TripListStore';
-import { FlashList } from '@shopify/flash-list';
-// import { appColors, textStyles } from '~/utils/styles';
+import { TripItem } from '@/types';
+import { tempConstants } from '@/utils/temp-constants';
+// import { Collapsible } from '~/components/Collapsible';
+import { MyCollapsible } from '~/components/MyCollapsible';
 
 const TOP_PICKS: TripItem[] = [
   {
@@ -99,7 +91,6 @@ const TOP_PICKS: TripItem[] = [
 const Home = () => {
   const { user } = useUser();
   const { CATEGORY_ITEMS, EVENTS_AND_EXPERIENCES } = tempConstants;
-  // const { trips } = useTrips();
   const tripIds = useTripIds();
   const colorScheme = useColorScheme();
   const appColors = Colors[colorScheme];
@@ -141,7 +132,6 @@ const Home = () => {
       borderRadius: 15,
       justifyContent: 'center',
       alignItems: 'center',
-      // backgroundColor: color.grey,
     },
     hotDealCard: {
       height: 200,
@@ -273,17 +263,20 @@ const Home = () => {
 
         <Spacer vertical size={30} />
 
-        <ThemedText type="subtitle" style={styles.header1}>
+        <MyCollapsible title="🎟️ Event & experience picks">
+          {/* <ThemedText type="subtitle" style={styles.header1}>
           🎟️ Event & experience picks
-        </ThemedText>
-        <ScrollView
-          contentContainerStyle={styles.categoryContainer}
-          horizontal
-          showsHorizontalScrollIndicator={false}>
-          {EVENTS_AND_EXPERIENCES.map((item) => (
-            <EventCard key={item.name} event={item} />
-          ))}
-        </ScrollView>
+        </ThemedText> */}
+
+          <ScrollView
+            contentContainerStyle={styles.categoryContainer}
+            horizontal
+            showsHorizontalScrollIndicator={false}>
+            {EVENTS_AND_EXPERIENCES.map((item) => (
+              <EventCard key={item.name} event={item} />
+            ))}
+          </ScrollView>
+        </MyCollapsible>
       </View>
 
       <View style={styles.sectionContainer} />
