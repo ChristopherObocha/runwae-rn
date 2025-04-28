@@ -10,3 +10,5 @@ android/
 
 .env*
 .expo/
+
+dist/
