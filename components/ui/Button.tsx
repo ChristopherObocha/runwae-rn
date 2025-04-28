@@ -1,3 +1,5 @@
+import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
 import {
   ActivityIndicator,
   Platform,
@@ -8,10 +10,9 @@ import {
   useColorScheme,
   StyleSheet,
 } from 'react-native';
-import React from 'react';
-import { Colors } from '@/constants/Colors';
+
 import { ThemedText } from '@/components/ThemedText';
-import { Ionicons } from '@expo/vector-icons';
+import { Colors } from '@/constants/Colors';
 
 type ButtonVariant = 'filled' | 'outline' | 'ghost';
 type ButtonSize = 'sm' | 'md' | 'lg';
@@ -42,7 +43,6 @@ const Button: React.FC<ButtonProps> = ({
   leftIcon,
 }) => {
   const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
 
   const sizeStyle: Record<
     ButtonSize,
@@ -132,7 +132,7 @@ const Button: React.FC<ButtonProps> = ({
       {loading ? (
         <ActivityIndicator
           size="small"
-          color={Colors[colorScheme].background}
+          color={textStyle?.color || Colors[colorScheme].background}
         />
       ) : (
         <View style={styles.contentContainer}>

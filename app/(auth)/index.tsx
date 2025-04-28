@@ -1,34 +1,41 @@
-import { StyleSheet, Image, View, useColorScheme } from 'react-native';
-import React, { useState } from 'react';
 import { isClerkAPIResponseError, useSignIn } from '@clerk/clerk-expo';
 import { ClerkAPIError } from '@clerk/types';
-import { useRouter, Link } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  useColorScheme,
+  TouchableOpacity,
+} from 'react-native';
 
+import LinearGradientScreen from '@/components/LinearGradientScreen';
+import ScreenContainer from '@/components/ScreenContainer';
+import { Spacer } from '@/components/Spacer';
 import { ThemedText } from '@/components/ThemedText';
 import Button from '@/components/ui/Button';
 import TextInput from '@/components/ui/TextInput';
-import ScreenContainer from '@/components/ScreenContainer';
-import LinearGradientScreen from '@/components/LinearGradientScreen';
 import { Colors } from '@/constants/Colors';
-import { Spacer } from '@/components/Spacer';
-// import { Image } from "expo-image";
+
 const LOGO = require('@/assets/images/figma/4.png');
 const BIG_LOGO = require('@/assets/images/figma/5.png');
 
 const SignInScreen = () => {
   const router = useRouter();
   const { signIn, setActive, isLoaded } = useSignIn();
-
   const colorScheme = useColorScheme();
-
-  if (!isLoaded) {
-    return null;
-  }
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [errors, setErrors] = useState<ClerkAPIError[]>([]);
+  const [showPassword, setShowPassword] = useState(false);
+
+  if (!isLoaded) {
+    return null;
+  }
 
   // Handle the submission of the sign-in form
   const onSignInPress = async () => {
@@ -69,7 +76,7 @@ const SignInScreen = () => {
   return (
     <>
       <LinearGradientScreen />
-      <ScreenContainer style={styles.container} scrollable={false}>
+      <ScreenContainer style={styles.container}>
         <View style={styles.contentContainer}>
           <Image source={LOGO} style={styles.logo} resizeMode="contain" />
           <Spacer size={8} vertical />
@@ -91,16 +98,28 @@ const SignInScreen = () => {
             inputStyle={styles.text}
           />
           <Spacer size={10} vertical />
-          <TextInput
-            variant="outline"
-            label="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            labelColor={Colors.white}
-            inputStyle={styles.text}
-          />
-          {errors.map(error => (
+          <View style={styles.passwordContainer}>
+            <TextInput
+              variant="outline"
+              label="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+              labelColor={Colors.white}
+              inputStyle={styles.text}
+              containerStyle={styles.passwordInput}
+            />
+            <TouchableOpacity
+              style={styles.toggleButton}
+              onPress={() => setShowPassword(!showPassword)}>
+              <Ionicons
+                name={showPassword ? 'eye-off' : 'eye'}
+                size={24}
+                color={Colors.white}
+              />
+            </TouchableOpacity>
+          </View>
+          {errors.map((error) => (
             <ThemedText key={error.longMessage} style={styles.errorText}>
               {error.longMessage}
             </ThemedText>
@@ -110,7 +129,8 @@ const SignInScreen = () => {
             onPress={onSignInPress}
             variant="filled"
             disabled={email === '' || password === ''}
-            loading={isSigningIn}>
+            loading={isSigningIn}
+            textStyle={{ color: Colors[colorScheme].text }}>
             Sign In
           </Button>
           <Spacer size={30} vertical />
@@ -187,5 +207,17 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginBottom: 8,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordInput: {
+    flex: 1,
+  },
+  toggleButton: {
+    position: 'absolute',
+    right: 12,
+    top: 40,
   },
 });

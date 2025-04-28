@@ -8,7 +8,7 @@ import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider as TinyBaseProvider } from 'tinybase/ui-react';
@@ -36,9 +36,13 @@ function AuthenticatedContent() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        {isLoaded && isSignedIn && <TripListStore />}
-        <Slot />
-        <StatusBar style="auto" />
+        {isLoaded && (
+          <>
+            {isSignedIn && <TripListStore />}
+            <Slot />
+            <StatusBar style="auto" />
+          </>
+        )}
       </GestureHandlerRootView>
     </ThemeProvider>
   );
