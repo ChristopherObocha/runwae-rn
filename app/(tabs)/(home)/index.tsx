@@ -197,7 +197,7 @@ const Home = () => {
           </View>
           <View style={styles.topNavBarRight}>
             <View style={hookedStyles.topNavBarRightIcon}>
-              <Octicons name="bell-fill" size={22} color="black" />
+              <Octicons name="bell-fill" size={22} color={appColors.text} />
             </View>
           </View>
         </View>
