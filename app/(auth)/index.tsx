@@ -1,9 +1,15 @@
 import { isClerkAPIResponseError, useSignIn } from '@clerk/clerk-expo';
 import { ClerkAPIError } from '@clerk/types';
+import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { StyleSheet, View, useColorScheme } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  useColorScheme,
+  TouchableOpacity,
+} from 'react-native';
 
 import LinearGradientScreen from '@/components/LinearGradientScreen';
 import ScreenContainer from '@/components/ScreenContainer';
@@ -25,6 +31,7 @@ const SignInScreen = () => {
   const [password, setPassword] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [errors, setErrors] = useState<ClerkAPIError[]>([]);
+  const [showPassword, setShowPassword] = useState(false);
 
   if (!isLoaded) {
     return null;
@@ -91,15 +98,27 @@ const SignInScreen = () => {
             inputStyle={styles.text}
           />
           <Spacer size={10} vertical />
-          <TextInput
-            variant="outline"
-            label="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            labelColor={Colors.white}
-            inputStyle={styles.text}
-          />
+          <View style={styles.passwordContainer}>
+            <TextInput
+              variant="outline"
+              label="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+              labelColor={Colors.white}
+              inputStyle={styles.text}
+              containerStyle={styles.passwordInput}
+            />
+            <TouchableOpacity
+              style={styles.toggleButton}
+              onPress={() => setShowPassword(!showPassword)}>
+              <Ionicons
+                name={showPassword ? 'eye-off' : 'eye'}
+                size={24}
+                color={Colors.white}
+              />
+            </TouchableOpacity>
+          </View>
           {errors.map((error) => (
             <ThemedText key={error.longMessage} style={styles.errorText}>
               {error.longMessage}
@@ -188,5 +207,17 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginBottom: 8,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordInput: {
+    flex: 1,
+  },
+  toggleButton: {
+    position: 'absolute',
+    right: 12,
+    top: 40,
   },
 });
