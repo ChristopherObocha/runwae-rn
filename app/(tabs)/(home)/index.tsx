@@ -22,7 +22,6 @@ import { Colors } from '@/constants/Colors';
 import { useTripIds } from '@/stores/TripListStore';
 import { TripItem } from '@/types';
 import { tempConstants } from '@/utils/temp-constants';
-// import { Collapsible } from '~/components/Collapsible';
 import { MyCollapsible } from '~/components/MyCollapsible';
 
 const TOP_PICKS: TripItem[] = [
@@ -227,47 +226,43 @@ const Home = () => {
       <Spacer vertical size={30} />
 
       <View style={styles.sectionStyles}>
-        <ThemedText type="subtitle" style={styles.header1}>
-          ⭐️ Recommended for you
-        </ThemedText>
-        <ScrollView
-          contentContainerStyle={styles.categoryContainer}
-          horizontal
-          showsHorizontalScrollIndicator={false}>
-          {TOP_PICKS.map((item) => (
-            <ItemCard key={item.title} hotel={item} />
-          ))}
-        </ScrollView>
+        <MyCollapsible title="⭐️ Recommended for you">
+          <ScrollView
+            contentContainerStyle={styles.categoryContainer}
+            horizontal
+            showsHorizontalScrollIndicator={false}>
+            {TOP_PICKS.map((item) => (
+              <ItemCard key={item.title} hotel={item} />
+            ))}
+          </ScrollView>
+        </MyCollapsible>
 
-        <ThemedText type="subtitle" style={styles.header1}>
-          🌍 Trending trips in your circle
-        </ThemedText>
-        <ScrollView
-          contentContainerStyle={styles.categoryContainer}
-          horizontal
-          showsHorizontalScrollIndicator={false}>
-          {TOP_PICKS.map((item) => (
-            <ItemCard key={item.title} hotel={item} />
-          ))}
-        </ScrollView>
+        <Spacer vertical size={24} />
+
+        <MyCollapsible title="🌍 Trending trips in your circle">
+          <ScrollView
+            contentContainerStyle={styles.categoryContainer}
+            horizontal
+            showsHorizontalScrollIndicator={false}>
+            {TOP_PICKS.map((item) => (
+              <ItemCard key={item.title} hotel={item} />
+            ))}
+          </ScrollView>
+        </MyCollapsible>
+
+        <Spacer vertical size={24} />
 
         {Array.isArray(tripIds) && tripIds.length > 0 && (
           <>
-            <ThemedText type="subtitle" style={styles.header1}>
-              💬 My groups and active trips
-            </ThemedText>
-            <Spacer vertical size={10} />
-            <RenderTrips />
+            <MyCollapsible title="💬 My groups and active trips">
+              <RenderTrips />
+            </MyCollapsible>
           </>
         )}
 
-        <Spacer vertical size={30} />
+        <Spacer vertical size={24} />
 
         <MyCollapsible title="🎟️ Event & experience picks">
-          {/* <ThemedText type="subtitle" style={styles.header1}>
-          🎟️ Event & experience picks
-        </ThemedText> */}
-
           <ScrollView
             contentContainerStyle={styles.categoryContainer}
             horizontal
