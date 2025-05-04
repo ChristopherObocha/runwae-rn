@@ -23,6 +23,11 @@ const ProfileScreen = () => {
     userActivities: ['Explorer', 'Beach Lover', 'Foodie', 'Yoga'],
   };
 
+  const handleTestOnboarding = async () => {
+    await signOut();
+    router.replace('/(onboarding)');
+  };
+
   const dynamicStyles = {
     selectedTab: {
       backgroundColor: Colors[colorScheme].grey,
@@ -63,13 +68,23 @@ const ProfileScreen = () => {
       paddingTop: 4,
       gap: 4,
     },
+    testButton: {
+      marginTop: 20,
+      backgroundColor: '#4c669f',
+    },
   };
 
   const renderContent = () => {
     switch (selectedTab) {
       case 'Preferences':
         return (
-          <View style={[styles.tabContent, { backgroundColor: '#FFE5E5' }]} />
+          <View style={[styles.tabContent, { backgroundColor: '#FFE5E5' }]}>
+            <Button
+              title="Test Onboarding"
+              onPress={handleTestOnboarding}
+              style={dynamicStyles.testButton}
+            />
+          </View>
         );
       case 'Settings':
         return (
@@ -303,5 +318,9 @@ const styles = StyleSheet.create({
   supportButtonText: {
     fontSize: 16,
     fontWeight: '600',
+  },
+  testButton: {
+    marginTop: 20,
+    backgroundColor: '#4c669f',
   },
 });
