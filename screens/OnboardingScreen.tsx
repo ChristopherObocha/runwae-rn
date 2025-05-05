@@ -7,7 +7,6 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Animated, {
   useAnimatedStyle,
   withSpring,
@@ -22,6 +21,7 @@ import {
   FeaturesSlide,
 } from '@/components/onboarding/OnboardingSlides';
 import { surveyData } from '@/components/onboarding/surveyData';
+import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
 const { width } = Dimensions.get('window');

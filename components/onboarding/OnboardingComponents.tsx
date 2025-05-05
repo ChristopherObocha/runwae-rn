@@ -1,7 +1,6 @@
 import { Check } from 'lucide-react-native';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Animated, {
   FadeIn,
   useAnimatedStyle,
@@ -12,6 +11,7 @@ import Animated, {
 
 import CustomImage from '@/components/ui/CustomImage';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { Colors } from '~/constants/Colors';
 
 export const FeatureCard = ({
   icon,
