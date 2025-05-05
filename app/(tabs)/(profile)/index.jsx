@@ -24,7 +24,7 @@ const ProfileScreen = () => {
   };
 
   const handleTestOnboarding = async () => {
-    await signOut();
+    // await signOut();
     router.replace('/(onboarding)');
   };
 
@@ -79,11 +79,16 @@ const ProfileScreen = () => {
       case 'Preferences':
         return (
           <View style={[styles.tabContent, { backgroundColor: '#FFE5E5' }]}>
-            <Button
-              title="Test Onboarding"
-              onPress={handleTestOnboarding}
-              style={dynamicStyles.testButton}
-            />
+            <View className="w-full">
+              <Button
+                onPress={handleTestOnboarding}
+                style={dynamicStyles.testButton}>
+                <ThemedText
+                  style={{ color: Colors[colorScheme].backgroundColor }}>
+                  Test Onboarding
+                </ThemedText>
+              </Button>
+            </View>
           </View>
         );
       case 'Settings':
