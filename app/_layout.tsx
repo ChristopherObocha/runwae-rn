@@ -5,7 +5,7 @@ import {
   ThemeProvider,
 } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Slot } from 'expo-router';
+import { Slot, Stack, Redirect } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
@@ -49,6 +49,20 @@ function AuthenticatedContent() {
   );
 }
 
+function OnboardingFlow() {
+  const colorScheme = useColorScheme();
+
+  return (
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <Stack>
+          <Stack.Screen name="(onboarding)" />
+        </Stack>
+      </GestureHandlerRootView>
+    </ThemeProvider>
+  );
+}
+
 export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -70,6 +84,7 @@ export default function RootLayout() {
         <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
           <ClerkLoaded>
             <AuthenticatedContent />
+            {/* <OnboardingFlow /> */}
           </ClerkLoaded>
         </ClerkProvider>
       </ListCreationProvider>

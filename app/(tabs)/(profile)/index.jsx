@@ -25,7 +25,7 @@ const ProfileScreen = () => {
 
   const handleTestOnboarding = async () => {
     // await signOut();
-    router.replace('/(onboarding)');
+    router.replace('/(onboarding)/test');
   };
 
   const dynamicStyles = {

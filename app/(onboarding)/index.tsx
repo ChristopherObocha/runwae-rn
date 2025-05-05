@@ -1,6 +1,6 @@
-import { Link, useRouter } from 'expo-router';
+import { Link, useRouter, Stack } from 'expo-router';
 import { MotiView } from 'moti';
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -10,12 +10,12 @@ import {
   Pressable,
 } from 'react-native';
 import PagerView from 'react-native-pager-view';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path, Circle } from 'react-native-svg';
 
 import { ThemedText } from '@/components/ThemedText';
 import Button from '@/components/ui/Button';
 import { Colors } from '@/constants/Colors';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width, height } = Dimensions.get('window');
 
@@ -65,7 +65,8 @@ export default function OnboardingScreen() {
   };
 
   const handleSkip = () => {
-    router.replace('/(tabs)/explore');
+    // router.replace('/(tabs)/explore');
+    router.replace('/(onboarding)/test');
   };
 
   const styles = StyleSheet.create({
@@ -149,108 +150,84 @@ export default function OnboardingScreen() {
   });
 
   return (
-    <View style={styles.container}>
-      <PagerView
-        ref={pagerRef}
-        style={styles.pager}
-        initialPage={0}
-        onPageSelected={(e) => setCurrentPage(e.nativeEvent.position)}>
-        {slides.map((slide, index) => (
-          <View key={index} style={styles.slide}>
-            <MotiView
-              from={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: 'timing', duration: 500 }}
-              style={styles.imageContainer}>
-              {slide.svg ? (
-                <MotiView
-                  from={{ rotate: '0deg' }}
-                  animate={{ rotate: '360deg' }}
-                  transition={{
-                    type: 'timing',
-                    duration: 2000,
-                    loop: true,
-                  }}>
-                  <Svg
-                    width={width * 0.8}
-                    height={width * 0.8}
-                    viewBox="0 0 374 496">
-                    <Path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M311.418 307.409C278.339 409.637 168.651 465.693 66.4226 432.614C-35.8053 399.535 -91.8614 289.847 -58.7821 187.619C-53.8229 172.293 -47.1418 158.005 -39.0223 144.899C-43.8186 153.853 -47.886 163.358 -51.1235 173.363C-80.3785 263.773 -30.8031 360.779 59.6061 390.034C150.015 419.289 247.022 369.714 276.277 279.305C305.532 188.896 255.957 91.8886 165.548 62.6337C143.821 55.6032 121.712 53.1254 100.255 54.6729C128.257 50.8682 157.529 53.1322 186.213 62.414C288.441 95.4933 344.497 205.181 311.418 307.409Z"
-                      fill="white"
-                      fillOpacity="0.28"
-                    />
-                    <Circle cx="55.5" cy="210.5" r="6.5" fill="white" />
-                    <Circle cx="248.5" cy="218.5" r="8.5" fill="white" />
-                    <Circle cx="55" cy="429" r="10" fill="white" />
-                  </Svg>
-                </MotiView>
-              ) : (
+    <>
+      <Stack.Screen options={{ headerShown: false }} />
+      <View style={styles.container}>
+        <PagerView
+          ref={pagerRef}
+          style={styles.pager}
+          initialPage={0}
+          onPageSelected={(e) => setCurrentPage(e.nativeEvent.position)}>
+          {slides.map((slide, index) => (
+            <View key={index} style={styles.slide}>
+              <MotiView
+                from={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: 'timing', duration: 500 }}
+                style={styles.imageContainer}>
                 <Image
                   source={slide.image}
                   style={styles.image}
                   resizeMode="contain"
                 />
-              )}
-            </MotiView>
+              </MotiView>
 
-            <View style={styles.content}>
-              <ThemedText type="title" style={styles.title}>
-                {slide.title}
-              </ThemedText>
-              <ThemedText type="default" style={styles.description}>
-                {slide.description}
-              </ThemedText>
+              <View style={styles.content}>
+                <ThemedText type="title" style={styles.title}>
+                  {slide.title}
+                </ThemedText>
+                <ThemedText type="default" style={styles.description}>
+                  {slide.description}
+                </ThemedText>
+              </View>
             </View>
-          </View>
-        ))}
-      </PagerView>
-
-      <View style={styles.footer}>
-        <View style={styles.progressContainer}>
-          {slides.map((_, index) => (
-            <MotiView
-              key={index}
-              style={[
-                styles.progressDot,
-                currentPage === index && styles.activeDot,
-              ]}
-              animate={{
-                scale: currentPage === index ? 1.2 : 1,
-                opacity: currentPage === index ? 1 : 0.5,
-              }}
-              transition={{ type: 'timing', duration: 300 }}
-            />
           ))}
-        </View>
+        </PagerView>
 
-        <View style={styles.buttonContainer}>
-          {currentPage < slides.length - 1 && (
-            <Pressable onPress={handleSkip}>
-              <ThemedText style={styles.skipText}>Skip</ThemedText>
-            </Pressable>
-          )}
-          <MotiView
-            animate={{
-              scale: [1, 1.05, 1],
-            }}
-            transition={{
-              type: 'timing',
-              duration: 1000,
-              loop: true,
-            }}>
-            <Button
-              variant="filled"
-              size="lg"
-              onPress={handleNext}
-              style={styles.button}>
-              {currentPage === slides.length - 1 ? 'Get Started' : 'Next'}
-            </Button>
-          </MotiView>
+        <View style={styles.footer}>
+          <View style={styles.progressContainer}>
+            {slides.map((_, index) => (
+              <MotiView
+                key={index}
+                style={[
+                  styles.progressDot,
+                  currentPage === index && styles.activeDot,
+                ]}
+                animate={{
+                  scale: currentPage === index ? 1.2 : 1,
+                  opacity: currentPage === index ? 1 : 0.5,
+                }}
+                transition={{ type: 'timing', duration: 300 }}
+              />
+            ))}
+          </View>
+
+          <View style={styles.buttonContainer}>
+            {currentPage < slides.length - 1 && (
+              <Pressable onPress={handleSkip}>
+                <ThemedText style={styles.skipText}>Skip</ThemedText>
+              </Pressable>
+            )}
+            <MotiView
+              animate={{
+                scale: [1, 1.05, 1],
+              }}
+              transition={{
+                type: 'timing',
+                duration: 1000,
+                loop: true,
+              }}>
+              <Button
+                variant="filled"
+                size="lg"
+                onPress={handleNext}
+                style={styles.button}>
+                {currentPage === slides.length - 1 ? 'Get Started' : 'Next'}
+              </Button>
+            </MotiView>
+          </View>
         </View>
       </View>
-    </View>
+    </>
   );
 }
