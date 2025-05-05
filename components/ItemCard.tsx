@@ -16,7 +16,7 @@ interface ItemCardProps {
 const ItemCard = ({ hotel, style }: ItemCardProps) => {
   return (
     <View style={[styles.hotelCard, style]}>
-      <ImageBackground source={hotel?.image} style={styles.hotelImage}>
+      {/* <ImageBackground source={hotel?.image} style={styles.hotelImage}>
         <View style={styles.topSpan}>
           <View style={styles.locationPill}>
             <Text numberOfLines={1} style={styles.locationText}>
@@ -25,7 +25,7 @@ const ItemCard = ({ hotel, style }: ItemCardProps) => {
           </View>
           <FontAwesome name="heart" size={17} color="white" />
         </View>
-      </ImageBackground>
+      </ImageBackground> */}
 
       <Spacer size={12} vertical />
 
@@ -61,15 +61,15 @@ export default ItemCard;
 
 const styles = StyleSheet.create({
   hotelCard: {
-    backgroundColor: appColors.white,
+    // backgroundColor: appColors.white,
     marginBottom: 10,
-    width: 186,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: appColors.grey,
+    // width: 186,
+    // borderRadius: 10,
+    // borderWidth: 1,
+    // borderColor: appColors.grey,
     paddingBottom: 10,
     paddingTop: 6,
-    paddingHorizontal: 6,
+    // paddingHorizontal: 6,
   },
   hotelImage: {
     height: 175,

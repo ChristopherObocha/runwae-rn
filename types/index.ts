@@ -8,3 +8,12 @@ export interface TripItem {
   description?: string;
   promo?: number;
 }
+
+export interface Destination {
+  destination: {
+    image: string;
+    title: string;
+    location?: string;
+    // id: string;
+  };
+}

@@ -12,6 +12,7 @@ import React, { useEffect } from 'react';
 import 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider as TinyBaseProvider } from 'tinybase/ui-react';
+import '@/global.css';
 
 import { tokenCache } from '@/cache';
 import { ListCreationProvider } from '@/context/ListCreationContext';

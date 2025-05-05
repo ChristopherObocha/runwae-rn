@@ -15,12 +15,13 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import ScreenContainer from '@/components/ScreenContainer';
 import { Spacer } from '@/components/Spacer';
 import { ThemedText } from '@/components/ThemedText';
+import DestinationCard from '@/components/cards/DestinationCard';
 import EventCard from '@/components/cards/EventCard';
 import ItemCard from '@/components/cards/ItemCard';
 import TripCard from '@/components/cards/TripCard';
 import { Colors } from '@/constants/Colors';
 import { useTripIds } from '@/stores/TripListStore';
-import { TripItem } from '@/types';
+import { Destination, TripItem } from '@/types';
 import { tempConstants } from '@/utils/temp-constants';
 import { MyCollapsible } from '~/components/MyCollapsible';
 
@@ -215,39 +216,34 @@ const Home = () => {
 
         <Spacer vertical size={15} />
       </View>
-      <ScrollView
-        style={styles.sectionStyles}
-        contentContainerStyle={styles.categoryContainer}
-        horizontal
-        showsHorizontalScrollIndicator={false}>
-        {CATEGORY_ITEMS.map((item) => (
-          <TabsComponent key={item?.type} item={item} />
-        ))}
-      </ScrollView>
-
-      <Spacer vertical size={30} />
 
       <View style={styles.sectionStyles}>
-        <MyCollapsible title="⭐️ Recommended for you">
+        {/* <MyCollapsible title="Recommended for you">
           <ScrollView
             contentContainerStyle={styles.categoryContainer}
             horizontal
             showsHorizontalScrollIndicator={false}>
             {TOP_PICKS.map((item) => (
-              <ItemCard key={item.title} hotel={item} />
+              <DestinationCard
+                key={item.title || Math.random().toString()}
+                destination={item}
+              />
             ))}
           </ScrollView>
         </MyCollapsible>
 
-        <Spacer vertical size={24} />
+        <Spacer vertical size={24} /> */}
 
-        <MyCollapsible title="🌍 Trending trips in your circle">
+        <MyCollapsible title="🌍 Trending trips">
           <ScrollView
             contentContainerStyle={styles.categoryContainer}
             horizontal
             showsHorizontalScrollIndicator={false}>
             {TOP_PICKS.map((item) => (
-              <ItemCard key={item.title} hotel={item} />
+              <DestinationCard
+                key={item.title || Math.random().toString()}
+                destination={item}
+              />
             ))}
           </ScrollView>
         </MyCollapsible>
