@@ -9,7 +9,7 @@ export default function OnboardingScreen() {
     const checkAndNavigate = async () => {
       // Show splash screen for at least 2 seconds
       setTimeout(() => {
-        router.replace('/(onboarding)');
+        router.replace('/(onboarding)/onboading');
       }, 2000);
     };
     checkAndNavigate();
