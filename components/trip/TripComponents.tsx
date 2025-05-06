@@ -1,4 +1,3 @@
-import { FontAwesome6 } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
 import {
@@ -10,16 +9,12 @@ import {
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Animated, {
-  FadeIn,
   useAnimatedStyle,
   withTiming,
   useSharedValue,
   interpolate,
 } from 'react-native-reanimated';
 
-// import { IconSymbol } from '../ui/IconSymbol.ios';
-
-import { Spacer } from '@/components/Spacer';
 import { ThemedText } from '@/components/ThemedText';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -66,10 +61,7 @@ export function TripCard({ tripId }: { tripId: string }) {
   const [endDate] = useTripValue(tripId, 'endDate');
   const [location] = useTripValue(tripId, 'destination');
   const [image] = useTripValue(tripId, 'coverImage');
-  // const productCount = useTripValues(tripId, "productCount");
   const userNicknames = useTripUserNicknames(tripId);
-
-  // console.log('name: ', name, 'collaborators: ', userNicknames);
 
   // Preload the trip's cover image if it exists
   useEffect(() => {
@@ -145,29 +137,31 @@ export function TripCard({ tripId }: { tripId: string }) {
           </View>
 
           {/* Column 2: Content */}
-          <View className="flex-1 justify-between py-4">
+          <View className="flex-1 justify-between py-2">
             <ThemedText type="defaultSemiBold" numberOfLines={1}>
               {name}
             </ThemedText>
 
             {/* Info Container */}
-            <View>
-              <View className="flex-row items-center gap-x-2">
-                <MapPinned
-                  size={14}
-                  color={Colors[colorScheme].text}
-                  style={{ opacity: 0.7 }}
-                />
-                <ThemedText
-                  type="default"
-                  style={dynamicStyles.tripInfoText}
-                  numberOfLines={1}>
-                  {location}
-                </ThemedText>
-              </View>
+            <View className="mt-4">
+              {location && (
+                <View className="flex-row items-center gap-x-1">
+                  <MapPinned
+                    size={14}
+                    color={Colors[colorScheme].text}
+                    style={{ opacity: 0.7 }}
+                  />
+                  <ThemedText
+                    type="default"
+                    style={dynamicStyles.tripInfoText}
+                    numberOfLines={1}>
+                    {location}
+                  </ThemedText>
+                </View>
+              )}
 
               {startDate && endDate && (
-                <View style={styles.tripInfoTextContainer}>
+                <View className="flex-row items-center gap-x-1">
                   <CalendarRange
                     size={14}
                     color={Colors[colorScheme].text}
@@ -182,16 +176,16 @@ export function TripCard({ tripId }: { tripId: string }) {
           </View>
 
           {/* Column 3: Actions and Nicknames */}
-          <View className="flex h-full w-16 shrink-0 items-center justify-between py-4">
+          <View className="flex h-full w-16 shrink-0 items-center justify-between py-2">
             <TouchableOpacity
               onPress={handleMorePress}
-              className="p-2 opacity-50"
+              className="opacity-50"
               disabled>
               <MoreHorizontal size={20} color={Colors[colorScheme].text} />
             </TouchableOpacity>
 
             {userNicknames.length >= 1 && (
-              <View className="flex-row">
+              <View className="mt-4 flex-row">
                 {userNicknames.length === 4
                   ? userNicknames.map((nickname, index) => (
                       <NicknameCircle
@@ -263,13 +257,10 @@ export const NicknameCircle = ({
 
 const styles = StyleSheet.create({
   tripCard: {
-    // paddingHorizontal: 16,
-    // paddingVertical: 12,
     borderRadius: 16,
     minWidth: '100%',
   },
   tripInfoContainer: {
-    // flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
   },
@@ -283,11 +274,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  memberContainer: {
-    // flexDirection: 'row',
-    // alignItems: 'center',
-    // justifyContent: 'flex-end',
-  },
   tripImage: {
     width: '100%',
     height: '100%',
@@ -295,10 +281,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 16,
   },
 
-  productCount: {
-    fontSize: 12,
-    color: 'gray',
-  },
+  // Nickname Circle
   nicknameContainer: {
     flexDirection: 'row',
     marginRight: 4,
