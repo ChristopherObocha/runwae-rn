@@ -1,5 +1,6 @@
 import { useUser } from '@clerk/clerk-expo';
 import { Octicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FlashList } from '@shopify/flash-list';
 import { Image } from 'expo-image';
 import React, { useEffect, useState } from 'react';
@@ -18,14 +19,15 @@ import { ThemedText } from '@/components/ThemedText';
 import DestinationCard from '@/components/cards/DestinationCard';
 import EventCard from '@/components/cards/EventCard';
 import ItemCard from '@/components/cards/ItemCard';
-import TripCard from '@/components/cards/TripCard';
+// import TripCard from '@/components/cards/TripCard';
+import { FlatTripCard, TripCard } from '@/components/trip/TripComponents';
 import { Colors } from '@/constants/Colors';
 import { useTripIds } from '@/stores/TripListStore';
+import { useOnboardingStore } from '@/stores/useOnboardingStore';
 import { Destination, TripItem } from '@/types';
 import { tempConstants } from '@/utils/temp-constants';
 import { MyCollapsible } from '~/components/MyCollapsible';
-import { useOnboardingStore } from '@/stores/useOnboardingStore';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const TOP_PICKS: TripItem[] = [
   {
     image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b',
@@ -181,6 +183,7 @@ const Home = () => {
       <View style={styles.tripsContainer}>
         <FlashList
           data={tripIds.slice(0, 4)}
+          // renderItem={({ item: tripId }) => <TripCard tripId={tripId} />}
           renderItem={({ item: tripId }) => <TripCard tripId={tripId} />}
           contentContainerStyle={{ paddingTop: 4 }}
           contentInsetAdjustmentBehavior="automatic"
@@ -219,13 +222,13 @@ const Home = () => {
       <View style={styles.container}>
         <Spacer vertical size={30} />
 
-        <Animated.Text entering={FadeIn} exiting={FadeOut}>
+        {/* <Animated.Text entering={FadeIn} exiting={FadeOut}>
           <ThemedText style={styles.hugeHeader}>
             {`Experience \nSeamless bookings, \nsmart itineraries, \nand unforgettable adventures`}
           </ThemedText>
         </Animated.Text>
 
-        <Spacer vertical size={15} />
+        <Spacer vertical size={15} /> */}
       </View>
 
       <View style={styles.sectionStyles}>
