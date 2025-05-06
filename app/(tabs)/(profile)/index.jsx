@@ -70,7 +70,7 @@ const ProfileScreen = () => {
     },
     testButton: {
       marginTop: 20,
-      backgroundColor: Colors[colorScheme].primary,
+      backgroundColor: Colors[colorScheme].primaryVariant,
     },
   };
 
@@ -83,7 +83,9 @@ const ProfileScreen = () => {
               <Button
                 onPress={handleTestOnboarding}
                 style={dynamicStyles.testButton}>
-                <ThemedText>Test Onboarding</ThemedText>
+                <ThemedText style={{ color: Colors[colorScheme].background }}>
+                  Test Onboarding
+                </ThemedText>
               </Button>
             </View>
           </View>

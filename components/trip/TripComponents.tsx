@@ -191,7 +191,7 @@ export function TripCard({ tripId }: { tripId: string }) {
                       <NicknameCircle
                         key={nickname}
                         nickname={nickname}
-                        color={Colors.light.primary}
+                        color={Colors[colorScheme].primaryVariant}
                         index={index}
                       />
                     ))
@@ -202,7 +202,7 @@ export function TripCard({ tripId }: { tripId: string }) {
                           <NicknameCircle
                             key={nickname}
                             nickname={nickname}
-                            color={Colors.light.primary}
+                            color={Colors[colorScheme].primaryVariant}
                             index={index}
                             isEllipsis={index === 3}
                           />
@@ -211,7 +211,7 @@ export function TripCard({ tripId }: { tripId: string }) {
                         <NicknameCircle
                           key={nickname}
                           nickname={nickname}
-                          color={Colors.light.primary}
+                          color={Colors[colorScheme].primaryVariant}
                           index={index}
                         />
                       ))}

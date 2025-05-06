@@ -22,6 +22,7 @@ export const Colors = {
     grey2: '#AFB0B4',
     grey: '#8E8E93',
     tripCardBackground: '#F5F5F5',
+    primaryVariant: '#5abe70',
   },
   dark: {
     text: '#ECEDEE',
@@ -35,6 +36,7 @@ export const Colors = {
     grey2: '#636366',
     grey: '#8E8E93',
     tripCardBackground: '#1E1E1E',
+    primaryVariant: '#2a833c',
   },
   white: '#FFFFFF',
   black: '#000000',
