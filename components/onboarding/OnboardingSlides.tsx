@@ -66,7 +66,8 @@ export const WelcomeSlide: React.FC<SlideProps> = ({
         className="flex-1 justify-end">
         <Animated.View
           style={[slideAnimStyle]}
-          className="bg-black/40 p-8 pt-16">
+          // className="bg-black/40 p-8 pt-16"
+          className="p-8 pt-16">
           <Text className="mb-3 text-5xl font-bold text-white">
             {slide.title}
           </Text>

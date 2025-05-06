@@ -25,7 +25,7 @@ const ProfileScreen = () => {
 
   const handleTestOnboarding = async () => {
     // await signOut();
-    router.replace('/(onboarding)/test');
+    router.replace('/(onboarding)');
   };
 
   const dynamicStyles = {
@@ -70,7 +70,7 @@ const ProfileScreen = () => {
     },
     testButton: {
       marginTop: 20,
-      backgroundColor: '#4c669f',
+      backgroundColor: Colors[colorScheme].primary,
     },
   };
 
@@ -78,15 +78,12 @@ const ProfileScreen = () => {
     switch (selectedTab) {
       case 'Preferences':
         return (
-          <View style={[styles.tabContent, { backgroundColor: '#FFE5E5' }]}>
-            <View className="w-full">
+          <View style={[styles.tabContent]} className="items-center">
+            <View className="w-1/2 items-center justify-center">
               <Button
                 onPress={handleTestOnboarding}
                 style={dynamicStyles.testButton}>
-                <ThemedText
-                  style={{ color: Colors[colorScheme].backgroundColor }}>
-                  Test Onboarding
-                </ThemedText>
+                <ThemedText>Test Onboarding</ThemedText>
               </Button>
             </View>
           </View>
