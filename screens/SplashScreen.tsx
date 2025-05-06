@@ -60,15 +60,15 @@ export default function SplashScreen() {
       </Animated.View>
 
       <Animated.Text
-        className={`mt-6 font-bold ${isDarkMode ? 'text-white' : 'text-yellow-700'}`}
+        className={`mt-6 text-center text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-yellow-700'}`}
         style={[logoStyle]}>
-        Plant Insights AI
+        Runwae
       </Animated.Text>
 
       <Animated.Text
         className={`mt-2 px-6 text-center text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
         style={[logoStyle]}>
-        Identify and learn about plants with AI
+        Plan and share group trips with friends and family.
       </Animated.Text>
     </View>
   );
