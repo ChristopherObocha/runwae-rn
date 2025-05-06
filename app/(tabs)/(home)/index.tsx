@@ -1,9 +1,7 @@
 import { useUser } from '@clerk/clerk-expo';
 import { Octicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FlashList } from '@shopify/flash-list';
-import { Image } from 'expo-image';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -11,22 +9,20 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import ScreenContainer from '@/components/ScreenContainer';
 import { Spacer } from '@/components/Spacer';
 import { ThemedText } from '@/components/ThemedText';
 import DestinationCard from '@/components/cards/DestinationCard';
 import EventCard from '@/components/cards/EventCard';
-import ItemCard from '@/components/cards/ItemCard';
-// import TripCard from '@/components/cards/TripCard';
-import { FlatTripCard, TripCard } from '@/components/trip/TripComponents';
+import { TripCard } from '@/components/trip/TripComponents';
 import { Colors } from '@/constants/Colors';
 import { useTripIds } from '@/stores/TripListStore';
 import { useOnboardingStore } from '@/stores/useOnboardingStore';
-import { Destination, TripItem } from '@/types';
+import { TripItem } from '@/types';
 import { tempConstants } from '@/utils/temp-constants';
 import { MyCollapsible } from '~/components/MyCollapsible';
+import { AvatarCircle } from '~/components/ui/AvatarCircle';
 
 const TOP_PICKS: TripItem[] = [
   {
@@ -200,14 +196,7 @@ const Home = () => {
       header={
         <View style={styles.topNavBar}>
           <View style={styles.topNavBarLeft}>
-            {user?.imageUrl && (
-              <Image
-                source={{
-                  uri: user.imageUrl,
-                }}
-                style={styles.avatar}
-              />
-            )}
+            <AvatarCircle style={styles.avatar} />
             <ThemedText style={hookedStyles.nameHeader}>
               Hi, {user?.firstName || 'there'}
             </ThemedText>
@@ -219,35 +208,8 @@ const Home = () => {
           </View>
         </View>
       }>
-      <View style={styles.container}>
-        <Spacer vertical size={30} />
-
-        {/* <Animated.Text entering={FadeIn} exiting={FadeOut}>
-          <ThemedText style={styles.hugeHeader}>
-            {`Experience \nSeamless bookings, \nsmart itineraries, \nand unforgettable adventures`}
-          </ThemedText>
-        </Animated.Text>
-
-        <Spacer vertical size={15} /> */}
-      </View>
-
+      <Spacer vertical size={30} />
       <View style={styles.sectionStyles}>
-        {/* <MyCollapsible title="Recommended for you">
-          <ScrollView
-            contentContainerStyle={styles.categoryContainer}
-            horizontal
-            showsHorizontalScrollIndicator={false}>
-            {TOP_PICKS.map((item) => (
-              <DestinationCard
-                key={item.title || Math.random().toString()}
-                destination={item}
-              />
-            ))}
-          </ScrollView>
-        </MyCollapsible>
-
-        <Spacer vertical size={24} /> */}
-
         <MyCollapsible title="🌍 Trending trips">
           <ScrollView
             contentContainerStyle={styles.categoryContainer}
