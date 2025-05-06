@@ -1,4 +1,14 @@
-import { ArrowRight, Leaf, Heart, Droplets } from 'lucide-react-native';
+import {
+  ArrowRight,
+  Leaf,
+  Compass,
+  PenTool,
+  Map,
+  Plane,
+  Users,
+  Calendar,
+  PlusCircle,
+} from 'lucide-react-native';
 import React from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import Animated, {
@@ -76,20 +86,20 @@ export const WelcomeSlide: React.FC<SlideProps> = ({
           <View className="mb-8 flex-row items-center justify-between">
             <View className="flex-row ">
               <AnimatedFeatureIcon
-                icon={<Leaf size={24} color="white" />}
-                label="Identify"
+                icon={<Compass size={24} color="white" />}
+                label="Create"
                 index={0}
                 marginRight
               />
               <AnimatedFeatureIcon
-                icon={<Droplets size={24} color="white" />}
-                label="Diagnose"
+                icon={<Calendar size={24} color="white" />}
+                label="Events"
                 index={1}
                 marginRight
               />
               <AnimatedFeatureIcon
-                icon={<Heart size={24} color="white" />}
-                label="Benefits"
+                icon={<Users size={24} color="white" />}
+                label="Groups"
                 index={2}
               />
             </View>
