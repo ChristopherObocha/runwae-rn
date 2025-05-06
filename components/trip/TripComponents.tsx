@@ -1,10 +1,12 @@
 import { FontAwesome6 } from '@expo/vector-icons';
 import { Image } from 'expo-image';
+import { Link, useRouter } from 'expo-router';
 import {
-  Link,
-  // useRouter
-} from 'expo-router';
-import { Check } from 'lucide-react-native';
+  Check,
+  MoreHorizontal,
+  MapPinned,
+  CalendarRange,
+} from 'lucide-react-native';
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Animated, {
@@ -55,7 +57,7 @@ export const FlatTripCard = ({ tripId }: { tripId: string }) => {
 };
 
 export function TripCard({ tripId }: { tripId: string }) {
-  // const router = useRouter();
+  const router = useRouter();
   const colorScheme = useColorScheme();
   // Listening to just these cells means that the component won't unnecessarily
   // re-render if anything else in the row changes (such as the timestamps).
@@ -93,11 +95,11 @@ export function TripCard({ tripId }: { tripId: string }) {
       backgroundColor: Colors[colorScheme].tripCardBackground,
     },
     tripName: {
-      color: Colors[colorScheme].background,
+      fontWeight: 'bold',
     },
     tripInfoText: {
-      color: Colors[colorScheme].background,
-      fontSize: 10,
+      fontSize: 14,
+      opacity: 0.7,
     },
   };
 
@@ -112,11 +114,19 @@ export function TripCard({ tripId }: { tripId: string }) {
     const diffTime = departureDate.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays < 0) return 'Past';
+    if (diffDays < 0)
+      return 'Past on ' + new Date(startDate).toLocaleDateString();
     if (diffDays === 0) return 'Departing today';
     if (diffDays === 1) return 'Departing tomorrow';
     if (isNaN(diffDays)) return null;
     return `${diffDays} days to departure`;
+  };
+
+  const handleMorePress = () => {
+    router.push({
+      pathname: '../trip/[tripId]/actions',
+      params: { tripId },
+    });
   };
 
   return (
@@ -125,6 +135,7 @@ export function TripCard({ tripId }: { tripId: string }) {
         <View
           style={[styles.tripCard, dynamicStyles.tripCard]}
           className="w-full flex-row gap-x-4">
+          {/* Column 1: Image */}
           <View className="h-full w-24 shrink-0">
             <Image
               source={{ uri: image || defaultImage }}
@@ -133,27 +144,56 @@ export function TripCard({ tripId }: { tripId: string }) {
             />
           </View>
 
-          <View className="flex-1 justify-center py-2">
-            <ThemedText
-              type="subtitle"
-              style={dynamicStyles.tripName}
-              numberOfLines={1}>
+          {/* Column 2: Content */}
+          <View className="flex-1 justify-between py-4">
+            <ThemedText type="defaultSemiBold" numberOfLines={1}>
               {name}
             </ThemedText>
-            <ThemedText
-              type="default"
-              style={dynamicStyles.tripInfoText}
-              numberOfLines={1}>
-              {location}
-            </ThemedText>
+
+            {/* Info Container */}
+            <View>
+              <View className="flex-row items-center gap-x-2">
+                <MapPinned
+                  size={14}
+                  color={Colors[colorScheme].text}
+                  style={{ opacity: 0.7 }}
+                />
+                <ThemedText
+                  type="default"
+                  style={dynamicStyles.tripInfoText}
+                  numberOfLines={1}>
+                  {location}
+                </ThemedText>
+              </View>
+
+              {startDate && endDate && (
+                <View style={styles.tripInfoTextContainer}>
+                  <CalendarRange
+                    size={14}
+                    color={Colors[colorScheme].text}
+                    style={{ opacity: 0.7 }}
+                  />
+                  <ThemedText type="default" style={dynamicStyles.tripInfoText}>
+                    {getDaysUntilDeparture(startDate)}
+                  </ThemedText>
+                </View>
+              )}
+            </View>
           </View>
 
-          <View className="flex h-full w-16 shrink-0 items-center justify-center">
+          {/* Column 3: Actions and Nicknames */}
+          <View className="flex h-full w-16 shrink-0 items-center justify-between py-4">
+            <TouchableOpacity
+              onPress={handleMorePress}
+              className="p-2 opacity-50"
+              disabled>
+              <MoreHorizontal size={20} color={Colors[colorScheme].text} />
+            </TouchableOpacity>
+
             {userNicknames.length >= 1 && (
               <View className="flex-row">
                 {userNicknames.length === 4
-                  ? // Show all 4 letters when length is exactly 4
-                    userNicknames.map((nickname, index) => (
+                  ? userNicknames.map((nickname, index) => (
                       <NicknameCircle
                         key={nickname}
                         nickname={nickname}
@@ -162,8 +202,7 @@ export function TripCard({ tripId }: { tripId: string }) {
                       />
                     ))
                   : userNicknames.length > 4
-                    ? // Show first 3 letters and ellipsis when length > 4
-                      userNicknames
+                    ? userNicknames
                         .slice(0, 4)
                         .map((nickname, index) => (
                           <NicknameCircle
@@ -174,8 +213,7 @@ export function TripCard({ tripId }: { tripId: string }) {
                             isEllipsis={index === 3}
                           />
                         ))
-                    : // Show all letters when length is 2 or 3
-                      userNicknames.map((nickname, index) => (
+                    : userNicknames.map((nickname, index) => (
                         <NicknameCircle
                           key={nickname}
                           nickname={nickname}
@@ -252,7 +290,7 @@ const styles = StyleSheet.create({
   },
   tripImage: {
     width: '100%',
-    height: 100,
+    height: '100%',
     borderTopLeftRadius: 16,
     borderBottomLeftRadius: 16,
   },
