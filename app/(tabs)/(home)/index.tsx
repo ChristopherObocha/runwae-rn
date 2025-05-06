@@ -2,7 +2,7 @@ import { useUser } from '@clerk/clerk-expo';
 import { Octicons } from '@expo/vector-icons';
 import { FlashList } from '@shopify/flash-list';
 import { Image } from 'expo-image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -24,7 +24,8 @@ import { useTripIds } from '@/stores/TripListStore';
 import { Destination, TripItem } from '@/types';
 import { tempConstants } from '@/utils/temp-constants';
 import { MyCollapsible } from '~/components/MyCollapsible';
-
+import { useOnboardingStore } from '@/stores/useOnboardingStore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const TOP_PICKS: TripItem[] = [
   {
     image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b',
@@ -94,10 +95,20 @@ const Home = () => {
   const tripIds = useTripIds();
   const colorScheme = useColorScheme();
   const appColors = Colors[colorScheme];
+  const { hasCompletedOnboarding } = useOnboardingStore();
 
   const [activeCategory, setActiveCategory] = useState<string>(
     CATEGORY_ITEMS[0]?.type
   );
+
+  //how to retrieve onboarding data from async storage
+  // useEffect(() => {
+  //   const fetchOnboardingData = async () => {
+  //     const onboardingData = await AsyncStorage.getItem('onboardingData');
+  //     // console.log('onboardingData', onboardingData);
+  //   };
+  //   fetchOnboardingData();
+  // }, []);
 
   const hookedStyles = StyleSheet.create({
     categoryItem: {

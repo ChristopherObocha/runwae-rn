@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 import React, { useState, useRef } from 'react';
 import {
@@ -23,6 +24,7 @@ import {
 import { surveyData } from '@/components/onboarding/surveyData';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useOnboardingStore } from '@/stores/useOnboardingStore';
 
 const { width } = Dimensions.get('window');
 
@@ -31,6 +33,7 @@ export default function OnboardingScreen() {
   const colors = Colors[colorScheme];
   const isDarkMode = colorScheme === 'dark';
   const scrollRef = useRef<ScrollView>(null);
+  const { completeOnboarding } = useOnboardingStore();
 
   const [currentStep, setCurrentStep] = useState(0);
   const totalSteps = surveyData.length;
@@ -80,19 +83,11 @@ export default function OnboardingScreen() {
       ) {
         const value = selectedOptions[0];
         setResponses({ ...responses, [currentSlide.id]: value });
-
-        if (currentSlide.id === 'plant-experience') {
-        } else if (currentSlide.id === 'goals') {
-        } else if (currentSlide.id === 'frequency') {
-        }
       } else if (
         currentSlide.type === 'multiple-select' &&
         selectedOptions.length > 0
       ) {
         setResponses({ ...responses, [currentSlide.id]: [...selectedOptions] });
-
-        if (currentSlide.id === 'plant-types') {
-        }
       }
     };
 
@@ -135,7 +130,11 @@ export default function OnboardingScreen() {
     }
   };
 
-  const handleSkip = () => {};
+  const handleSkip = () => {
+    completeOnboarding(responses);
+    //this should be router.replace, made this push to test home screen animations
+    router.push('/(tabs)/(home)');
+  };
 
   const handleOptionSelect = (optionId: string) => {
     if (currentSlide.type === 'multiple-choice') {
@@ -249,18 +248,35 @@ export default function OnboardingScreen() {
       </ScrollView>
 
       {currentStep > 0 && (
-        <View className="mb-10 items-center px-6">
+        <View className="mb-10 items-center gap-y-4 px-6">
           {currentStep === 0 ? null : currentStep === totalSteps - 1 ? (
-            <Animated.View style={[buttonAnimStyle, { width: '100%' }]}>
-              <TouchableOpacity
-                onPress={() => {}}
-                className="w-full items-center justify-center rounded-xl py-4"
-                style={{ backgroundColor: Colors.primary[500] }}>
-                <Text className="text-lg font-semibold text-white">
-                  Continue to Premium
-                </Text>
-              </TouchableOpacity>
-            </Animated.View>
+            <>
+              <Animated.View style={[buttonAnimStyle, { width: '100%' }]}>
+                <TouchableOpacity
+                  onPress={() => {}}
+                  className="w-full items-center justify-center rounded-xl py-4"
+                  disabled
+                  style={{
+                    backgroundColor: Colors.primary[500],
+                    opacity: 0.5,
+                  }}>
+                  <Text className="text-lg font-semibold text-white">
+                    Continue to Premium
+                  </Text>
+                </TouchableOpacity>
+              </Animated.View>
+
+              {/* <Animated.View style={[buttonAnimStyle, { width: '100%' }]}>
+                <TouchableOpacity
+                  onPress={() => {}}
+                  className="w-full items-center justify-center rounded-xl py-4"
+                  style={{ backgroundColor: Colors.primary[500] }}>
+                  <Text className="text-lg font-semibold text-white">
+                    Continue to Premium
+                  </Text>
+                </TouchableOpacity>
+              </Animated.View> */}
+            </>
           ) : (
             <Animated.View style={[buttonAnimStyle, { width: '100%' }]}>
               <TouchableOpacity
