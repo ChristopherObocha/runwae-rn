@@ -3,11 +3,30 @@ const { hairlineWidth, platformSelect } = require('nativewind/theme');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   // NOTE: Update this to include the paths to all of your component files.
-  content: ['./app/**/*.{js,jsx,ts,tsx}', './components/**/*.{js,jsx,ts,tsx}'],
+  content: [
+    './app/**/*.{js,jsx,ts,tsx}',
+    './components/**/*.{js,jsx,ts,tsx}',
+    './screens/**/*.{js,jsx,ts,tsx}',
+  ],
   presets: [require('nativewind/preset')],
   theme: {
     extend: {
       colors: {
+        // Include default Tailwind colors
+        yellow: {
+          50: '#fefce8',
+          100: '#fef9c3',
+          200: '#fef08a',
+          300: '#fde047',
+          400: '#facc15',
+          500: '#eab308',
+          600: '#ca8a04',
+          700: '#a16207',
+          800: '#854d0e',
+          900: '#713f12',
+          950: '#422006',
+        },
+        // Your custom colors
         border: withOpacity('border'),
         input: withOpacity('input'),
         ring: withOpacity('ring'),

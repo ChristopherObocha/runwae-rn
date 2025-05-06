@@ -1,7 +1,6 @@
 import { useUser } from '@clerk/clerk-expo';
 import { Octicons } from '@expo/vector-icons';
 import { FlashList } from '@shopify/flash-list';
-import { Image } from 'expo-image';
 import React, { useState } from 'react';
 import {
   ScrollView,
@@ -10,19 +9,20 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import ScreenContainer from '@/components/ScreenContainer';
 import { Spacer } from '@/components/Spacer';
 import { ThemedText } from '@/components/ThemedText';
+import DestinationCard from '@/components/cards/DestinationCard';
 import EventCard from '@/components/cards/EventCard';
-import ItemCard from '@/components/cards/ItemCard';
-import TripCard from '@/components/cards/TripCard';
+import { TripCard } from '@/components/trip/TripComponents';
 import { Colors } from '@/constants/Colors';
 import { useTripIds } from '@/stores/TripListStore';
+import { useOnboardingStore } from '@/stores/useOnboardingStore';
 import { TripItem } from '@/types';
 import { tempConstants } from '@/utils/temp-constants';
 import { MyCollapsible } from '~/components/MyCollapsible';
+import { AvatarCircle } from '~/components/ui/AvatarCircle';
 
 const TOP_PICKS: TripItem[] = [
   {
@@ -93,10 +93,20 @@ const Home = () => {
   const tripIds = useTripIds();
   const colorScheme = useColorScheme();
   const appColors = Colors[colorScheme];
+  const { hasCompletedOnboarding } = useOnboardingStore();
 
   const [activeCategory, setActiveCategory] = useState<string>(
     CATEGORY_ITEMS[0]?.type
   );
+
+  //how to retrieve onboarding data from async storage
+  // useEffect(() => {
+  //   const fetchOnboardingData = async () => {
+  //     const onboardingData = await AsyncStorage.getItem('onboardingData');
+  //     // console.log('onboardingData', onboardingData);
+  //   };
+  //   fetchOnboardingData();
+  // }, []);
 
   const hookedStyles = StyleSheet.create({
     categoryItem: {
@@ -169,6 +179,7 @@ const Home = () => {
       <View style={styles.tripsContainer}>
         <FlashList
           data={tripIds.slice(0, 4)}
+          // renderItem={({ item: tripId }) => <TripCard tripId={tripId} />}
           renderItem={({ item: tripId }) => <TripCard tripId={tripId} />}
           contentContainerStyle={{ paddingTop: 4 }}
           contentInsetAdjustmentBehavior="automatic"
@@ -185,14 +196,7 @@ const Home = () => {
       header={
         <View style={styles.topNavBar}>
           <View style={styles.topNavBarLeft}>
-            {user?.imageUrl && (
-              <Image
-                source={{
-                  uri: user.imageUrl,
-                }}
-                style={styles.avatar}
-              />
-            )}
+            <AvatarCircle style={styles.avatar} />
             <ThemedText style={hookedStyles.nameHeader}>
               Hi, {user?.firstName || 'there'}
             </ThemedText>
@@ -204,50 +208,18 @@ const Home = () => {
           </View>
         </View>
       }>
-      <View style={styles.container}>
-        <Spacer vertical size={30} />
-
-        <Animated.Text entering={FadeIn} exiting={FadeOut}>
-          <ThemedText style={styles.hugeHeader}>
-            {`Experience \nSeamless bookings, \nsmart itineraries, \nand unforgettable adventures`}
-          </ThemedText>
-        </Animated.Text>
-
-        <Spacer vertical size={15} />
-      </View>
-      <ScrollView
-        style={styles.sectionStyles}
-        contentContainerStyle={styles.categoryContainer}
-        horizontal
-        showsHorizontalScrollIndicator={false}>
-        {CATEGORY_ITEMS.map((item) => (
-          <TabsComponent key={item?.type} item={item} />
-        ))}
-      </ScrollView>
-
       <Spacer vertical size={30} />
-
       <View style={styles.sectionStyles}>
-        <MyCollapsible title="⭐️ Recommended for you">
+        <MyCollapsible title="🌍 Trending trips">
           <ScrollView
             contentContainerStyle={styles.categoryContainer}
             horizontal
             showsHorizontalScrollIndicator={false}>
             {TOP_PICKS.map((item) => (
-              <ItemCard key={item.title} hotel={item} />
-            ))}
-          </ScrollView>
-        </MyCollapsible>
-
-        <Spacer vertical size={24} />
-
-        <MyCollapsible title="🌍 Trending trips in your circle">
-          <ScrollView
-            contentContainerStyle={styles.categoryContainer}
-            horizontal
-            showsHorizontalScrollIndicator={false}>
-            {TOP_PICKS.map((item) => (
-              <ItemCard key={item.title} hotel={item} />
+              <DestinationCard
+                key={item.title || Math.random().toString()}
+                destination={item}
+              />
             ))}
           </ScrollView>
         </MyCollapsible>

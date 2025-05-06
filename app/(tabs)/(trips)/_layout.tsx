@@ -72,6 +72,15 @@ export default function TripsLayout() {
         }}
       />
       <Stack.Screen
+        name="trip/[tripId]/actions"
+        options={{
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.25],
+          sheetGrabberVisible: true,
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="trip/[tripId]/itinerary/[itineraryId]"
         options={{
           presentation: 'formSheet',
