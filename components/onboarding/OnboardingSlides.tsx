@@ -1,14 +1,4 @@
-import {
-  ArrowRight,
-  Leaf,
-  Compass,
-  PenTool,
-  Map,
-  Plane,
-  Users,
-  Calendar,
-  PlusCircle,
-} from 'lucide-react-native';
+import { ArrowRight, Compass, Users, Calendar } from 'lucide-react-native';
 import React from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import Animated, {
