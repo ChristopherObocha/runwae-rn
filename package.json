@@ -14,7 +14,7 @@
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
     "web": "expo start --web",
-    "update:preview": "eas update --profile preview"
+    "update:preview": "eas update --channel preview"
   },
   "dependencies": {
     "@clerk/clerk-expo": "^2.9.7",
