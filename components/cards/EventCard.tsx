@@ -1,9 +1,7 @@
-import { Octicons } from '@expo/vector-icons';
 import { ImageBackground } from 'expo-image';
-import { LinearGradient } from 'expo-linear-gradient';
-import { MapPinned } from 'lucide-react-native';
+import { MapPinned, Plus } from 'lucide-react-native';
 import React from 'react';
-import { StyleSheet, View, useColorScheme } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { Spacer } from '@/components/Spacer';
 import { ThemedText } from '@/components/ThemedText';
@@ -38,10 +36,6 @@ const EventCard = ({ event }: EventCardProps) => {
     CTAButton: {
       backgroundColor: appColors.primaryVariant,
     },
-    CTAText: {
-      fontSize: 12,
-      fontWeight: '600',
-    },
   });
 
   const Pill = ({ name }: { name: string }) => {
@@ -54,10 +48,10 @@ const EventCard = ({ event }: EventCardProps) => {
     );
   };
 
-  const CTAButton = ({ name }: { name: string }) => {
+  const CTAButton = () => {
     return (
-      <View style={hookedStyles.CTAButton} className="rounded-xl px-4 py-1">
-        <ThemedText style={hookedStyles.CTAText}>{name}</ThemedText>
+      <View style={hookedStyles.CTAButton} className="rounded-full p-1">
+        <Plus size={24} color={Colors.white} />
       </View>
     );
   };
@@ -100,7 +94,7 @@ const EventCard = ({ event }: EventCardProps) => {
           </View>
 
           <View style={styles.buttonContainer}>
-            <CTAButton name="Add to trip" />
+            <CTAButton />
           </View>
         </View>
 
@@ -185,9 +179,5 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 12,
-  },
-  CTAText: {
-    fontSize: 10,
-    fontWeight: '600',
   },
 });

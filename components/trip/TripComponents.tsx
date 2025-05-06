@@ -29,8 +29,8 @@ const defaultImage =
 preloadImage(DEFAULT_IMAGES.TRIP_COVER);
 
 export const FlatTripCard = ({ tripId }: { tripId: string }) => {
-  const colorScheme = useColorScheme();
-  const isDarkMode = colorScheme === 'dark';
+  // const colorScheme = useColorScheme();
+  // const isDarkMode = colorScheme === 'dark';
   const animatedValue = useSharedValue(0);
 
   const cardAnimStyle = useAnimatedStyle(() => {
@@ -236,7 +236,7 @@ export const NicknameCircle = ({
   isEllipsis?: boolean;
 }) => {
   const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
+  // const isDark = colorScheme === 'dark';
 
   return (
     <ThemedText
@@ -246,8 +246,11 @@ export const NicknameCircle = ({
         isEllipsis && styles.ellipsisCircle,
         {
           backgroundColor: color,
-          borderColor: isDark ? '#000000' : '#ffffff',
+          // borderColor: isDark ? '#000000' : '#ffffff',
+          borderColor: Colors[colorScheme].text,
+          borderWidth: 1,
           marginLeft: index > 0 ? -6 : 0,
+          color: Colors[colorScheme].text,
         },
       ]}>
       {isEllipsis ? '...' : nickname[0].toUpperCase()}
@@ -288,9 +291,9 @@ const styles = StyleSheet.create({
   },
   nicknameCircle: {
     fontSize: 12,
-    color: 'white',
-    borderWidth: 1,
-    borderColor: 'white',
+    // color: 'white',
+    // borderWidth: 1,
+    // borderColor: 'white',
     borderRadius: 12,
     padding: 1,
     width: 24,

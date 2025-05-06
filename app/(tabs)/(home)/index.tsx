@@ -1,14 +1,8 @@
 import { useUser } from '@clerk/clerk-expo';
 import { Octicons } from '@expo/vector-icons';
 import { FlashList } from '@shopify/flash-list';
-import React, { useState } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  useColorScheme,
-} from 'react-native';
+import React from 'react';
+import { ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
 
 import ScreenContainer from '@/components/ScreenContainer';
 import { Spacer } from '@/components/Spacer';
@@ -18,7 +12,7 @@ import EventCard from '@/components/cards/EventCard';
 import { TripCard } from '@/components/trip/TripComponents';
 import { Colors } from '@/constants/Colors';
 import { useTripIds } from '@/stores/TripListStore';
-import { useOnboardingStore } from '@/stores/useOnboardingStore';
+// import { useOnboardingStore } from '@/stores/useOnboardingStore';
 import { TripItem } from '@/types';
 import { tempConstants } from '@/utils/temp-constants';
 import { MyCollapsible } from '~/components/MyCollapsible';
@@ -89,15 +83,11 @@ const TOP_PICKS: TripItem[] = [
 
 const Home = () => {
   const { user } = useUser();
-  const { CATEGORY_ITEMS, EVENTS_AND_EXPERIENCES } = tempConstants;
+  const { EVENTS_AND_EXPERIENCES } = tempConstants;
   const tripIds = useTripIds();
   const colorScheme = useColorScheme();
   const appColors = Colors[colorScheme];
-  const { hasCompletedOnboarding } = useOnboardingStore();
-
-  const [activeCategory, setActiveCategory] = useState<string>(
-    CATEGORY_ITEMS[0]?.type
-  );
+  // const { hasCompletedOnboarding } = useOnboardingStore();
 
   //how to retrieve onboarding data from async storage
   // useEffect(() => {
@@ -151,27 +141,6 @@ const Home = () => {
       color: appColors.text,
     },
   });
-
-  const TabsComponent = ({ item }: { item: any }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => setActiveCategory(item?.type)}
-        key={item?.type}
-        style={[
-          hookedStyles.categoryItem,
-          activeCategory === item?.type && hookedStyles.categoryItemActive,
-        ]}>
-        <ThemedText
-          style={[
-            hookedStyles.categoryItemText,
-            activeCategory === item?.type &&
-              hookedStyles.categoryItemActiveText,
-          ]}>
-          {item?.type}
-        </ThemedText>
-      </TouchableOpacity>
-    );
-  };
 
   const RenderTrips = () => {
     if (!tripIds || !Array.isArray(tripIds)) return null;
