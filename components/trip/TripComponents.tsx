@@ -19,7 +19,6 @@ import Animated, {
 
 import { Spacer } from '@/components/Spacer';
 import { ThemedText } from '@/components/ThemedText';
-import CustomImage from '@/components/ui/CustomImage';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 // import { useDelTripCallback } from '@/stores/TripListStore';
@@ -67,6 +66,8 @@ export function TripCard({ tripId }: { tripId: string }) {
   const [image] = useTripValue(tripId, 'coverImage');
   // const productCount = useTripValues(tripId, "productCount");
   const userNicknames = useTripUserNicknames(tripId);
+
+  // console.log('name: ', name, 'collaborators: ', userNicknames);
 
   // Preload the trip's cover image if it exists
   useEffect(() => {
@@ -123,61 +124,57 @@ export function TripCard({ tripId }: { tripId: string }) {
       <Link href={{ pathname: '/trip/[tripId]', params: { tripId } }}>
         <View
           style={[styles.tripCard, dynamicStyles.tripCard]}
-          className="flex-row gap-x-4">
-          <View className="h-full w-24">
+          className="w-full flex-row gap-x-4">
+          <View className="h-full w-24 shrink-0">
             <Image
               source={{ uri: image || defaultImage }}
               style={styles.tripImage}
               contentFit="cover"
             />
           </View>
-          <View className="w-full justify-center py-2">
+
+          <View className="flex-1 justify-center py-2">
             <ThemedText
               type="subtitle"
               style={dynamicStyles.tripName}
-              // className="text-center text-lime-500"
-            >
+              numberOfLines={1}>
               {name}
             </ThemedText>
-            <Spacer size={10} vertical />
-            <View style={styles.tripTextInfoContainer}>
-              {location && (
-                <View style={styles.tripInfoTextContainer}>
-                  <FontAwesome6
-                    name="location-dot"
-                    size={10}
-                    color={Colors[colorScheme].background}
-                  />
-                  <ThemedText type="default" style={dynamicStyles.tripInfoText}>
-                    {location}
-                  </ThemedText>
-                </View>
-              )}
+            <ThemedText
+              type="default"
+              style={dynamicStyles.tripInfoText}
+              numberOfLines={1}>
+              {location}
+            </ThemedText>
+          </View>
 
-              {startDate && endDate && (
-                <View style={styles.tripInfoTextContainer}>
-                  <FontAwesome6
-                    name="calendar-days"
-                    size={10}
-                    color={Colors[colorScheme].background}
-                  />
-                  <ThemedText type="default" style={dynamicStyles.tripInfoText}>
-                    {new Date(startDate).toLocaleDateString()} -{' '}
-                    {new Date(endDate).toLocaleDateString()}
-                  </ThemedText>
-                </View>
-              )}
-              {startDate && (
-                <ThemedText type="default" style={dynamicStyles.tripInfoText}>
-                  {getDaysUntilDeparture(startDate)}
-                </ThemedText>
-              )}
-            </View>
-            <View style={styles.memberContainer}>
-              {userNicknames.length > 1 && (
-                <View style={styles.nicknameContainer}>
-                  {userNicknames.length === 4
-                    ? // Show all 4 letters when length is exactly 4
+          <View className="flex h-full w-16 shrink-0 items-center justify-center">
+            {userNicknames.length >= 1 && (
+              <View className="flex-row">
+                {userNicknames.length === 4
+                  ? // Show all 4 letters when length is exactly 4
+                    userNicknames.map((nickname, index) => (
+                      <NicknameCircle
+                        key={nickname}
+                        nickname={nickname}
+                        color={Colors.light.primary}
+                        index={index}
+                      />
+                    ))
+                  : userNicknames.length > 4
+                    ? // Show first 3 letters and ellipsis when length > 4
+                      userNicknames
+                        .slice(0, 4)
+                        .map((nickname, index) => (
+                          <NicknameCircle
+                            key={nickname}
+                            nickname={nickname}
+                            color={Colors.light.primary}
+                            index={index}
+                            isEllipsis={index === 3}
+                          />
+                        ))
+                    : // Show all letters when length is 2 or 3
                       userNicknames.map((nickname, index) => (
                         <NicknameCircle
                           key={nickname}
@@ -185,32 +182,9 @@ export function TripCard({ tripId }: { tripId: string }) {
                           color={Colors.light.primary}
                           index={index}
                         />
-                      ))
-                    : userNicknames.length > 4
-                      ? // Show first 3 letters and ellipsis when length > 4
-                        userNicknames
-                          .slice(0, 4)
-                          .map((nickname, index) => (
-                            <NicknameCircle
-                              key={nickname}
-                              nickname={nickname}
-                              color={Colors.light.primary}
-                              index={index}
-                              isEllipsis={index === 3}
-                            />
-                          ))
-                      : // Show all letters when length is 2 or 3
-                        userNicknames.map((nickname, index) => (
-                          <NicknameCircle
-                            key={nickname}
-                            nickname={nickname}
-                            color={Colors.light.primary}
-                            index={index}
-                          />
-                        ))}
-                </View>
-              )}
-            </View>
+                      ))}
+              </View>
+            )}
           </View>
         </View>
       </Link>
@@ -272,9 +246,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   memberContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    // justifyContent: 'flex-end',
   },
   tripImage: {
     width: '100%',
@@ -283,29 +257,9 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 16,
   },
 
-  rightAction: {
-    width: 200,
-    height: 65,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  leftContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    flexShrink: 1,
-  },
-  textContent: {
-    flexShrink: 1,
-  },
   productCount: {
     fontSize: 12,
     color: 'gray',
-  },
-  rightContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
   },
   nicknameContainer: {
     flexDirection: 'row',
