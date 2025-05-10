@@ -12,13 +12,13 @@ import {
 } from 'react-native';
 
 import { Spacer } from '@/components/Spacer';
-import TripCard from '@/components/cards/TripCard';
 import HomeSkeleton from '@/components/skeletons/HomeSkeleton';
 import { BodyScrollView } from '@/components/ui/BodyScrollView';
 import Button from '@/components/ui/Button';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Colors } from '@/constants/Colors';
 import { useTripIds } from '@/stores/TripListStore';
+import { TripCard } from '~/components/trip/TripComponents';
 
 const TripsScreen = () => {
   const router = useRouter();
