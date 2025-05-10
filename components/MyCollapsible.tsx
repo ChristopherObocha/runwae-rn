@@ -20,7 +20,7 @@ export function MyCollapsible({
         style={styles.heading}
         onPress={() => setIsOpen((value) => !value)}
         activeOpacity={0.8}>
-        <ThemedText type="defaultSemiBold">{title}</ThemedText>
+        <ThemedText type="subtitle">{title}</ThemedText>
 
         <IconSymbol
           name="chevron.right"
