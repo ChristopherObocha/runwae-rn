@@ -8,7 +8,7 @@
     "android": "expo run:android",
     "build:dev": "eas build --profile development",
     "build:dev-sim": "eas build --profile development-simulator",
-    "build:preview": "eas build --profile preview",
+    "build:preview": "eas build --profile preview --submit",
     "build:prod": "eas build --profile production",
     "prebuild": "expo prebuild",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
