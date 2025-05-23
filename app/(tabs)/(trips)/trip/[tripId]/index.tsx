@@ -138,20 +138,7 @@ export default function ListScreen() {
         createdByNickname,
       };
 
-      return (
-        // <View key={id} style={styles.itineraryItem}>
-        //   <ThemedText style={styles.itineraryName}>{name}</ThemedText>
-        //   <ThemedText>{location}</ThemedText>
-        //   <ThemedText>{new Date(startDate).toLocaleString()}</ThemedText>
-        //   <ThemedText>{description}</ThemedText>
-        //   <ThemedText style={styles.createdBy}>
-        //     Added by {createdByNickname}
-        //   </ThemedText>
-        // </View>
-        // <View style={styles.itineraryItem}>
-        <ItineraryCard itinerary={itineraryObject} />
-        // </View>
-      );
+      return <ItineraryCard itinerary={itineraryObject} />;
     };
 
     return (

@@ -359,6 +359,40 @@ const EVENTS_AND_EXPERIENCES: Event[] = [
   },
 ];
 
+const HTTP_REQUESTS = {
+  DELETE: 'DELETE',
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  PATCH: 'PATCH',
+};
+
+const PLATFORM = {
+  IOS: 'ios',
+  ANDROID: 'android',
+};
+const STORAGE = {
+  ANALYTICS: '@analytics_allowed',
+  CRASHLYTICS: '@crashlytics_allowed',
+  PREFERRED_NAME: '@preferred_name',
+  LANGUAGE: '@language',
+  ARTICLE_CLICKED: '@article_clicked',
+  EMAIL: '@email',
+  ALREADY_LAUNCHED: '@already_launched',
+  RETURNING_USER: '@returning_user',
+  TOKENS: '@tokens',
+  BIOMETRICS_ASKED: '@biometrics_asked',
+  BIOMETRICS_ENABLED: '@biometrics_enabled',
+  EVENT_ID: '@event_id',
+  VIEWED: '@viewed',
+  PROFILE_VISITED: '@profile_visited',
+  THEME: '@theme',
+  PENDING_BACKGROUND_NOTIFICATION_PAYLOAD: '@pending_background_notificaiton',
+  TERRA_LAST_UPDATE: '@terra_last_request',
+  LAST_UPDATE_PROMPT: '@last_update_prompt',
+  ANIMATIONS_ENABLED: '@animations_enabled',
+};
+
 export const constants = {
   DEFAULT_HOTELS_STRING: JSON.stringify(DEFAULT_HOTELS),
   DEFAULT_HOTELS_PARSED: DEFAULT_HOTELS,
@@ -367,4 +401,7 @@ export const constants = {
   CATEGORY_ITEMS,
   EVENTS_AND_EXPERIENCES,
   ...DIRECTIONS,
+  ...HTTP_REQUESTS,
+  ...PLATFORM,
+  ...STORAGE,
 };
