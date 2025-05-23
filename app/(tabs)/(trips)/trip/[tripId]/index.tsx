@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
 import * as Haptics from 'expo-haptics';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useState } from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -11,26 +11,23 @@ import {
 import Animated, {
   useAnimatedStyle,
   withSpring,
-  interpolateColor,
   useSharedValue,
 } from 'react-native-reanimated';
-// import ShoppingListProductItem from "@/components/ShoppingListProductItem";
+
 import { ThemedText } from '@/components/ThemedText';
+import ItineraryCard from '@/components/cards/ItineraryCard';
 import { BodyScrollView } from '@/components/ui/BodyScrollView';
 import Button from '@/components/ui/Button';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import { Colors } from '@/constants/Colors';
+import { useDelTripCallback } from '@/stores/TripListStore';
 import {
   useTripItineraryIds,
   useTripValue,
   useAddTripItineraryCallback,
-} from '@/stores/TripStore';
-import { useDelTripCallback } from '@/stores/TripListStore';
-import { Colors } from '@/constants/Colors';
-import {
   useTripItineraryCell,
   useTripItineraryCreatedByNickname,
 } from '@/stores/TripStore';
-import ItineraryCard from '@/components/cards/ItineraryCard';
 
 const SEGMENTS = ['Itinerary', 'Places', 'Bookings'] as const;
 type SegmentType = (typeof SEGMENTS)[number];
@@ -159,7 +156,7 @@ export default function ListScreen() {
 
     return (
       <View style={styles.itineraryContentContainer}>
-        {itineraryIds.map(id => (
+        {itineraryIds.map((id) => (
           <ItineraryItem key={id} id={id} />
         ))}
 
@@ -222,7 +219,7 @@ export default function ListScreen() {
                   });
                 }}
                 style={{ padding: 8 }}>
-                <IconSymbol name="square.and.arrow.up" color={'#007AFF'} />
+                <IconSymbol name="square.and.arrow.up" color="#007AFF" />
               </Pressable>
               <Pressable
                 onPress={() => {
@@ -235,10 +232,7 @@ export default function ListScreen() {
                   });
                 }}
                 style={{ padding: 8 }}>
-                <IconSymbol
-                  name="pencil.and.list.clipboard"
-                  color={'#007AFF'}
-                />
+                <IconSymbol name="pencil.and.list.clipboard" color="#007AFF" />
               </Pressable>
               <Pressable
                 onPress={() => {
@@ -248,7 +242,7 @@ export default function ListScreen() {
                   // router.push(newProductHref);
                 }}
                 style={{ paddingLeft: 8 }}>
-                <IconSymbol name="plus" color={'#007AFF'} />
+                <IconSymbol name="plus" color="#007AFF" />
               </Pressable>
               <Pressable
                 onPress={() => {
@@ -259,7 +253,7 @@ export default function ListScreen() {
                   router.replace('/(tabs)/(home)');
                 }}
                 style={{ paddingLeft: 8 }}>
-                <IconSymbol name="trash" color={'#007AFF'} />
+                <IconSymbol name="trash" color="#007AFF" />
               </Pressable>
             </View>
           ),
