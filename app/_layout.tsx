@@ -5,7 +5,7 @@ import {
   ThemeProvider,
 } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Slot, Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import 'react-native-reanimated';
@@ -17,8 +17,8 @@ import { tokenCache } from '@/cache';
 import { ListCreationProvider } from '@/context/ListCreationContext';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useImagePreloader } from '@/hooks/useImagePreloader';
-import TripListStore from '@/stores/TripListStore';
 import SplashScreen from '@/screens/SplashScreen';
+import TripListStore from '@/stores/TripListStore';
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
@@ -56,20 +56,6 @@ function AuthenticatedContent() {
             <StatusBar style="auto" />
           </>
         )}
-      </GestureHandlerRootView>
-    </ThemeProvider>
-  );
-}
-
-function OnboardingFlow() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <Stack>
-          <Stack.Screen name="(onboarding)" />
-        </Stack>
       </GestureHandlerRootView>
     </ThemeProvider>
   );
