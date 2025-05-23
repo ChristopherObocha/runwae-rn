@@ -1,7 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import {
   StyleSheet,
@@ -9,17 +10,19 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
+
+import MemberAvatars from '@/components/MemberAvatars';
 import { Spacer } from '@/components/Spacer';
 import { ThemedText } from '@/components/ThemedText';
+import Button from '@/components/ui/Button';
 import { Colors } from '@/constants/Colors';
-import { useRouter } from 'expo-router';
-import { formatTime } from '@/utils/formatters';
 import {
   useTripItineraryParticipants,
   useAddTripItineraryParticipant,
 } from '@/stores/TripStore';
-import MemberAvatars from '@/components/MemberAvatars';
-import Button from '@/components/ui/Button';
+import { formatTime } from '@/utils/formatters';
+
+const defaultImage = require('@/assets/images/high-quality-images/4.jpg');
 
 interface ItineraryCardProps {
   itinerary: {
@@ -66,8 +69,6 @@ const ItineraryCard = ({ itinerary }: ItineraryCardProps) => {
     },
   };
 
-  console.log(participants);
-
   return (
     <TouchableOpacity
       style={[styles.container, dynamicStyles.container]}
@@ -80,28 +81,12 @@ const ItineraryCard = ({ itinerary }: ItineraryCardProps) => {
           },
         });
       }}>
-      {itinerary.image ? (
-        <Image
-          source={{ uri: itinerary.image }}
-          style={styles.image}
-          contentFit="cover"
-          transition={100}
-        />
-      ) : (
-        <View style={styles.imagePlaceholder}>
-          <LinearGradient
-            colors={['#e0e0e0', '#f5f5f5', '#e0e0e0']}
-            style={styles.gradient}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}>
-            <BlurView intensity={50} style={styles.blur}>
-              <ThemedText style={styles.placeholderText}>
-                {/* {itinerary.location || 'No location set'} */}
-              </ThemedText>
-            </BlurView>
-          </LinearGradient>
-        </View>
-      )}
+      <Image
+        source={itinerary?.image ? { uri: itinerary.image } : defaultImage}
+        style={styles.image}
+        contentFit="cover"
+        transition={100}
+      />
 
       <View style={styles.contentContainer}>
         <ThemedText style={styles.title}>{itinerary?.title}</ThemedText>
@@ -225,7 +210,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   image: {
-    width: '100%',
+    width: '30%',
     height: '100%',
     resizeMode: 'cover',
   },
