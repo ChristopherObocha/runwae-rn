@@ -1,7 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 import { Image } from 'expo-image';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import {
@@ -49,13 +47,10 @@ const ItineraryCard = ({ itinerary }: ItineraryCardProps) => {
     itinerary.tripId,
     itinerary.id
   );
-  const blurhash =
-    '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
   const dynamicStyles = {
     container: {
-      backgroundColor: Colors[colorScheme].background,
-      borderColor: Colors[colorScheme].grey,
+      backgroundColor: Colors[colorScheme].tripCardBackground,
     },
     description: {
       color: Colors[colorScheme].grey2,
@@ -66,6 +61,9 @@ const ItineraryCard = ({ itinerary }: ItineraryCardProps) => {
     participantCount: {
       fontSize: 14,
       color: Colors[colorScheme].grey2,
+    },
+    addButton: {
+      backgroundColor: Colors[colorScheme].primaryVariant,
     },
   };
 
@@ -139,7 +137,8 @@ const ItineraryCard = ({ itinerary }: ItineraryCardProps) => {
               variant="filled"
               leftIcon="add"
               onPress={addParticipant}
-              style={styles.addButton}>
+              style={dynamicStyles.addButton}
+              textStyle={{ color: Colors[colorScheme].text }}>
               Join
             </Button>
           )}
@@ -162,18 +161,23 @@ export default ItineraryCard;
 const styles = StyleSheet.create({
   container: {
     borderRadius: 10,
-    paddingVertical: 6,
-    paddingHorizontal: 6,
-    borderWidth: 1,
     flexDirection: 'row',
+  },
+  image: {
+    width: '30%',
+    height: '100%',
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
   },
   contentContainer: {
     flex: 1,
-    marginLeft: 10,
     flexDirection: 'column',
+    paddingVertical: 8,
+    paddingLeft: 12,
   },
   ellipsisContainer: {
-    padding: 5,
+    paddingVertical: 8,
+    paddingRight: 12,
     alignItems: 'center',
   },
   title: {
@@ -195,25 +199,6 @@ const styles = StyleSheet.create({
     gap: 4,
   },
 
-  imagePlaceholder: {
-    height: '100%',
-    maxWidth: 90,
-    aspectRatio: 1,
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  imageContainer: {
-    height: '100%',
-    maxWidth: 90,
-    aspectRatio: 1,
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  image: {
-    width: '30%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
   gradient: {
     flex: 1,
     justifyContent: 'center',
@@ -236,10 +221,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 8,
     // alignSelf: 'flex-end',
-  },
-  addButton: {
-    padding: 4,
-    marginLeft: 8,
   },
   avatarContainer: {
     flexDirection: 'row',

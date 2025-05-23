@@ -132,7 +132,12 @@ const Button: React.FC<ButtonProps> = ({
       {loading ? (
         <ActivityIndicator
           size="small"
-          color={textStyle?.color || Colors[colorScheme].background}
+          color={
+            textStyle?.color ||
+            (variant === 'filled'
+              ? Colors[colorScheme].background
+              : Colors[colorScheme].text)
+          }
         />
       ) : (
         <View style={styles.contentContainer}>
@@ -142,9 +147,10 @@ const Button: React.FC<ButtonProps> = ({
                 name={leftIcon}
                 size={sizeStyle[size].fontSize + 2}
                 color={
-                  variant === 'filled'
+                  textStyle?.color ||
+                  (variant === 'filled'
                     ? Colors[colorScheme].background
-                    : Colors[colorScheme].text
+                    : Colors[colorScheme].text)
                 }
               />
               <View style={{ width: 8 }} />
