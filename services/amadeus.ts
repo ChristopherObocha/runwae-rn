@@ -1,8 +1,10 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
+import { ENDPOINTS } from '~/hooks/client/endpoints';
 
-const AMADEUS_TOKEN_KEY = '@amadeus_token';
-const AMADEUS_TOKEN_EXPIRY_KEY = '@amadeus_token_expiry';
+const { baseAmadeus } = ENDPOINTS;
+const AMADEUS_TOKEN_KEY = 'amadeus_token';
+const AMADEUS_TOKEN_EXPIRY_KEY = 'amadeus_token_expiry';
 
 interface AmadeusToken {
   access_token: string;
@@ -64,6 +66,7 @@ export class AmadeusService {
 
       // Store the new token and its expiry
       await SecureStore.setItemAsync(AMADEUS_TOKEN_KEY, tokenData.access_token);
+      console.log('token: ', tokenData.access_token);
       const expiryTime = Date.now() + tokenData.expires_in * 1000;
       await SecureStore.setItemAsync(
         AMADEUS_TOKEN_EXPIRY_KEY,
@@ -87,7 +90,8 @@ export class AmadeusService {
 
       const response = await axios({
         method,
-        url: `${this.baseUrl}${endpoint}`,
+        // url: `${this.baseUrl}${endpoint}`,
+        url: 'https://test.api.amadeus.com/v1/reference-data/locations/cities?countryCode=MA&keyword=Marrakesh',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
