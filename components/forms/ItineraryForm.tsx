@@ -1,11 +1,18 @@
-import React, { useState, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import debounce from 'lodash/debounce';
+import React, { useState, useCallback } from 'react';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  useColorScheme,
+} from 'react-native';
+
 import { ThemedText } from '@/components/ThemedText';
 import Button from '@/components/ui/Button';
 import TextInput from '@/components/ui/TextInput';
-import debounce from 'lodash/debounce';
-
+import { Colors } from '@/constants/Colors';
 type ItineraryFormProps = {
   onSubmit: (data: {
     name: string;
@@ -24,6 +31,7 @@ interface PlaceResult {
 }
 
 export function ItineraryForm({ onSubmit, onClose }: ItineraryFormProps) {
+  const colorScheme = useColorScheme();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
@@ -75,6 +83,26 @@ export function ItineraryForm({ onSubmit, onClose }: ItineraryFormProps) {
     setPlaceSuggestions([]);
   };
 
+  const dynamicStyle = {
+    dropdown: {
+      position: 'absolute' as const,
+      top: 90,
+      left: 0,
+      right: 0,
+      maxHeight: 200,
+      backgroundColor: Colors[colorScheme].tripCardBackground,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: Colors[colorScheme].text,
+      zIndex: 2,
+    },
+    dropdownItem: {
+      padding: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: Colors[colorScheme].text,
+    },
+  };
+
   return (
     <View style={styles.container}>
       <ThemedText style={styles.title}>New Itinerary Item</ThemedText>
@@ -97,15 +125,17 @@ export function ItineraryForm({ onSubmit, onClose }: ItineraryFormProps) {
         />
         {showDropdown && placeSuggestions.length > 0 && (
           <ScrollView
-            style={styles.dropdown}
+            style={dynamicStyle.dropdown}
             keyboardShouldPersistTaps="handled"
-            nestedScrollEnabled={true}>
-            {placeSuggestions.map(place => (
+            nestedScrollEnabled>
+            {placeSuggestions.map((place) => (
               <TouchableOpacity
                 key={place.place_id}
                 onPress={() => handlePlaceSelect(place)}
-                style={styles.dropdownItem}>
-                <ThemedText>{place.display_name}</ThemedText>
+                style={dynamicStyle.dropdownItem}>
+                <ThemedText style={{ color: Colors[colorScheme].text }}>
+                  {place.display_name}
+                </ThemedText>
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -175,23 +205,6 @@ const styles = StyleSheet.create({
   locationContainer: {
     position: 'relative',
     zIndex: 1,
-  },
-  dropdown: {
-    position: 'absolute',
-    top: '100%',
-    left: 0,
-    right: 0,
-    maxHeight: 200,
-    backgroundColor: 'white',
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    zIndex: 2,
-  },
-  dropdownItem: {
-    padding: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
   },
   dateContainer: {
     marginVertical: 4,

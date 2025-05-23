@@ -17,6 +17,8 @@ const PlacesView = ({ style, location = 'Paris' }: PlacesViewProps) => {
   const amadeusService = AmadeusService.getInstance();
   const [cityResults, setCityResults] = useState<any[]>([]);
 
+  console.log('location', location);
+
   // useEffect(() => {
   //   amadeusService
   //     .makeRequest(cityInfo, GET, {
@@ -30,13 +32,12 @@ const PlacesView = ({ style, location = 'Paris' }: PlacesViewProps) => {
   //     });
   // }, [location]);
 
-  console.log('cityResults', cityResults);
   const callCityInfo = async () => {
     const cityInfo = await amadeusService.makeRequest(
       `${baseAmadeus}v1/reference-data/locations/cities`,
       GET
     );
-    console.log('cityInfo', cityInfo);
+    console.log('cityInfo', JSON.stringify(cityInfo, null, 2));
   };
 
   callCityInfo();
