@@ -8,7 +8,7 @@ export const getCountryCode = (countryName: string): string => {
   const normalizedName = countryName.trim().toLowerCase();
 
   // Map of common country names and their ISO codes
-  const countryMap: { [key: string]: string } = {
+  const countryMap: Record<string, string> = {
     // Full names
     'united kingdom': 'GB',
     'united states': 'US',

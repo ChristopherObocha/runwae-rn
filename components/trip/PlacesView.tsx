@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
-import {
-  getCountryCode,
-  getCountryData,
-  getCountryDataList,
-  getEmojiFlag,
-} from 'countries-list';
 
+import { ENDPOINTS } from '~/hooks/client/endpoints';
 import { AmadeusService } from '~/services/amadeus';
 import { constants } from '~/utils/constants';
-import { ENDPOINTS } from '~/hooks/client/endpoints';
+import { getCountryCode } from '~/utils/countryUtils';
 
 const { GET } = constants;
 const { baseAmadeus, cityInfo } = ENDPOINTS;
@@ -25,21 +20,19 @@ const PlacesView = ({ style, location = 'Paris' }: PlacesViewProps) => {
 
   // Split location into city and country parts
   const [city, country] = location.split(',').map((part) => part.trim());
-  const countryCode = getCountryCode(country || '');
-  const keyword = city;
 
-  // useEffect(() => {
-  //   amadeusService
-  //     .makeRequest(cityInfo, GET, {
-  //       params: {
-  //         keyword: 'Paris',
-  //         countryCode: 'FR',
-  //       },
-  //     })
-  //     .then((places) => {
-  //       setCityResults(places);
-  //     });
-  // }, [location]);
+  // Use our local getCountryCode function
+  const countryCode: string = getCountryCode(country) || '';
+
+  const keyword: string = city || '';
+
+  useEffect(() => {
+    amadeusService
+      .makeRequest(cityInfo(countryCode, keyword), GET)
+      .then((places) => {
+        setCityResults(places);
+      });
+  }, [location]);
 
   const callCityInfo = async () => {
     if (!countryCode) {
