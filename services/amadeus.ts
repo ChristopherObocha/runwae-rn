@@ -90,8 +90,7 @@ export class AmadeusService {
 
       const response = await axios({
         method,
-        // url: `${this.baseUrl}${endpoint}`,
-        url: 'https://test.api.amadeus.com/v1/reference-data/locations/cities?countryCode=MA&keyword=Marrakesh',
+        url: `${this.baseUrl}/${endpoint}`,
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',

@@ -41,7 +41,7 @@ const PlacesView = ({ style, location = 'Paris' }: PlacesViewProps) => {
     }
 
     const cityInfoResult = await amadeusService.makeRequest(
-      `${baseAmadeus}${cityInfo(countryCode, keyword)}`,
+      `${cityInfo(countryCode, keyword)}`,
       GET
     );
     console.log('cityInfo', JSON.stringify(cityInfoResult, null, 2));
