@@ -7,7 +7,7 @@ import { constants } from '~/utils/constants';
 import { getCountryCode } from '~/utils/countryUtils';
 
 const { GET } = constants;
-const { baseAmadeus, cityInfo } = ENDPOINTS;
+const { baseAmadeus, cityInfo, activitySearchByGeoCode } = ENDPOINTS;
 
 type PlacesViewProps = {
   style?: ViewStyle;
@@ -20,19 +20,24 @@ const PlacesView = ({ style, location = 'Paris' }: PlacesViewProps) => {
 
   // Split location into city and country parts
   const [city, country] = location.split(',').map((part) => part.trim());
+  const [cityDetails, setCityDetails] = useState<any>(null);
+  const [activities, setActivities] = useState<any[]>([]);
 
   // Use our local getCountryCode function
   const countryCode: string = getCountryCode(country) || '';
-
   const keyword: string = city || '';
 
   useEffect(() => {
-    amadeusService
-      .makeRequest(cityInfo(countryCode, keyword), GET)
-      .then((places) => {
-        setCityResults(places);
-      });
+    if (!cityDetails) {
+      callCityInfo();
+    }
   }, [location]);
+
+  useEffect(() => {
+    if (cityDetails) {
+      callActivitySearchByGeoCode();
+    }
+  }, [cityDetails]);
 
   const callCityInfo = async () => {
     if (!countryCode) {
@@ -40,14 +45,50 @@ const PlacesView = ({ style, location = 'Paris' }: PlacesViewProps) => {
       return;
     }
 
-    const cityInfoResult = await amadeusService.makeRequest(
-      `${cityInfo(countryCode, keyword)}`,
-      GET
-    );
-    console.log('cityInfo', JSON.stringify(cityInfoResult, null, 2));
+    try {
+      const url = `${baseAmadeus}${cityInfo(countryCode, keyword)}`;
+      console.log('City Info URL:', url);
+      const cityInfoResult = await amadeusService.makeRequest(url, GET);
+      if (cityInfoResult?.data) {
+        setCityDetails(cityInfoResult);
+
+        //call activity search by geo code
+        callActivitySearchByGeoCode();
+      } else {
+        console.warn('No city details found in response');
+      }
+    } catch (error: any) {
+      console.error('Error fetching city info:', error);
+    }
   };
 
-  callCityInfo();
+  const callActivitySearchByGeoCode = async () => {
+    if (!cityDetails?.data[0]?.geoCode) {
+      console.warn('No valid city details found. ');
+      return;
+    }
+
+    try {
+      const url = `${baseAmadeus}${activitySearchByGeoCode(
+        cityDetails.data.geoCode.latitude,
+        cityDetails.data.geoCode.longitude,
+        '5'
+      )}`;
+      console.log('Activity Search URL:', url);
+      const activitySearchByGeoCodeResult = await amadeusService.makeRequest(
+        url,
+        GET
+      );
+      if (activitySearchByGeoCodeResult?.data) {
+        setActivities(activitySearchByGeoCodeResult);
+      } else {
+        console.warn('No activities found in response');
+      }
+    } catch (error: any) {
+      console.error('Error calling activity search by geo code:', error);
+    }
+  };
+
   return (
     <View style={[styles.container, style]}>
       <Text>Places Content</Text>
