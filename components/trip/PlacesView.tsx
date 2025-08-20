@@ -63,6 +63,7 @@ const PlacesView = ({ style, location = 'Paris' }: PlacesViewProps) => {
   };
 
   const callActivitySearchByGeoCode = async () => {
+    //check if cityDetails exists
     if (!cityDetails?.data[0]?.geoCode) {
       console.warn('No valid city details found. ');
       return;
@@ -70,11 +71,10 @@ const PlacesView = ({ style, location = 'Paris' }: PlacesViewProps) => {
 
     try {
       const url = `${baseAmadeus}${activitySearchByGeoCode(
-        cityDetails.data.geoCode.latitude,
-        cityDetails.data.geoCode.longitude,
+        cityDetails?.data[0].geoCode.latitude,
+        cityDetails?.data[0].geoCode.longitude,
         '5'
       )}`;
-      console.log('Activity Search URL:', url);
       const activitySearchByGeoCodeResult = await amadeusService.makeRequest(
         url,
         GET
@@ -87,6 +87,7 @@ const PlacesView = ({ style, location = 'Paris' }: PlacesViewProps) => {
     } catch (error: any) {
       console.error('Error calling activity search by geo code:', error);
     }
+    console.log('activities: ', JSON.stringify(activities));
   };
 
   return (

@@ -1,8 +1,6 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
-import { ENDPOINTS } from '~/hooks/client/endpoints';
 
-const { baseAmadeus } = ENDPOINTS;
 const AMADEUS_TOKEN_KEY = 'amadeus_token';
 const AMADEUS_TOKEN_EXPIRY_KEY = 'amadeus_token_expiry';
 
@@ -88,9 +86,11 @@ export class AmadeusService {
     try {
       const token = await this.getToken();
 
+      console.log('endpoint: ', `${endpoint}`);
+
       const response = await axios({
         method,
-        url: `${this.baseUrl}/${endpoint}`,
+        url: `${endpoint}`,
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
