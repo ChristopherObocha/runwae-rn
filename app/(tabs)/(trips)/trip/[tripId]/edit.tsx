@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 import * as Haptics from 'expo-haptics';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+
+import { Spacer } from '@/components/Spacer';
+import { ThemedText } from '@/components/ThemedText';
 import { BodyScrollView } from '@/components/ui/BodyScrollView';
 import Button from '@/components/ui/Button';
 import TextInput from '@/components/ui/TextInput';
 import { useListCreation } from '@/context/ListCreationContext';
 import { useTripValue } from '@/stores/TripStore';
-import { Spacer } from '@/components/Spacer';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
-import { ThemedText } from '@/components/ThemedText';
 
 export default function ListScreen() {
   const router = useRouter();

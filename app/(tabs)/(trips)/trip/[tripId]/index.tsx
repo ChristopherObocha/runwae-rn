@@ -16,6 +16,7 @@ import Animated, {
 
 import { ThemedText } from '@/components/ThemedText';
 import ItineraryCard from '@/components/cards/ItineraryCard';
+import PlacesView from '@/components/trip/PlacesView';
 import { BodyScrollView } from '@/components/ui/BodyScrollView';
 import Button from '@/components/ui/Button';
 import { IconSymbol } from '@/components/ui/IconSymbol';
@@ -40,6 +41,7 @@ export default function ListScreen() {
   const [description] = useTripValue(tripId, 'description');
   const [startDate] = useTripValue(tripId, 'startDate');
   const [endDate] = useTripValue(tripId, 'endDate');
+  const [location] = useTripValue(tripId, 'destination');
 
   const deleteCallback = useDelTripCallback(tripId);
   const addItinerary = useAddTripItineraryCallback(tripId);
@@ -171,9 +173,7 @@ export default function ListScreen() {
         return <ItineraryRoute />;
       case 'Places':
         return (
-          <View style={styles.contentContainer}>
-            <ThemedText>Places Content</ThemedText>
-          </View>
+          <PlacesView style={styles.contentContainer} location={location} />
         );
       case 'Bookings':
         return (
